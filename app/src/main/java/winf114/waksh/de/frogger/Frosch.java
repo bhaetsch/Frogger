@@ -11,7 +11,8 @@ public class Frosch {
     private int y;                  //vertikale Position der linken oberen Ecke
     private int breite;             //in Pixeln
     private int hoehe;              //in Pixeln
-    private Bitmap bitmap;          //fürs Frosch Bild
+    private Bitmap bitmap; // the actual bitmap
+    private boolean touched; // if frog is touched/picked up
 
     public Frosch(Bitmap bitmap, int x, int y, int breite, int hoehe) {
         this.bitmap = bitmap;
@@ -22,19 +23,18 @@ public class Frosch {
     }
 
     public void move(richtung r) {
-        // bewegungsweite 20 pixel addiert
         switch(r){
             case vor:
-                this.setY(this.getY()-this.getHoehe()-40);
+                this.setY(this.getY()-this.getHoehe());
                 break;
             case zurueck:
-                this.setY(this.getY() + this.getHoehe()+40);
+                this.setY(this.getY() + this.getHoehe());
                 break;
             case links:
-                this.setX(this.getX()-this.getBreite()-40);
+                this.setX(this.getX()-this.getBreite());
                 break;
             case rechts:
-                this.setX(this.getX()+this.getBreite()+40);
+                this.setX(this.getX()+this.getBreite());
                 break;
         }
     }
@@ -87,14 +87,35 @@ public class Frosch {
         this.hoehe = hoehe;
     }
 
+
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
+    }
+
+    public boolean isTouched() {
+        return touched;
+    }
+
+    public void setTouched(boolean touched) {
+        this.touched = touched;
+    }
+
+    public void handleActionDown(int eventX, int eventY) {
+        if (eventX >= (x - bitmap.getWidth() / 2) && (eventX <= (x + bitmap.getWidth()/2))) {
+            if (eventY >= (y - bitmap.getHeight() / 2) && (y <= (y + bitmap.getHeight() / 2))) {
+                // droid touched
+                setTouched(true);
+            } else {
+                setTouched(false);
+            }
+        } else {
+            setTouched(false);
+        }
     }
 
     public Bitmap getBitmap() {
         return bitmap;
     }
-
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
