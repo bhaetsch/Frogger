@@ -18,6 +18,7 @@ public class MainThread extends Thread {
     @Override
     public void run() {
         while (isRunning()) {
+            //TODO
 
             Canvas canvas;
 
@@ -29,7 +30,7 @@ public class MainThread extends Thread {
                     synchronized (surfaceHolder) {
                         // update game state
                         // draws the canvas
-                        this.gameActivity.onDraw(canvas);
+                        this.gameActivity.onDraw(canvas); //kein Fehler!
                     }
                 } finally {
                     // in case of an exception the surface is not left in

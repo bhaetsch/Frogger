@@ -11,8 +11,14 @@
         android:id="@+id/surfaceView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:keepScreenOn="true" />
+        android:keepScreenOn="true"
+        android:background="#0e2f44" />
 
+    <ImageView
+        android:id="@+id/hintergrund"
+        android:src="@drawable/hintergrund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
@@ -22,7 +28,7 @@
         <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="#0099cc" android:orientation="horizontal"
+            android:background="@color/black_overlay" android:orientation="horizontal"
             tools:ignore="UselessParent">
 
             <Button
