@@ -1,26 +1,34 @@
 package winf114.waksh.de.frogger;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+
 /**
  * Created by bhaetsch on 25.05.2015.
  */
 public abstract class Spielobjekt {
+
     private int x;                  //horizontale Position der linken oberen Ecke
     private int y;                  //vertikale Position der linken oberen Ecke
     private int breite;             //in Pixeln
     private int hoehe;              //in Pixeln
-    private int geschwindigkeit;    //negativ==links; positiv==rechts, 0==statisch
+    Paint zeichenStift;
+    Rect zeichenBereich;
 
-    public Spielobjekt(int x, int y, int breite, int hoehe, int geschwindigkeit) {
-        this.setX(x);
-        this.setY(y);
-        this.setBreite(breite);
-        this.setHoehe(hoehe);
-        this.setGeschwindigkeit(geschwindigkeit);
+
+    public Spielobjekt(int x, int y, int breite, int hoehe, int farbe) {
+        this.x = x;
+        this.y = y;
+        this.breite = breite;
+        this.hoehe = hoehe;
+
+        zeichenBereich = new Rect(0,0,0,0);
+        zeichenStift = new Paint();
+        zeichenStift.setColor(farbe);
     }
 
-    public void move() {
-        this.setX(this.x + this.geschwindigkeit);
-    }
+
 
     public int getX() {
         return x;
@@ -54,11 +62,17 @@ public abstract class Spielobjekt {
         this.hoehe = hoehe;
     }
 
-    public int getGeschwindigkeit() {
-        return geschwindigkeit;
+    public void setZeichenBereich() {
+        zeichenBereich.set(x, y, x + breite, y + hoehe);
     }
 
-    public void setGeschwindigkeit(int geschwindigkeit) {
-        this.geschwindigkeit = geschwindigkeit;
+    public boolean kollidiertMit(Rect r){
+        if(this.zeichenBereich.intersect(r)){
+            return true;
+        }
+        return false;
     }
+
+    abstract void move();
+    abstract void draw(Canvas canvas);
 }

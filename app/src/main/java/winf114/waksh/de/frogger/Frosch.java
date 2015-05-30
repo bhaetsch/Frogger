@@ -1,122 +1,67 @@
 package winf114.waksh.de.frogger;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 /**
  * Created by bhaetsch on 25.05.2015.
  */
-public class Frosch {
-    private int x;                  //horizontale Position der linken oberen Ecke
-    private int y;                  //vertikale Position der linken oberen Ecke
-    private int breite;             //in Pixeln
-    private int hoehe;              //in Pixeln
-    private Bitmap bitmap; // the actual bitmap
-    private boolean touched; // if frog is touched/picked up
+public class Frosch extends Spielobjekt{
 
-    public Frosch(Bitmap bitmap, int x, int y, int breite, int hoehe) {
-        this.bitmap = bitmap;
-        this.setX(x);
-        this.setY(y);
-        this.setBreite(breite);
-        this.setHoehe(hoehe);
+    int geschwindigkeitVertikal;
+    int geschwindigkeitHorizontal;
+    boolean moved;
+    richtung r;
+    GameActivity gameActivity;
+
+
+    public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal,int farbe, GameActivity gameActivity) {
+        super(x, y, breite, hoehe, farbe);
+
+        this.gameActivity = gameActivity;
+        this.geschwindigkeitHorizontal = geschwindigkeitHorizontal;
+        this.geschwindigkeitVertikal = geschwindigkeitVertikal;
+        setZeichenBereich();
+        moved = false;
+    }
+
+    public void move(){
+        if(moved == true){
+            move(r);
+        }
     }
 
     public void move(richtung r) {
         switch(r){
             case vor:
-                this.setY(this.getY()-this.getHoehe());
+                this.setY(this.getY()-this.getHoehe() - geschwindigkeitVertikal);
                 break;
             case zurueck:
-                this.setY(this.getY() + this.getHoehe());
+                this.setY(this.getY() + this.getHoehe() + geschwindigkeitVertikal);
                 break;
             case links:
-                this.setX(this.getX()-this.getBreite());
+                this.setX(this.getX()-this.getBreite() - geschwindigkeitHorizontal);
                 break;
             case rechts:
-                this.setX(this.getX()+this.getBreite());
+                this.setX(this.getX()+this.getBreite() + geschwindigkeitHorizontal);
                 break;
         }
+        setZeichenBereich();
+        moved = false;
     }
 
-    public boolean collidesWithHindernis(Hindernis h) {
-        if (h.getY() > this.getY() + this.getHoehe() || this.getY() > h.getY() + h.getHoehe() || h.getX() > this.getX() + this.getBreite() || this.getX() > h.getX() + h.getBreite()) {
-            return false;
-        } else {
-            return true;
-        }
+    public void sterben(){
+        this.setX(gameActivity.startPositionX);
+        this.setY(gameActivity.startPositionY);
+        this.setZeichenBereich();
     }
-
-    public boolean collidesWithSchwimmer(Schwimmer s) {
-        if (s.getY() > this.getY() + this.getHoehe() || this.getY() > s.getY() + s.getHoehe() || s.getX() > this.getX() + this.getBreite() || this.getX() > s.getX() + s.getBreite()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getBreite() {
-        return breite;
-    }
-
-    public void setBreite(int breite) {
-        this.breite = breite;
-    }
-
-    public int getHoehe() {
-        return hoehe;
-    }
-
-    public void setHoehe(int hoehe) {
-        this.hoehe = hoehe;
-    }
-
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
+        canvas.drawRect(zeichenBereich, zeichenStift);
     }
 
-    public boolean isTouched() {
-        return touched;
-    }
 
-    public void setTouched(boolean touched) {
-        this.touched = touched;
-    }
 
-    public void handleActionDown(int eventX, int eventY) {
-        if (eventX >= (x - bitmap.getWidth() / 2) && (eventX <= (x + bitmap.getWidth()/2))) {
-            if (eventY >= (y - bitmap.getHeight() / 2) && (y <= (y + bitmap.getHeight() / 2))) {
-                // droid touched
-                setTouched(true);
-            } else {
-                setTouched(false);
-            }
-        } else {
-            setTouched(false);
-        }
-    }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
-    }
+
 }

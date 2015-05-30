@@ -5,20 +5,22 @@ import android.view.SurfaceHolder;
 import android.graphics.Canvas;
 
 
+
 /**
  * Created by bhaetsch on 25.05.2015.
  */
 public class MainThread extends Thread {
     private boolean running;
-    private ArrayList<Spielobjekt> spielobjekte = new ArrayList<Spielobjekt>();
+    ArrayList<Spielobjekt> spielobjekte = new ArrayList<Spielobjekt>();
 
     private SurfaceHolder surfaceHolder;
     private GameActivity gameActivity;
 
+
+
     @Override
     public void run() {
         while (isRunning()) {
-            //TODO
 
             Canvas canvas;
 
@@ -29,8 +31,44 @@ public class MainThread extends Thread {
                     canvas = this.surfaceHolder.lockCanvas();
                     synchronized (surfaceHolder) {
                         // update game state
+
+
+
+
+                        for (Spielobjekt s : spielobjekte){
+                            s.move();
+
+                        }
+
+                        // TODO die ArrayList in GameActivity?? und pass
+                        // Kol Spielobjekt mit Rand
+                        // byReference byValue !!!
+                        for (Spielobjekt s : spielobjekte){
+                            if (s instanceof Hindernis) {
+                                if (!s.kollidiertMit(s.zeichenBereich)) {
+                                    ((Hindernis) s).erscheintWieder();
+                                }
+                            }
+                        }
+                        // Kol Frosch mit Auto
+                        for (Spielobjekt s : spielobjekte){
+                            if (s instanceof Hindernis) {
+                                if (gameActivity.frosch.kollidiertMit(s.zeichenBereich)) {
+                                    gameActivity.frosch.sterben();
+
+                                }
+                            }
+                        }
+                        // Kol Frosch mit Rand
+                        if (!gameActivity.frosch.kollidiertMit(gameActivity.spielFlaeche)) {
+                            gameActivity.frosch.sterben();
+                        }
+
+
+
+
                         // draws the canvas
-                        this.gameActivity.onDraw(canvas); //kein Fehler!
+                        this.gameActivity.onDraw(canvas);
                     }
                 } finally {
                     // in case of an exception the surface is not left in
@@ -55,7 +93,5 @@ public class MainThread extends Thread {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameActivity = gameActivity;
-
-
     }
 }

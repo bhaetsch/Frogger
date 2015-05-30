@@ -7,40 +7,48 @@
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
 
-    <!--<TextView android:id="@+id/fullscreen_content" android:layout_width="match_parent"
-        android:layout_height="match_parent" android:keepScreenOn="true" android:textColor="#33b5e5"
-         /> -->
-
     <SurfaceView
         android:id="@+id/surfaceView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight = "1"
-        android:background="#0e2f44" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:fitsSystemWindows="true"/>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#cd3700"
-        android:text="Hallo Welt!" ></TextView>
-
-    <ImageView
-        android:id="@+id/frosch"
-        android:src="@drawable/ic_launcher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <LinearLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
+        <GridLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay" android:orientation="horizontal"
+            android:background="#ff000000" android:orientation="horizontal"
+            android:fitsSystemWindows="true"
             tools:ignore="UselessParent">
+
+
+            <Button
+                android:id="@+id/oben"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/oben_button_text"
+                android:layout_gravity="left|center" />
+
+            <Button
+                android:id="@+id/unten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unten_button_text"
+                android:layout_gravity="left|center" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#cd3700"
+                android:text="Hallo Welt!"
+                android:layout_gravity="center"></TextView>
 
             <Button
                 android:id="@+id/links"
@@ -54,21 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rechts_button_text" />
 
-            <Button
-                android:id="@+id/oben"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/oben_button_text" />
-
-            <Button
-                android:id="@+id/unten"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/unten_button_text" />
-
-        </LinearLayout>
-
-
+        </GridLayout>
 
 
 

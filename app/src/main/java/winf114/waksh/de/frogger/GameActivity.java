@@ -1,43 +1,45 @@
 package winf114.waksh.de.frogger;
 
-import winf114.waksh.de.frogger.util.SystemUiHider;
-import android.annotation.TargetApi;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.SurfaceView;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.graphics.Color;
+import android.graphics.Rect;
 
 
 public class GameActivity extends Activity implements SurfaceHolder.Callback{
 
+    final int LANE_HOEHE_PROZENT = 6;       //Höhe einer "Lane" im Spiel in % des Screens
+    final int OBJEKT_HOEHE_PROZENT = 80;    //Höhe des Objekts in % der Lane Hoehe
 
-    // Felder für die Menue Anzeige und so (vorgegeben)
-    private static final boolean AUTO_HIDE = true;
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-    private static final boolean TOGGLE_ON_CLICK = true;
-    private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
-    private SystemUiHider mSystemUiHider;
+    private int lanePixelHoehe;             //Höhe einer "Lane" im Spiel in Pixeln
+    private int objektPixelHoehe;           //Höhe der Objekt (eg.Frosch) im Spiel in Pixeln
+    Rect spielFlaeche;
+    int lanePadding;
+    int froschbreite;
+    int startPositionX;
+    int startPositionY;
 
-    // Eigene Felder
     private MainThread mainThread;
-    private Frosch frosch;
+
+    Frosch frosch;
+    private Hindernis auto;
+    private Hindernis lkw;
+    private Hindernis auto2;
+    private Hindernis krad;
+    private Hindernis auto3;
+
+    private Hintergrund hintergrund;
     SurfaceView surfaceView;
-    TextView textView;
     SurfaceHolder surfaceHolder;
-    Paint p = new Paint();
-    Color c = new Color();
+    TextView textView;
+
+
 
 
     @Override
@@ -45,23 +47,32 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
-        // setupActionBar(); //Erzeugt Fehler
+
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
+        spielFlaeche = new Rect(0,0,0,0);
         mainThread = new MainThread(surfaceHolder, this);
-        frosch = new Frosch(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), 20,20,10,10);
-
 
         // 4 Knöpfe und ein Test-Textfeld
+
         textView = (TextView) findViewById(R.id.textView1);
 
         Button linksButton = (Button) findViewById(R.id.links);
         linksButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 textView.setText("Links");
+                frosch.moved = true;
+                frosch.r = richtung.links;
             }
         });
 
@@ -69,6 +80,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback{
         rechtsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 textView.setText("Rechts");
+                frosch.moved = true;
+                frosch.r = richtung.rechts;
             }
         });
 
@@ -76,6 +89,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback{
         untenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 textView.setText("Unten");
+                frosch.moved = true;
+                frosch.r = richtung.zurueck;
             }
         });
 
@@ -83,68 +98,11 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback{
         obenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 textView.setText("Oben");
-            }
-        });
-
-        final View controlsView = findViewById(R.id.fullscreen_content_controls);
-        final View contentView = findViewById(R.id.surfaceView);
-
-
-    // Zeugs zum Menue verstecken
-    mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
-        mSystemUiHider.setup();
-        mSystemUiHider
-                .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
-
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-                    public void onVisibilityChange(boolean visible) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available
-                            // (Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the
-                            // screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(
-                                        android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate()
-                                    .translationY(visible ? 0 : mControlsHeight)
-                                    .setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't
-                            // available, simply show or hide the in-layout UI
-                            // controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        }
-
-                        if (visible && AUTO_HIDE) {
-                            // Schedule a hide().
-                            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                        }
-                    }
-                });
-
-        contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TOGGLE_ON_CLICK) {
-                    mSystemUiHider.toggle();
-                } else {
-                    mSystemUiHider.show();
-                }
+                frosch.moved = true;
+                frosch.r = richtung.vor;
             }
         });
     }
-
-
-
 
     // SurfaceView Methoden
     @Override
@@ -168,86 +126,87 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        erstelleSpielParameter(width,height);
+
+        String breiteSTR = Integer.toString(width);
+        String hoeheSTR = Integer.toString(height);
+
+        textView.setText(hoeheSTR + ":" + breiteSTR);
+
+        hintergrund = new Hintergrund(width, lanePixelHoehe);
+
+
+        // xx = XX(linker rand, lane+(zentriert in lane),breiteObjekt,hoeheObjekt, geschw.)
+        auto = new Hindernis(-200, lanePixelHoehe * 7 + lanePadding, 200, objektPixelHoehe, 4, Color.parseColor("#750707"));
+        lkw = new Hindernis(-400, lanePixelHoehe * 8 + lanePadding, 400, objektPixelHoehe, 2, Color.parseColor("#750707"));
+        auto2 = new Hindernis(-250, lanePixelHoehe * 9 + lanePadding, 250, objektPixelHoehe, 3, Color.parseColor("#750707"));
+        krad = new Hindernis(-100, lanePixelHoehe * 10 + lanePadding, 100, objektPixelHoehe, 5, Color.parseColor("#750707"));
+        auto3 = new Hindernis(-150, lanePixelHoehe * 11 + lanePadding, 150, objektPixelHoehe, 4, Color.parseColor("#750707"));
+
+
+        // frosch geschwindigkeit abhaengig von lanehoehe
+
+        frosch = new Frosch(startPositionX, startPositionY, froschbreite , objektPixelHoehe, (lanePixelHoehe - objektPixelHoehe),froschbreite/2, Color.parseColor("#9db426"), this);
+
+        mainThread.spielobjekte.add(frosch);
+        mainThread.spielobjekte.add(auto);
+        mainThread.spielobjekte.add(lkw);
+        mainThread.spielobjekte.add(auto2);
+        mainThread.spielobjekte.add(krad);
+        mainThread.spielobjekte.add(auto3);
+
+
     }
 
+    @Override
+    public void onBackPressed() {
+        mainThread.setRunning(false);
+        super.onBackPressed();
+    }
 
+    @Override
+    public void onPause() {
+        mainThread.setRunning(false);
+        super.onPause();
+    }
 
-    // render Methode
+    @Override
+    public void onStop(){
+        mainThread.setRunning(false);
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        mainThread.setRunning(false);
+        super.onDestroy();
+    }
 
     protected void onDraw(Canvas canvas) {
-        // überflüssig
-        canvas.drawColor(Color.parseColor("#0e2f44"));
-        p.setColor(0xffffffff);
-        canvas.drawLine(0, 1000, 100, 1000, p);
-        canvas.drawText("Ende", 0, 1000, p);
+        canvas.drawColor(Color.BLACK);
+        hintergrund.draw(canvas);
         frosch.draw(canvas);
+        auto.draw(canvas);
+        lkw.draw(canvas);
+        auto2.draw(canvas);
+        krad.draw(canvas);
+        auto3.draw(canvas);
+
+
     }
 
-
-
-
-    // andere Methoden (vorgegeben)
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
-        delayedHide(100);
+    public Rect getSpielFlaeche(){
+        return spielFlaeche;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // Show the Up button in the action bar.
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            // TODO: If Settings has multiple levels, Up should navigate up
-            // that hierarchy.
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
-        }
-    };
-
-    Handler mHideHandler = new Handler();
-    Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            mSystemUiHider.hide();
-        }
-    };
-
-    private void delayedHide(int delayMillis) {
-
-        // Funktioniert aber nervt ^.^
-
-        mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    private void erstelleSpielParameter(int width, int height){
+        this.lanePixelHoehe = height * LANE_HOEHE_PROZENT / 100;
+        this.objektPixelHoehe = lanePixelHoehe * OBJEKT_HOEHE_PROZENT / 100;
+        lanePadding = (lanePixelHoehe - objektPixelHoehe)/2; //zentriert die Obj in den Lanes
+        spielFlaeche.set(0,0,width,height * LANE_HOEHE_PROZENT / 100 * 13);
+        froschbreite = width / 13;
+        startPositionX = width / 2 - (froschbreite/2);
+        startPositionY = lanePixelHoehe * 12 + lanePadding;
     }
 }
