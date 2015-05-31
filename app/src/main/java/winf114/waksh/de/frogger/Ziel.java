@@ -13,12 +13,11 @@ public class Ziel extends Spielobjekt {
     }
 
     public void setBesetzt(boolean besetzt) {
-        if (besetzt == true){
+        if (besetzt == true) {
             this.getZeichenStift().setColor(Farbe.zielBesetzt);
             this.setZeichenBereich();
             this.besetzt = true;
-        }
-        else if (besetzt == false){
+        } else if (besetzt == false) {
             this.getZeichenStift().setColor(Farbe.zielLeer);
             this.setZeichenBereich();
             this.besetzt = false;

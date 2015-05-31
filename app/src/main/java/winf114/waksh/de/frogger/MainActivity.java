@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 import android.content.Context;
 
-
 public class MainActivity extends ActionBarActivity {
 
     @Override

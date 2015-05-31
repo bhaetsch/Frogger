@@ -3,7 +3,7 @@ package winf114.waksh.de.frogger;
 /**
  * Created by bhaetsch on 25.05.2015.
  */
-public class Frosch extends Spielobjekt{
+public class Frosch extends Spielobjekt {
 
     private int geschwindigkeitVertikal;
     protected int geschwindigkeitHorizontal;
@@ -16,7 +16,8 @@ public class Frosch extends Spielobjekt{
     boolean istTot;
     boolean hitTree;
 
-    public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal,int farbe, GameActivity gameActivity) {
+
+    public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, GameActivity gameActivity) {
         super(x, y, breite, hoehe, farbe);
 
         this.gameActivity = gameActivity;
@@ -28,35 +29,34 @@ public class Frosch extends Spielobjekt{
         imWasser = false;
     }
 
-    public void move(){
-
-        if (hitTree){
+    public void move() {
+        if (hitTree) {
             this.setX(this.getX() + geschwindigkeitHorizontal);
             setZeichenBereich();
         }
-        if(moved){
+        if (moved) {
             geschwindigkeitHorizontal = gameActivity.froschGeschwX;
             move(r);
         }
     }
 
     public void move(richtung r) {
-        switch(r){
+        switch (r) {
             case vor:
                 this.setY(this.getY() - geschwindigkeitVertikal);
-                if(this.getY() < gameActivity.lanePixelHoehe * 6){
+                if (this.getY() < gameActivity.lanePixelHoehe * 6) {
                     imWasser = true;
                 }
                 break;
             case zurueck:
                 this.setY(this.getY() + geschwindigkeitVertikal);
-                if(this.getY() > gameActivity.lanePixelHoehe * 6){
+                if (this.getY() > gameActivity.lanePixelHoehe * 6) {
                     imWasser = false;
                     hitTree = false;
                 }
                 break;
             case links:
-                this.setX(this.getX()- geschwindigkeitHorizontal);
+                this.setX(this.getX() - geschwindigkeitHorizontal);
                 break;
             case rechts:
                 this.setX(this.getX() + geschwindigkeitHorizontal);
@@ -66,12 +66,12 @@ public class Frosch extends Spielobjekt{
         moved = false;
     }
 
-    public void gewinnt(){
-        gameActivity.punkte +=100;
+    public void gewinnt() {
+        gameActivity.punkte += 100;
         resetFrosch();
     }
 
-    public void sterben(){
+    public void sterben() {
         gameActivity.tode++;
         istTot = true;
         gameActivity.deadFrosch.setX(getX());
@@ -80,7 +80,7 @@ public class Frosch extends Spielobjekt{
         resetFrosch();
     }
 
-    public void resetFrosch(){
+    public void resetFrosch() {
         geschwindigkeitHorizontal = gameActivity.froschGeschwX;
         hitTree = false;
         imWasser = false;
@@ -93,7 +93,7 @@ public class Frosch extends Spielobjekt{
         this.geschwindigkeitHorizontal = geschwindigkeitHorizontal;
     }
 
-    public void setMoved(){
+    public void setMoved() {
         moved = true;
     }
 

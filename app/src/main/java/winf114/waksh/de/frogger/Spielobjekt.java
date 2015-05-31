@@ -25,7 +25,7 @@ public abstract class Spielobjekt {
         this.breite = breite;
         this.hoehe = hoehe;
 
-        this.zeichenBereich = new Rect(0,0,0,0);
+        this.zeichenBereich = new Rect(0, 0, 0, 0);
         this.zeichenStift = new Paint();
         this.zeichenStift.setColor(farbe);
 
@@ -76,8 +76,8 @@ public abstract class Spielobjekt {
         return zeichenStift;
     }
 
-    public boolean kollidiertMit(Rect r){
-        if(this.zeichenBereich.intersects(this.zeichenBereich, r)){
+    public boolean kollidiertMit(Rect r) {
+        if (this.zeichenBereich.intersects(this.zeichenBereich, r)) {
             return true;
         }
         return false;
@@ -85,7 +85,7 @@ public abstract class Spielobjekt {
 
     abstract void move();
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
         canvas.drawRect(zeichenBereich, zeichenStift);
     }
 }

@@ -22,7 +22,7 @@ public final class Farbe {
     static int text;
 
 
-    public Farbe(){
+    public Farbe() {
         zielBereich = Color.parseColor("#3b522e");
         wasserBereich = Color.parseColor("#2e4975");
         pausenBereich = Color.parseColor("#3b522e");
@@ -36,6 +36,5 @@ public final class Farbe {
         auto = Color.parseColor("#9b4523");
         baum = Color.parseColor("#79491d");
         text = Color.parseColor("#ffffff");
-
     }
 }
