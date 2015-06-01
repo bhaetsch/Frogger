@@ -17,14 +17,13 @@ public class LebensAnzeige {
     private Rect Leben4;
     private Rect Leben5;
     protected int lebenAnzahl;
-
     private Paint zeichenStift;
-
 
     public LebensAnzeige(int x, int y, int breite, int hoehe, int farbe) {
         leben = new ArrayList<>();
         lebenAnzahl = 5;
 
+        //Position und Größe sind abhängig vom Spielfeld //TODO schicker machen
         int abstand = breite * 2;
         Leben1 = new Rect(x, y, x + breite, y + hoehe);
         Leben2 = new Rect(x + abstand, y, x + abstand + breite, y + hoehe);
@@ -43,6 +42,7 @@ public class LebensAnzeige {
     }
 
     public void draw(Canvas canvas) {
+        // zeigt Vierecke nur in Anzahl der lebenAnzahl an
         for (int i = 1; i <= lebenAnzahl; i++) {
             canvas.drawRect(leben.get(i - 1), zeichenStift);
         }

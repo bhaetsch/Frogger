@@ -34,11 +34,11 @@ public class Hintergrund {
 
         // definiert die Größe der Bereiche
         // Rect(left,top,right,bottom)
-        zielBereich = new Rect(0, 0, breite, hoehe);
-        wasserBereich = new Rect(0, hoehe + 1, breite, hoehe * 6);
-        pausenBereich = new Rect(0, hoehe * 6 + 1, breite, hoehe * 7);
-        strassenBereich = new Rect(0, hoehe * 7 + 1, breite, hoehe * 12);
-        startBereich = new Rect(0, hoehe * 12 + 1, breite, hoehe * 13);
+        zielBereich = new       Rect(0, 0,              breite, hoehe);
+        wasserBereich = new     Rect(0, hoehe + 1,      breite, hoehe * 6);
+        pausenBereich = new     Rect(0, hoehe * 6 + 1,  breite, hoehe * 7);
+        strassenBereich = new   Rect(0, hoehe * 7 + 1,  breite, hoehe * 12);
+        startBereich = new      Rect(0, hoehe * 12 + 1, breite, hoehe * 13);
         /*  erste Lane startet oben links (0,0)
             nächste Lane immer einen Pixel unter der Überen deshalb "top" + 1 !
             eine Lane startet immer nach X Lanes, deshalb Faktor X bei "top"

@@ -9,27 +9,21 @@ import android.graphics.Rect;
  */
 public abstract class Spielobjekt {
 
-    // TODO könnt Rect beerben
-    // => Rect ist final und kann nicht beerbt werden!
-
     private int x;                  //horizontale Position der linken oberen Ecke
     private int y;                  //vertikale Position der linken oberen Ecke
     private int breite;             //in Pixeln
     private int hoehe;              //in Pixeln
-    private Paint zeichenStift;
-    private Rect zeichenBereich;
-
+    private Rect zeichenBereich;    //Viereck für die Anzeige
+    private Paint zeichenStift;     //Stift der das Viereck malt
 
     public Spielobjekt(int x, int y, int breite, int hoehe, int farbe) {
         this.x = x;
         this.y = y;
         this.breite = breite;
         this.hoehe = hoehe;
-
         this.zeichenBereich = new Rect(0, 0, 0, 0);
         this.zeichenStift = new Paint();
         this.zeichenStift.setColor(farbe);
-
         this.setZeichenBereich();
     }
 
