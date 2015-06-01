@@ -15,6 +15,7 @@ public class Frosch extends Spielobjekt {
     boolean imWasser;
     boolean istTot;
     boolean hitTree;
+    boolean imZiel;
 
 
     public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, GameActivity gameActivity) {
@@ -27,6 +28,7 @@ public class Frosch extends Spielobjekt {
         istTot = false;
         hitTree = false;
         imWasser = false;
+        imZiel = false;
     }
 
     public void move() {
@@ -67,12 +69,17 @@ public class Frosch extends Spielobjekt {
     }
 
     public void gewinnt() {
+        imZiel = true;
         gameActivity.punkte += 100;
         resetFrosch();
     }
 
     public void sterben() {
-        gameActivity.tode++;
+        gameActivity.lebensAnzeige.lebenAnzahl--;
+        if (gameActivity.lebensAnzeige.lebenAnzahl == 0) {
+            gameActivity.lebensAnzeige.lebenAnzahl = 5;
+            gameActivity.punkte = 0;
+        }
         istTot = true;
         gameActivity.deadFrosch.setX(getX());
         gameActivity.deadFrosch.setY(getY());

@@ -102,11 +102,12 @@ public class MainThread extends Thread {
                                 }
                             }
                         }
-                        if (!gameActivity.frosch.hitTree) {
+                        if (!gameActivity.frosch.hitTree && !gameActivity.frosch.imZiel) {
                             gameActivity.frosch.sterben();
                         }
                         gameActivity.testText = "Tree? " + gameActivity.frosch.hitTree + " - Speed: " + gameActivity.frosch.geschwindigkeitHorizontal;
                     }
+                    gameActivity.frosch.imZiel = false;
 
                     // Kol Frosch mit Auto !wasser
                     if (!gameActivity.frosch.imWasser) {
