@@ -10,6 +10,7 @@ import android.graphics.Rect;
 public abstract class Spielobjekt {
 
     // TODO könnt Rect beerben
+    // => Rect ist final und kann nicht beerbt werden!
 
     private int x;                  //horizontale Position der linken oberen Ecke
     private int y;                  //vertikale Position der linken oberen Ecke
