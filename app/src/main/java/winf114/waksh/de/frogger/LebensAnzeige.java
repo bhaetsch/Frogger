@@ -10,14 +10,14 @@ import java.util.ArrayList;
  */
 public class LebensAnzeige {
 
-    private ArrayList<Rect> leben;
-    private Rect Leben1;
-    private Rect Leben2;
-    private Rect Leben3;
-    private Rect Leben4;
-    private Rect Leben5;
+    private final ArrayList<Rect> leben;
+    private final Rect Leben1;
+    private final Rect Leben2;
+    private final Rect Leben3;
+    private final Rect Leben4;
+    private final Rect Leben5;
     protected int lebenAnzahl;
-    private Paint zeichenStift;
+    private final Paint zeichenStift;
 
     public LebensAnzeige(int x, int y, int breite, int hoehe, int farbe) {
         leben = new ArrayList<>();

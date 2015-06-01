@@ -3,7 +3,7 @@ package winf114.waksh.de.frogger;
 /**
  * Created by Matzef on 30.05.2015.
  */
-public class Ziel extends Spielobjekt {
+class Ziel extends Spielobjekt {
 
     private boolean besetzt;
 
@@ -13,11 +13,11 @@ public class Ziel extends Spielobjekt {
     }
 
     public void setBesetzt(boolean besetzt) {
-        if (besetzt == true) {
+        if (besetzt) {
             this.getZeichenStift().setColor(Farbe.zielBesetzt);
             this.setZeichenBereich();
             this.besetzt = true;
-        } else if (besetzt == false) {
+        } else if (!besetzt) {
             this.getZeichenStift().setColor(Farbe.zielLeer);
             this.setZeichenBereich();
             this.besetzt = false;

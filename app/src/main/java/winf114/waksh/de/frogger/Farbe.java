@@ -5,7 +5,7 @@ import android.graphics.Color;
 /**
  * Created by Matzef on 31.05.2015.
  */
-public final class Farbe {
+final class Farbe {
 
     static int zielBereich;
     static int wasserBereich;
@@ -20,6 +20,7 @@ public final class Farbe {
     static int zielLeer;
     static int zielBesetzt;
     static int text;
+    static int transparent;
 
 
     public Farbe() {
@@ -36,5 +37,6 @@ public final class Farbe {
         auto = Color.parseColor("#9b4523");
         baum = Color.parseColor("#79491d");
         text = Color.parseColor("#ffffff");
+        transparent = Color.parseColor("#00000000");
     }
 }

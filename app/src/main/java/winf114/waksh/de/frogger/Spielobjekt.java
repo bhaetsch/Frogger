@@ -7,14 +7,14 @@ import android.graphics.Rect;
 /**
  * Created by bhaetsch on 25.05.2015.
  */
-public abstract class Spielobjekt {
+abstract class Spielobjekt {
 
     private int x;                  //horizontale Position der linken oberen Ecke
     private int y;                  //vertikale Position der linken oberen Ecke
     private int breite;             //in Pixeln
     private int hoehe;              //in Pixeln
-    private Rect zeichenBereich;    //Viereck für die Anzeige
-    private Paint zeichenStift;     //Stift der das Viereck malt
+    private final Rect zeichenBereich;    //Viereck für die Anzeige
+    private final Paint zeichenStift;     //Stift der das Viereck malt
 
     public Spielobjekt(int x, int y, int breite, int hoehe, int farbe) {
         this.x = x;
@@ -72,10 +72,7 @@ public abstract class Spielobjekt {
     }
 
     public boolean kollidiertMit(Rect r) {
-        if (this.zeichenBereich.intersects(this.zeichenBereich, r)) {
-            return true;
-        }
-        return false;
+        return this.zeichenBereich.intersects(this.zeichenBereich, r);
     }
 
     abstract void move();

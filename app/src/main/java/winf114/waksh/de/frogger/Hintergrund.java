@@ -7,25 +7,25 @@ import android.graphics.Rect;
 /**
  * Created by Matzef on 28.05.2015.
  */
-public class Hintergrund {
+class Hintergrund {
 
     // die einzelnen Bereiche des Spielhintergrunds
-    private Rect zielBereich;
-    private Rect wasserBereich;
-    private Rect pausenBereich;
-    private Rect strassenBereich;
-    private Rect startBereich;
-    private float lanehoehe;
-    private float screenbreite;
+    private final Rect zielBereich;
+    private final Rect wasserBereich;
+    private final Rect pausenBereich;
+    private final Rect strassenBereich;
+    private final Rect startBereich;
+    private final float lanehoehe;
+    private final float screenbreite;
 
     // die Farben der Bereiche
     private Farbe farbe = new Farbe();
-    private Paint zielBereichStift = new Paint();
-    private Paint wasserBereichStift = new Paint();
-    private Paint pausenBereichStift = new Paint();
-    private Paint strassenBereichStift = new Paint();
-    private Paint startBereichStift = new Paint();
-    private Paint strassenMarkierungStift = new Paint();
+    private final Paint zielBereichStift = new Paint();
+    private final Paint wasserBereichStift = new Paint();
+    private final Paint pausenBereichStift = new Paint();
+    private final Paint strassenBereichStift = new Paint();
+    private final Paint startBereichStift = new Paint();
+    private final Paint strassenMarkierungStift = new Paint();
 
 
     public Hintergrund(int breite, int hoehe) {

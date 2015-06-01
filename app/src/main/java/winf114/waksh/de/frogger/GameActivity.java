@@ -21,7 +21,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private final int OBJEKT_HOEHE_PROZENT = 80;    //Höhe des Objekts in % der Lane Hoehe
 
     //Spielfeld Variablen
-    protected int lanePixelHoehe;                             //Höhe einer "Lane" im Spiel in Pixeln
+    protected int lanePixelHoehe;                    //Höhe einer "Lane" im Spiel in Pixeln
     protected Rect spielFlaeche;                    //Bewegungsbereich des Frosches
     protected Rect erweiterteSpielFlaeche;          //erweiterter Bewegungsbereich für die Hindernisse
     private int lanePadding;                        //zentriert die Objekte in den Lanes
@@ -41,7 +41,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     //die Spielobjekte und ihre Liste
     protected ArrayList<Spielobjekt> spielobjekte;
     protected LebensAnzeige lebensAnzeige;
-    protected Frosch deadFrosch;
+    protected ToterFrosch toterFrosch;
     protected Frosch frosch;
     private Hindernis auto01;
     private Hindernis auto02;
@@ -69,14 +69,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private Ziel ziel04;
     private Ziel ziel05;
 
-    //für die Zeitmessung und Anzeige (hoffentlich selbsterklärend)
-    private long renderTimeBegin;
-    private long renderTime;
-    private long renderTimeMax;
-    private long renderTimeAvg;
-    private String renderTimeAvgStr;
-    private long renderTimeSum;
-    private int renderCycles;
+    private ZeitMessung renderCycleMessung;
 
     //Textausgabe, Stift und Hintergrund
     private Paint textStift;
@@ -101,6 +94,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
+
+        renderCycleMessung = new ZeitMessung();
 
         // start mit 0 Punkten
         punkte = 0;
@@ -132,16 +127,16 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         textStift = new Paint();
         textStift.setColor(Farbe.text);
 
-        deadFrosch = new Frosch(0, 0, objektPixelBreite, objektPixelHoehe, 0, 0, Farbe.deadFrosch, this); //TODO make class
+        toterFrosch = new ToterFrosch(Farbe.deadFrosch);
         lebensAnzeige = new LebensAnzeige(startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 13 + (objektPixelBreite * 60 / 100), objektPixelBreite * 60 / 100, objektPixelHoehe * 60 / 100, Farbe.frosch);
 
-        //erstellt alle Hindernisse,die Ziele und die Objektliste
-        spielobjekte = new ArrayList<Spielobjekt>();
+        //<editor-fold erstellt alle Hindernisse,die Ziele und die Objektliste>
+        spielobjekte = new ArrayList<>();
 
         // LANE 2
         int hindernisBreite = objektPixelBreite * 3;
         int hindernisGeschw = 4;
-        int lanePositionY = lanePixelHoehe * 1 + lanePadding;
+        int lanePositionY = lanePixelHoehe + lanePadding;
         spielobjekte.add(baum01 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 7, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
         spielobjekte.add(baum08 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 14, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
         spielobjekte.add(baum09 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, 4, Farbe.baum, this));
@@ -207,15 +202,18 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         spielobjekte.add(auto05 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
         spielobjekte.add(auto06 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 5, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
 
+
         //LANE 1 Ziele
         spielobjekte.add(ziel01 = new Ziel(startPositionX, 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
         spielobjekte.add(ziel02 = new Ziel(startPositionX + (3 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
         spielobjekte.add(ziel03 = new Ziel(startPositionX - (3 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
         spielobjekte.add(ziel04 = new Ziel(startPositionX + (6 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
         spielobjekte.add(ziel05 = new Ziel(startPositionX - (6 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
+        //</editor-fold>
 
         //Frosch
         spielobjekte.add(frosch = new Frosch(startPositionX, startPositionY, objektPixelBreite, objektPixelHoehe, froschGeschwY, froschGeschwX, Farbe.frosch, this));
+        frosch.levelStartZeitpunkt = System.currentTimeMillis();
     }
 
     @Override
@@ -314,22 +312,10 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
     protected void onDraw(Canvas canvas) { //RenderRoutine wird vom MainThread aufgerufen
 
-        renderTimeBegin = System.currentTimeMillis();
+        renderCycleMessung.start();
+        renderGame(canvas);
+        renderCycleMessung.end();
 
-        renderGame(canvas); //zeichnet alle Spielobjekte
-
-        renderCycles++;
-        if (renderTime > renderTimeMax) { //checkt ob neue maximale "Cycle" Zeit erreicht
-            renderTimeMax = renderTime;
-        }
-        renderTime = System.currentTimeMillis() - renderTimeBegin;
-        renderTimeSum = renderTimeSum + renderTime; //berechnet den Zeitdurchschnitt der letzte 20 "Cycles"
-        if (renderCycles == 20) {
-            renderTimeAvg = renderTimeSum / renderCycles;
-            renderTimeAvgStr = " | " + renderTimeAvg;
-            renderCycles = 0;
-            renderTimeSum = 0;
-        }
     }
 
     private void renderGame(Canvas canvas) {
@@ -345,15 +331,13 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         }
 
         //Toter Frosch wird nur zeitweise angezeigt
-        if (frosch.istTot) {
-            deadFrosch.draw(canvas);
-        }
+        toterFrosch.draw(canvas);
 
         //Punkteanzeige und 4 Textfelder(positioniert) als Kontrollanzeige
         textStift.setTextSize(smallTextSize);
-        canvas.drawText("GCmax|avg: " + mainThread.gameCycleTimeMax + mainThread.gameCycleTimeAvgStr + " (ms)", 10, lanePixelHoehe * 15, textStift);
-        canvas.drawText("RCmax|avg: " + renderTimeMax + renderTimeAvgStr + " (ms)", 10, lanePixelHoehe * 15 - (lanePixelHoehe / 2), textStift);
-        canvas.drawText("imWasser: " + frosch.imWasser, startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 15 - (lanePixelHoehe / 2), textStift);
+        canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, lanePixelHoehe * 15, textStift);
+        canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, lanePixelHoehe * 15 - (lanePixelHoehe / 2), textStift);
+        canvas.drawText(mainThread.levelZeit, startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 15 - (lanePixelHoehe / 2), textStift);
         canvas.drawText(testText, startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 15, textStift);
         textStift.setTextSize(largeTextSize);
         canvas.drawText("Punkte: " + punkte, 10, lanePixelHoehe * 14, textStift);
