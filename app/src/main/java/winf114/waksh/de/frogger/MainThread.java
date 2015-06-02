@@ -13,10 +13,10 @@ public class MainThread extends Thread {
     private final SurfaceHolder surfaceHolder;
     private final GameActivity gameActivity;
     private Canvas canvas;
-    protected final ZeitMessung gameCycleMessung;
-    private int zieleErreicht;
 
-    protected String levelZeit;
+    final ZeitMessung gameCycleMessung;
+    private int zieleErreicht;
+    String levelZeit;
 
 
 
@@ -73,7 +73,7 @@ public class MainThread extends Thread {
     }
 
     private void todesAnzeigeCheck(){
-        //versteckt den toten Frosch und deaktiviert Frosch kurz Froschbewegung
+        //versteckt den toten Frosch und deaktiviert kurz Froschbewegung
 
         if (System.currentTimeMillis() > gameActivity.frosch.todesZeitpunkt + 1000) {
             gameActivity.toterFrosch.verstecken();
@@ -104,7 +104,7 @@ public class MainThread extends Thread {
     private void kolFroschMitRand(){
         // Kollision Frosch mit Rand ?
 
-        if (!gameActivity.frosch.kollidiertMit(gameActivity.spielFlaeche)) {
+        if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
             gameActivity.frosch.sterben();
         }
     }
@@ -114,7 +114,7 @@ public class MainThread extends Thread {
 
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Hindernis) {
-                if (!s.kollidiertMit(gameActivity.erweiterteSpielFlaeche)) {
+                if (!s.kollidiertMit(FP.erweiterteSpielFlaeche)) {
                     ((Hindernis) s).erscheintWieder();
                 }
             }
@@ -141,7 +141,7 @@ public class MainThread extends Thread {
 
         if (gameActivity.frosch.imWasser) {
             gameActivity.frosch.hitTree = false;
-            gameActivity.frosch.setGeschwindigkeitHorizontal(gameActivity.froschGeschwX);
+            gameActivity.frosch.setGeschwindigkeitHorizontal(FP.froschGeschwX);
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 // mit Ziel
                 if (s instanceof Ziel) {

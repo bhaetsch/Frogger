@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.SurfaceView;
 import android.widget.Button;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.util.Log;
 import android.graphics.Paint;
 import java.util.ArrayList;
@@ -17,28 +16,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
     //TODO memo to self: renderpausen: logcat:GC_FOR_ALLOC freed 7576K, 32% free 17140K/25000K, paused 81ms, total 90ms
 
-    private final int LANE_HOEHE_PROZENT = 5;       //Höhe einer "Lane" im Spiel in % des Screens
-    private final int OBJEKT_HOEHE_PROZENT = 80;    //Höhe des Objekts in % der Lane Hoehe
-
-    //Spielfeld Variablen
-    protected int lanePixelHoehe;                    //Höhe einer "Lane" im Spiel in Pixeln
-    protected Rect spielFlaeche;                    //Bewegungsbereich des Frosches
-    protected Rect erweiterteSpielFlaeche;          //erweiterter Bewegungsbereich für die Hindernisse
-    private int lanePadding;                        //zentriert die Objekte in den Lanes
-    private int objektPixelHoehe;                   //Höhe der Objekt (eg.Frosch) im Spiel in Pixeln
-    private int objektPixelBreite;                  //Basis-Breite der Spielobjekte in Pixeln
-    protected int froschGeschwX;                    //standard Geschwindigkeit Frosch
-    protected int froschGeschwY;
-    protected int startPositionX;                   //Startposition Frosch
-    protected int startPositionY;
-    private int smallTextSize;                      //Textgrößen
-    private int largeTextSize;
-
-    // private Farbe farbe;                            //stellt eigene Farben als Felder bereit
-
-    protected int punkte;                           //die Punkte des aktuellen durchlaufs
-
-    //die Spielobjekte und ihre Liste
+    //<editor-fold | die Spielobjekte und ihre Liste
     protected ArrayList<Spielobjekt> spielobjekte;
     protected LebensAnzeige lebensAnzeige;
     protected ToterFrosch toterFrosch;
@@ -68,12 +46,14 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private Ziel ziel03;
     private Ziel ziel04;
     private Ziel ziel05;
+    //</editor-fold>
 
+    int punkte;                           //die Punkte des aktuellen durchlaufs
     private ZeitMessung renderCycleMessung;
 
     //Textausgabe, Stift und Hintergrund
     private Paint textStift;
-    protected String testText;
+    String testText;
     private Hintergrund hintergrund;
 
     //SurfaceView und MainThread
@@ -119,100 +99,101 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         //wird automatisch aufgerufen sobald das SurfaceView auf Größe gezogen wird
 
         Log.d("GameActivity", "surfaceChanged");
-        erstelleSpielParameter(width, height);
-        hintergrund = new Hintergrund(width, lanePixelHoehe);
+
+        FP.setParaM(width, height);
+        hintergrund = new Hintergrund(width, FP.lanePixelHoehe);
 
         //Stift und Farbe und für die Textanzeigen
-        testText = height + ":" + width + ":" + objektPixelBreite + ":" + froschGeschwX;
+        testText = height + ":" + width + ":" + FP.objektPixelBreite + ":" + FP.froschGeschwX;
         textStift = new Paint();
         textStift.setColor(Farbe.text);
 
         toterFrosch = new ToterFrosch(Farbe.deadFrosch);
-        lebensAnzeige = new LebensAnzeige(startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 13 + (objektPixelBreite * 60 / 100), objektPixelBreite * 60 / 100, objektPixelHoehe * 60 / 100, Farbe.frosch);
+        lebensAnzeige = new LebensAnzeige(FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 13 + (FP.objektPixelBreite * 60 / 100), FP.objektPixelBreite * 60 / 100, FP.objektPixelHoehe * 60 / 100, Farbe.frosch);
 
-        //<editor-fold erstellt alle Hindernisse,die Ziele und die Objektliste>
+        //<editor-fold | erstellt alle Hindernisse,die Ziele und die Objektliste>
         spielobjekte = new ArrayList<>();
 
         // LANE 2
-        int hindernisBreite = objektPixelBreite * 3;
+        int hindernisBreite = FP.objektPixelBreite * 3;
         int hindernisGeschw = 4;
-        int lanePositionY = lanePixelHoehe + lanePadding;
-        spielobjekte.add(baum01 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 7, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
-        spielobjekte.add(baum08 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 14, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
-        spielobjekte.add(baum09 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, 4, Farbe.baum, this));
+        int lanePositionY = FP.lanePixelHoehe + FP.lanePadding;
+        spielobjekte.add(baum01 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum08 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum09 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, 4, Farbe.baum));
 
         //LANE 3
-        hindernisBreite = objektPixelBreite * 6;
+        hindernisBreite = FP.objektPixelBreite * 6;
         hindernisGeschw = -2;
-        lanePositionY = lanePixelHoehe * 2 + lanePadding;
-        spielobjekte.add(baum02 = new Hindernis(erweiterteSpielFlaeche.right + objektPixelBreite * 3, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
+        lanePositionY = FP.lanePixelHoehe * 2 + FP.lanePadding;
+        spielobjekte.add(baum02 = new Hindernis(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 3, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
 
         //LANE 4
-        hindernisBreite = objektPixelBreite * 4;
+        hindernisBreite = FP.objektPixelBreite * 4;
         hindernisGeschw = 3;
-        lanePositionY = lanePixelHoehe * 3 + lanePadding;
-        spielobjekte.add(baum03 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, 3, Farbe.baum, this));
-        spielobjekte.add(baum12 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 8, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
-        spielobjekte.add(baum13 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 16, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
+        lanePositionY = FP.lanePixelHoehe * 3 + FP.lanePadding;
+        spielobjekte.add(baum03 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, 3, Farbe.baum));
+        spielobjekte.add(baum12 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 8, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum13 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 16, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
 
         //LANE 5
-        hindernisBreite = objektPixelBreite * 5;
+        hindernisBreite = FP.objektPixelBreite * 5;
         hindernisGeschw = -2;
-        lanePositionY = lanePixelHoehe * 4 + lanePadding;
-        spielobjekte.add(baum04 = new Hindernis(erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
-        spielobjekte.add(baum10 = new Hindernis(erweiterteSpielFlaeche.right + objektPixelBreite * 10, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
+        lanePositionY = FP.lanePixelHoehe * 4 + FP.lanePadding;
+        spielobjekte.add(baum04 = new Hindernis(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum10 = new Hindernis(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 10, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
 
         //LANE 6
-        hindernisBreite = objektPixelBreite * 3;
+        hindernisBreite = FP.objektPixelBreite * 3;
         hindernisGeschw = 2;
-        lanePositionY = lanePixelHoehe * 5 + lanePadding;
-        spielobjekte.add(baum05 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
-        spielobjekte.add(baum06 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 7, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
-        spielobjekte.add(baum07 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 14, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.baum, this));
+        lanePositionY = FP.lanePixelHoehe * 5 + FP.lanePadding;
+        spielobjekte.add(baum05 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum06 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum07 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
 
         //LANE 8
-        hindernisBreite = objektPixelBreite * 2;
+        hindernisBreite = FP.objektPixelBreite * 2;
         hindernisGeschw = 4;
-        lanePositionY = lanePixelHoehe * 7 + lanePadding;
-        spielobjekte.add(auto01 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
+        lanePositionY = FP.lanePixelHoehe * 7 + FP.lanePadding;
+        spielobjekte.add(auto01 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 9
-        hindernisBreite = objektPixelBreite * 4;
+        hindernisBreite = FP.objektPixelBreite * 4;
         hindernisGeschw = -2;
-        lanePositionY = lanePixelHoehe * 8 + lanePadding;
-        spielobjekte.add(auto02 = new Hindernis(erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
+        lanePositionY = FP.lanePixelHoehe * 8 + FP.lanePadding;
+        spielobjekte.add(auto02 = new Hindernis(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 10
-        hindernisBreite = objektPixelBreite * 3;
+        hindernisBreite = FP.objektPixelBreite * 3;
         hindernisGeschw = 3;
-        lanePositionY = lanePixelHoehe * 9 + lanePadding;
-        spielobjekte.add(auto03 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
+        lanePositionY = FP.lanePixelHoehe * 9 + FP.lanePadding;
+        spielobjekte.add(auto03 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 11
-        hindernisBreite = objektPixelBreite * 2;
+        hindernisBreite = FP.objektPixelBreite * 2;
         hindernisGeschw = -5;
-        lanePositionY = lanePixelHoehe * 10 + lanePadding;
-        spielobjekte.add(auto04 = new Hindernis(erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
-        spielobjekte.add(auto07 = new Hindernis(erweiterteSpielFlaeche.right + objektPixelBreite * 6, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
+        lanePositionY = FP.lanePixelHoehe * 10 + FP.lanePadding;
+        spielobjekte.add(auto04 = new Hindernis(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto07 = new Hindernis(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 6, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 12
-        hindernisBreite = objektPixelBreite * 2;
+        hindernisBreite = FP.objektPixelBreite * 2;
         hindernisGeschw = 4;
-        lanePositionY = lanePixelHoehe * 11 + lanePadding;
-        spielobjekte.add(auto05 = new Hindernis(erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
-        spielobjekte.add(auto06 = new Hindernis(erweiterteSpielFlaeche.left + objektPixelBreite * 5, lanePositionY, hindernisBreite, objektPixelHoehe, hindernisGeschw, Farbe.auto, this));
+        lanePositionY = FP.lanePixelHoehe * 11 + FP.lanePadding;
+        spielobjekte.add(auto05 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto06 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 5, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
 
         //LANE 1 Ziele
-        spielobjekte.add(ziel01 = new Ziel(startPositionX, 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel02 = new Ziel(startPositionX + (3 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel03 = new Ziel(startPositionX - (3 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel04 = new Ziel(startPositionX + (6 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel05 = new Ziel(startPositionX - (6 * objektPixelBreite), 0, objektPixelBreite, lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel01 = new Ziel(FP.startPositionX, 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel02 = new Ziel(FP.startPositionX + (3 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel03 = new Ziel(FP.startPositionX - (3 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel04 = new Ziel(FP.startPositionX + (6 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel05 = new Ziel(FP.startPositionX - (6 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
         //</editor-fold>
 
         //Frosch
-        spielobjekte.add(frosch = new Frosch(startPositionX, startPositionY, objektPixelBreite, objektPixelHoehe, froschGeschwY, froschGeschwX, Farbe.frosch, this));
+        spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, this));
         frosch.levelStartZeitpunkt = System.currentTimeMillis();
     }
 
@@ -232,28 +213,9 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         }
     }
 
-    private void erstelleSpielParameter(int width, int height) {
-        // berechnet Objektgrößen und Startpositionen in Abhängigkeit von der Spielfeldgröße
-
-        lanePixelHoehe = height * LANE_HOEHE_PROZENT / 100;                             //Höhe einer Lane
-        objektPixelHoehe = lanePixelHoehe * OBJEKT_HOEHE_PROZENT / 100;                 //Höhe aller Objekte
-        lanePadding = (lanePixelHoehe - objektPixelHoehe) / 2;                          //zentriert die Obj in den Lanes
-        spielFlaeche = new Rect(0, 0, width, height * LANE_HOEHE_PROZENT / 100 * 13);          //Bewegungsbereich des Frosches
-        objektPixelBreite = width / 15;                                                 //Basis-Breite für die Objekte
-        froschGeschwX = objektPixelBreite;                                              //Frosch standard Geschwindigkeit
-        froschGeschwY = lanePixelHoehe;
-        startPositionX = width / 2 - (objektPixelBreite / 2);                           //Startposition des Frosches
-        startPositionY = lanePixelHoehe * 12 + lanePadding;
-        smallTextSize = lanePixelHoehe / 3;                                             //Textgrößen
-        largeTextSize = objektPixelHoehe;
-
-        //Hindernisse bewegen sich ausserhalb des sichtbaren Bereichs in der erweiterten Spielfläche weiter
-        erweiterteSpielFlaeche = new Rect(spielFlaeche.left - objektPixelBreite * 8, spielFlaeche.top, spielFlaeche.right + objektPixelBreite * 8, spielFlaeche.bottom);
-    }
-
     @Override
     public void onPause() {
-        //erklärt duch activity_lifecycle.png
+        //erklärt duch wiki - activity_lifecycle.png
 
         Log.d("GameActivity", "onPause");
         super.onPause();
@@ -310,7 +272,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         });
     }
 
-    protected void onDraw(Canvas canvas) { //RenderRoutine wird vom MainThread aufgerufen
+    protected void onDraw(Canvas canvas) {
+        //RenderRoutine wird vom MainThread aufgerufen
 
         renderCycleMessung.start();
         renderGame(canvas);
@@ -334,12 +297,12 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         toterFrosch.draw(canvas);
 
         //Punkteanzeige und 4 Textfelder(positioniert) als Kontrollanzeige
-        textStift.setTextSize(smallTextSize);
-        canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, lanePixelHoehe * 15, textStift);
-        canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, lanePixelHoehe * 15 - (lanePixelHoehe / 2), textStift);
-        canvas.drawText(mainThread.levelZeit, startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 15 - (lanePixelHoehe / 2), textStift);
-        canvas.drawText(testText, startPositionX + (objektPixelBreite / 2), lanePixelHoehe * 15, textStift);
-        textStift.setTextSize(largeTextSize);
-        canvas.drawText("Punkte: " + punkte, 10, lanePixelHoehe * 14, textStift);
+        textStift.setTextSize(FP.smallTextSize);
+        canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 15, textStift);
+        canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(mainThread.levelZeit, FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(testText, FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15, textStift);
+        textStift.setTextSize(FP.largeTextSize);
+        canvas.drawText("Punkte: " + punkte, 10, FP.lanePixelHoehe * 14, textStift);
     }
 }

@@ -6,12 +6,9 @@ package winf114.waksh.de.frogger;
 class Hindernis extends Spielobjekt {
 
     private final int geschwindigkeit;    //negativ==links; positiv==rechts, 0==statisch
-    private final GameActivity gameActivity;
 
-
-    public Hindernis(int x, int y, int breite, int hoehe, int geschwindigkeit, int farbe, GameActivity gameActivity) {
+    public Hindernis(int x, int y, int breite, int hoehe, int geschwindigkeit, int farbe) {
         super(x, y, breite, hoehe, farbe);
-        this.gameActivity = gameActivity;
         this.geschwindigkeit = geschwindigkeit;
     }
 
@@ -23,9 +20,9 @@ class Hindernis extends Spielobjekt {
     public void erscheintWieder() {
         //TODO erweiterte Spielfläche
         if (this.geschwindigkeit > 0) {
-            this.setX(gameActivity.spielFlaeche.left - this.getBreite());
+            this.setX(FP.spielFlaeche.left - this.getBreite());
         } else {
-            this.setX(gameActivity.spielFlaeche.right);
+            this.setX(FP.spielFlaeche.right);
         }
         this.setZeichenBereich();
     }

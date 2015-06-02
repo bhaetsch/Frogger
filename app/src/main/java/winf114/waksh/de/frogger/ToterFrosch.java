@@ -5,6 +5,7 @@ import android.graphics.Rect;
 /**
  * Created by Matzef on 01.06.2015.
  */
+
 public class ToterFrosch extends Spielobjekt {
 
     private int farbe;

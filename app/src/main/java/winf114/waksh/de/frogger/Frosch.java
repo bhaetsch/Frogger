@@ -11,7 +11,6 @@ public class Frosch extends Spielobjekt {
     private richtung r;
     private final GameActivity gameActivity;
 
-    // TODO Felder einpacken
     boolean imWasser;
     boolean hitTree;
     boolean imZiel;
@@ -43,7 +42,7 @@ public class Frosch extends Spielobjekt {
             setZeichenBereich();
         }
         if (moved) {
-            geschwindigkeitHorizontal = gameActivity.froschGeschwX;
+            geschwindigkeitHorizontal = FP.froschGeschwX;
             move(r);
         }
     }
@@ -53,7 +52,7 @@ public class Frosch extends Spielobjekt {
             switch (r) {
                 case vor:
                     this.setY(this.getY() - geschwindigkeitVertikal);
-                    if (this.getY() < gameActivity.lanePixelHoehe * 6) {
+                    if (this.getY() < FP.lanePixelHoehe * 6) {
                         imWasser = true;
                     }
                     aufStartPosition = false;
@@ -61,7 +60,7 @@ public class Frosch extends Spielobjekt {
                 case zurueck:
                     if (!aufStartPosition) {
                         this.setY(this.getY() + geschwindigkeitVertikal);
-                        if (this.getY() > gameActivity.lanePixelHoehe * 6) {
+                        if (this.getY() > FP.lanePixelHoehe * 6) {
                             imWasser = false;
                             hitTree = false;
                         }
@@ -108,12 +107,12 @@ public class Frosch extends Spielobjekt {
 
     private void resetFrosch() {
         levelStartZeitpunkt = System.currentTimeMillis();
-        geschwindigkeitHorizontal = gameActivity.froschGeschwX;
+        geschwindigkeitHorizontal = FP.froschGeschwX;
         hitTree = false;
         imWasser = false;
         aufStartPosition = true;
-        setX(gameActivity.startPositionX);
-        setY(gameActivity.startPositionY);
+        setX(FP.startPositionX);
+        setY(FP.startPositionY);
         setZeichenBereich();
     }
 

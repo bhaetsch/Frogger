@@ -3,7 +3,7 @@ package winf114.waksh.de.frogger;
 /**
  * Created by Matzef on 01.06.2015.
  */
-public class ZeitMessung {
+class ZeitMessung {
 
     private final int CYLCLES_AVG = 20;
 
