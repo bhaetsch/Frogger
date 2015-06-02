@@ -1,32 +1,38 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="#0099cc"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
     tools:context="winf114.waksh.de.frogger.GameActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
-        android:fitsSystemWindows="true"/>
-
+        android:fitsSystemWindows="true" />
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <GridLayout android:id="@+id/fullscreen_content_controls" style="?metaButtonBarStyle"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
+        <GridLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?metaButtonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="#ff000000" android:orientation="horizontal"
+            android:background="#ff000000"
+            android:orientation="horizontal"
             android:fitsSystemWindows="true"
             tools:ignore="UselessParent">
-
 
             <Button
                 android:id="@+id/oben"
@@ -53,9 +59,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rechts_button_text" />
-
         </GridLayout>
-
     </FrameLayout>
-
 </FrameLayout>
