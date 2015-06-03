@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.graphics.Canvas;
 
+import java.util.Date;
+
 /**
  * Created by bhaetsch on 25.05.2015.
  */
@@ -70,7 +72,9 @@ public class MainThread extends Thread {
         levelZeit = "Time:"  + (System.currentTimeMillis() - gameActivity.frosch.getLevelStartZeitpunkt())/1000;
         if (System.currentTimeMillis() > gameActivity.frosch.getLevelStartZeitpunkt() + (45*1000)){
             gameActivity.frosch.sterben();
-            highscore.compareScore(gameActivity.punkte);
+            if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
+                highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
+            }
         }
     }
 
@@ -108,7 +112,9 @@ public class MainThread extends Thread {
 
         if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
             gameActivity.frosch.sterben();
-            highscore.compareScore(gameActivity.punkte);
+            if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
+                highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
+            }
         }
     }
 
@@ -133,7 +139,9 @@ public class MainThread extends Thread {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
                         gameActivity.testText = "hit car";
                         gameActivity.frosch.sterben();
-                        highscore.compareScore(gameActivity.punkte);
+                        if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
+                            highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
+                        }
                     }
                 }
             }
@@ -158,7 +166,9 @@ public class MainThread extends Thread {
                     // besetzt
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && ((Ziel) s).isBesetzt()) {
                         gameActivity.frosch.sterben();
-                        highscore.compareScore(gameActivity.punkte);
+                        if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
+                            highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
+                        }
                     }
                 }
                 if (s instanceof Hindernis) {
@@ -170,7 +180,9 @@ public class MainThread extends Thread {
             }
             if (!gameActivity.frosch.hitTree && !gameActivity.frosch.imZiel) {
                 gameActivity.frosch.sterben();
-                highscore.compareScore(gameActivity.punkte);
+                if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
+                    highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
+                }
             }
             gameActivity.testText = "Tree? " + gameActivity.frosch.hitTree + " - Speed: " + gameActivity.frosch.geschwindigkeitHorizontal;
         }
