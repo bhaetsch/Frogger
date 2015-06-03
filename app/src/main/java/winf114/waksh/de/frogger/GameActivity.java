@@ -91,8 +91,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         //wird automatisch aufgerufen sobald das SurfaceView erstellt wird
 
         Log.d("GameActivity", "surfaceCreated");
-        mainThread.setRunning(true);
-        mainThread.start();
     }
 
     @Override
@@ -196,6 +194,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         //Frosch
         spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, this));
         frosch.levelStartZeitpunkt = System.currentTimeMillis();
+        mainThread.setRunning(true);
+        mainThread.start();
     }
 
     @Override

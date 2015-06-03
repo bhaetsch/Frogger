@@ -15,31 +15,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
     }
 
-    /* Dropdown-Menü entfernt
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            show_toast("Settings");
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
-
     private void show_toast(CharSequence text) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -53,7 +28,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onclick_highscore(View view) {
-        show_toast("Highscore");
+        Intent intent = new Intent(this, HighscoreActivity.class);
+        startActivity(intent);
     }
 
     public void onclick_settings(View view) {

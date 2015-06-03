@@ -18,7 +18,7 @@ public class MainThread extends Thread {
     private int zieleErreicht;
     protected String levelZeit;
 
-
+    Highscore highscore;
 
     public MainThread(SurfaceHolder surfaceHolder, GameActivity gameActivity) {
         super();
@@ -26,6 +26,7 @@ public class MainThread extends Thread {
         this.gameActivity = gameActivity;
         zieleErreicht = 0;
         gameCycleMessung = new ZeitMessung();
+        this.highscore = new Highscore(gameActivity);
     }
 
     @Override
@@ -69,6 +70,7 @@ public class MainThread extends Thread {
         levelZeit = "Time:"  + (System.currentTimeMillis() - gameActivity.frosch.getLevelStartZeitpunkt())/1000;
         if (System.currentTimeMillis() > gameActivity.frosch.getLevelStartZeitpunkt() + (45*1000)){
             gameActivity.frosch.sterben();
+            highscore.compareScore(gameActivity.punkte);
         }
     }
 
@@ -106,6 +108,7 @@ public class MainThread extends Thread {
 
         if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
             gameActivity.frosch.sterben();
+            highscore.compareScore(gameActivity.punkte);
         }
     }
 
@@ -130,6 +133,7 @@ public class MainThread extends Thread {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
                         gameActivity.testText = "hit car";
                         gameActivity.frosch.sterben();
+                        highscore.compareScore(gameActivity.punkte);
                     }
                 }
             }
@@ -154,6 +158,7 @@ public class MainThread extends Thread {
                     // besetzt
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && ((Ziel) s).isBesetzt()) {
                         gameActivity.frosch.sterben();
+                        highscore.compareScore(gameActivity.punkte);
                     }
                 }
                 if (s instanceof Hindernis) {
@@ -165,12 +170,12 @@ public class MainThread extends Thread {
             }
             if (!gameActivity.frosch.hitTree && !gameActivity.frosch.imZiel) {
                 gameActivity.frosch.sterben();
+                highscore.compareScore(gameActivity.punkte);
             }
             gameActivity.testText = "Tree? " + gameActivity.frosch.hitTree + " - Speed: " + gameActivity.frosch.geschwindigkeitHorizontal;
         }
         gameActivity.frosch.imZiel = false;
     }
-
 }
 
 

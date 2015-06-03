@@ -15,4 +15,5 @@
     <string name="rechts_button_text">Rechts</string>
     <string name="oben_button_text">Oben</string>
     <string name="unten_button_text">Unten</string>
+    <string name="title_activity_highscore">HighscoreActivity</string>
 </resources>
