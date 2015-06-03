@@ -1,9 +1,13 @@
 package winf114.waksh.de.frogger;
 
+import java.util.Date;
+
 /**
  * Created by bhaetsch on 25.05.2015.
  */
 public class Frosch extends Spielobjekt {
+
+    Highscore highscore;
 
     private final int geschwindigkeitVertikal;
     int geschwindigkeitHorizontal;
@@ -22,6 +26,9 @@ public class Frosch extends Spielobjekt {
         super(x, y, breite, hoehe, farbe);
 
         this.gameActivity = gameActivity;
+
+        this.highscore = new Highscore(gameActivity);
+
         this.geschwindigkeitHorizontal = geschwindigkeitHorizontal;
         this.geschwindigkeitVertikal = geschwindigkeitVertikal;
         moved = false;
@@ -94,9 +101,12 @@ public class Frosch extends Spielobjekt {
         gameActivity.lebensAnzeige.lebenVerlieren();
         if(gameActivity.lebensAnzeige.keineLebenMehr()){
             resetZiele();
+            highscore.compareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
+            SpielWerte.resetPunkte();
         }
         gameActivity.toterFrosch.versetzen(getZeichenBereich());
         resetFrosch();
+
     }
 
     private void resetFrosch() {

@@ -15,11 +15,9 @@ public class MainThread extends Thread {
     private final SurfaceHolder surfaceHolder;
     private final GameActivity gameActivity;
     private Canvas canvas;
-
     final ZeitMessung gameCycleMessung;
     private int zieleErreicht;
 
-    Highscore highscore;
 
     public MainThread(SurfaceHolder surfaceHolder, GameActivity gameActivity) {
         super();
@@ -27,7 +25,6 @@ public class MainThread extends Thread {
         this.gameActivity = gameActivity;
         zieleErreicht = 0;
         gameCycleMessung = new ZeitMessung();
-        this.highscore = new Highscore(gameActivity);
     }
 
     @Override

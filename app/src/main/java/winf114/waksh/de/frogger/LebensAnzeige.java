@@ -29,7 +29,6 @@ class LebensAnzeige {
     boolean keineLebenMehr(){
         if (leben.size() == 0) {
             resetLebensAnzeige();
-            SpielWerte.resetPunkte();
             return true;
         }
         return false;

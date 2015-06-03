@@ -55,6 +55,10 @@ final class SpielWerte {
         return "Punkte: " + punkte;
     }
 
+    static int getPunkte(){
+        return  punkte;
+    }
+
     static void setTextAnzeige(String text){
         SpielWerte.text = text;
     }
