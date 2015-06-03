@@ -7,8 +7,8 @@ class Ziel extends Spielobjekt {
 
     private boolean besetzt;
 
-    public Ziel(int x, int y, int breite, int hoehe, int farbe) {
-        super(x, y, breite, hoehe, farbe);
+    public Ziel(int x, int breite, int hoehe, int farbe) {
+        super(x, 0, breite, hoehe, farbe);
         besetzt = false;
     }
 

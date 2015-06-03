@@ -16,7 +16,7 @@ public class MainThread extends Thread {
 
     final ZeitMessung gameCycleMessung;
     private int zieleErreicht;
-    String levelZeit;
+    protected String levelZeit;
 
 
 

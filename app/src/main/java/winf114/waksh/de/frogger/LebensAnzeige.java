@@ -8,15 +8,10 @@ import java.util.ArrayList;
 /**
  * Created by Matzef on 31.05.2015.
  */
-public class LebensAnzeige {
+class LebensAnzeige {
 
     private final ArrayList<Rect> leben;
-    private final Rect Leben1;
-    private final Rect Leben2;
-    private final Rect Leben3;
-    private final Rect Leben4;
-    private final Rect Leben5;
-    protected int lebenAnzahl;
+    int lebenAnzahl;
     private final Paint zeichenStift;
 
     public LebensAnzeige(int x, int y, int breite, int hoehe, int farbe) {
@@ -25,17 +20,17 @@ public class LebensAnzeige {
 
         //Position und Größe sind abhängig vom Spielfeld //TODO schicker machen
         int abstand = breite * 2;
-        Leben1 = new Rect(x, y, x + breite, y + hoehe);
-        Leben2 = new Rect(x + abstand, y, x + abstand + breite, y + hoehe);
-        Leben3 = new Rect(x + abstand * 2, y, x + abstand * 2 + breite, y + hoehe);
-        Leben4 = new Rect(x + abstand * 3, y, x + abstand * 3 + breite, y + hoehe);
-        Leben5 = new Rect(x + abstand * 4, y, x + abstand * 4 + breite, y + hoehe);
+        Rect leben1 = new Rect(x, y, x + breite, y + hoehe);
+        Rect leben2 = new Rect(x + abstand, y, x + abstand + breite, y + hoehe);
+        Rect leben3 = new Rect(x + abstand * 2, y, x + abstand * 2 + breite, y + hoehe);
+        Rect leben4 = new Rect(x + abstand * 3, y, x + abstand * 3 + breite, y + hoehe);
+        Rect leben5 = new Rect(x + abstand * 4, y, x + abstand * 4 + breite, y + hoehe);
 
-        leben.add(Leben1);
-        leben.add(Leben2);
-        leben.add(Leben3);
-        leben.add(Leben4);
-        leben.add(Leben5);
+        leben.add(leben1);
+        leben.add(leben2);
+        leben.add(leben3);
+        leben.add(leben4);
+        leben.add(leben5);
 
         this.zeichenStift = new Paint();
         this.zeichenStift.setColor(farbe);

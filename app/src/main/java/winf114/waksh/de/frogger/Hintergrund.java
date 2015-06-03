@@ -19,7 +19,6 @@ class Hintergrund {
     private final float screenbreite;
 
     // die Farben der Bereiche
-    private Farbe farbe = new Farbe();
     private final Paint zielBereichStift = new Paint();
     private final Paint wasserBereichStift = new Paint();
     private final Paint pausenBereichStift = new Paint();

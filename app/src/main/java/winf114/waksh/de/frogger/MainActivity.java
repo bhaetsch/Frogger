@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity {
     }
     */
 
-    public void show_toast(CharSequence text) {
+    private void show_toast(CharSequence text) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, text, duration);

@@ -11,7 +11,7 @@ final class Farbe {
     static int zielBereich = Color.parseColor("#3b522e");
     static int wasserBereich = Color.parseColor("#2e4975");
     static int pausenBereich = Color.parseColor("#3b522e");
-    static int strassenBereich = Color.parseColor("#7b7b7b");
+    static final int strassenBereich = Color.parseColor("#7b7b7b");
     static int startBereich = Color.parseColor("#3b522e");
     static int strassenMarkierung = Color.parseColor("#ffffff");
     static int frosch = Color.parseColor("#c4e86a");

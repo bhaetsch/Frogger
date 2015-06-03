@@ -15,12 +15,13 @@ import java.util.ArrayList;
 public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
     //TODO memo to self: renderpausen: logcat:GC_FOR_ALLOC freed 7576K, 32% free 17140K/25000K, paused 81ms, total 90ms
+    //TODO bei kollision mit dem rand wird der sterbende frosch ausserhalb des bildes angezeigt
 
     //<editor-fold | die Spielobjekte und ihre Liste
-    protected ArrayList<Spielobjekt> spielobjekte;
-    protected LebensAnzeige lebensAnzeige;
-    protected ToterFrosch toterFrosch;
-    protected Frosch frosch;
+    ArrayList<Spielobjekt> spielobjekte;
+    LebensAnzeige lebensAnzeige;
+    ToterFrosch toterFrosch;
+    Frosch frosch;
     private Hindernis auto01;
     private Hindernis auto02;
     private Hindernis auto03;
@@ -185,11 +186,11 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
 
         //LANE 1 Ziele
-        spielobjekte.add(ziel01 = new Ziel(FP.startPositionX, 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel02 = new Ziel(FP.startPositionX + (3 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel03 = new Ziel(FP.startPositionX - (3 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel04 = new Ziel(FP.startPositionX + (6 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
-        spielobjekte.add(ziel05 = new Ziel(FP.startPositionX - (6 * FP.objektPixelBreite), 0, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel01 = new Ziel(FP.startPositionX, FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel02 = new Ziel(FP.startPositionX + (3 * FP.objektPixelBreite), FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel03 = new Ziel(FP.startPositionX - (3 * FP.objektPixelBreite), FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel04 = new Ziel(FP.startPositionX + (6 * FP.objektPixelBreite), FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
+        spielobjekte.add(ziel05 = new Ziel(FP.startPositionX - (6 * FP.objektPixelBreite), FP.objektPixelBreite, FP.lanePixelHoehe, Farbe.zielLeer));
         //</editor-fold>
 
         //Frosch
