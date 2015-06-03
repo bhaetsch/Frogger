@@ -6,12 +6,13 @@ import android.graphics.Color;
  * Created by Matzef on 31.05.2015.
  * stellt alle Farben zur Verfügung, paket-privat
  */
+
 final class Farbe {
 
     static int zielBereich = Color.parseColor("#3b522e");
     static int wasserBereich = Color.parseColor("#2e4975");
     static int pausenBereich = Color.parseColor("#3b522e");
-    static final int strassenBereich = Color.parseColor("#7b7b7b");
+    static int strassenBereich = Color.parseColor("#7b7b7b");
     static int startBereich = Color.parseColor("#3b522e");
     static int strassenMarkierung = Color.parseColor("#ffffff");
     static int frosch = Color.parseColor("#c4e86a");
