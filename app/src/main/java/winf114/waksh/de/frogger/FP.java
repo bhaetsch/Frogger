@@ -12,6 +12,7 @@ final class FP {
 
     private static final int LANE_HOEHE_PROZENT = 5;        //Höhe einer "Lane" im Spiel in % des Screens
     private static final int OBJEKT_HOEHE_PROZENT = 80;     //Höhe des Objekts in % der Lane Hoehe
+    private static final int LEBENSANZEIGE_GROESSE_PROZENT = 60;
 
     static int lanePixelHoehe;                              //Höhe einer "Lane" im Spiel in Pixeln
     static Rect spielFlaeche;                               //Bewegungsbereich des Frosches
@@ -25,8 +26,13 @@ final class FP {
     static int startPositionY;
     static int smallTextSize;                               //Textgrößen
     static int largeTextSize;
+    static int lebensAnzeigeX;
+    static int lebensAnzeigeY;
+    static int lebensAnzeigeHöhe;
+    static int lebensAnzeigeBreite;
+    static int lebensAnzeigeAbstand;
 
-    static void setParaM(int spielFeldbreite, int spielFeldHoehe){
+    static void erstelleSpielParameter(int spielFeldbreite, int spielFeldHoehe){
 
         spielFlaeche = new Rect(0, 0, spielFeldbreite, spielFeldHoehe * LANE_HOEHE_PROZENT / 100 * 13);          //Bewegungsbereich des Frosches
 
@@ -47,6 +53,11 @@ final class FP {
 
         //Hindernisse bewegen sich ausserhalb des sichtbaren Bereichs in der erweiterten Spielfläche weiter
         erweiterteSpielFlaeche = new Rect(spielFlaeche.left - objektPixelBreite * 8, spielFlaeche.top, spielFlaeche.right + objektPixelBreite * 8, spielFlaeche.bottom);
-    }
 
+        lebensAnzeigeX = startPositionX + (FP.objektPixelBreite / 2);
+        lebensAnzeigeY = lanePixelHoehe * 13 + (FP.objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100);
+        lebensAnzeigeHöhe = objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100;
+        lebensAnzeigeBreite = objektPixelHoehe * LEBENSANZEIGE_GROESSE_PROZENT / 100;
+        lebensAnzeigeAbstand = lebensAnzeigeBreite + (lebensAnzeigeBreite/2);
+    }
 }

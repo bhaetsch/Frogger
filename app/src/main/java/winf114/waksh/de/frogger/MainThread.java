@@ -18,7 +18,6 @@ public class MainThread extends Thread {
 
     final ZeitMessung gameCycleMessung;
     private int zieleErreicht;
-    protected String levelZeit;
 
     Highscore highscore;
 
@@ -42,8 +41,12 @@ public class MainThread extends Thread {
                 synchronized (surfaceHolder) {
 
                     gameCycleMessung.start();
+                    SpielWerte.updateLevelZeit(System.currentTimeMillis());
+                    gameActivity.zeitAnzeige.tick();
                     levelZuendeCheck();
                     todesAnzeigeCheck();
+                    prinzessinAnzeigeCheck();
+                    prinzessinCheck();
                     zieleErreichtCheck();
                     alleObjekteBewegen();
                     kolHindernisMitRand();
@@ -69,12 +72,9 @@ public class MainThread extends Thread {
     }
 
     private void levelZuendeCheck(){
-        levelZeit = "Time:"  + (System.currentTimeMillis() - gameActivity.frosch.getLevelStartZeitpunkt())/1000;
-        if (System.currentTimeMillis() > gameActivity.frosch.getLevelStartZeitpunkt() + (45*1000)){
-            gameActivity.frosch.sterben();
-            if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
-                highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
-            }
+
+        if (SpielWerte.levelZuende()){
+            gameActivity.frosch.stirbt();
         }
     }
 
@@ -87,11 +87,26 @@ public class MainThread extends Thread {
         }
     }
 
+    private void prinzessinAnzeigeCheck(){
+
+    }
+
+    private void prinzessinCheck(){
+
+        if (gameActivity.frosch.kollidiertMit(gameActivity.prinzessin.getZeichenBereich())) {
+            gameActivity.frosch.traegtPrinzessin = true;
+        }
+
+        if (gameActivity.frosch.traegtPrinzessin) {
+            gameActivity.prinzessin.versetzen(gameActivity.frosch.getZeichenBereich());
+        }
+    }
+
     private void zieleErreichtCheck(){
         // wenn 5 ziele gefüllt sind wird das spiel zurück gesetzt
 
         if (zieleErreicht == 5) {
-            gameActivity.punkte += 500;
+            SpielWerte.changePunkte(500);
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Ziel) {
                     ((Ziel) s).setBesetzt(false);
@@ -111,10 +126,8 @@ public class MainThread extends Thread {
         // Kollision Frosch mit Rand ?
 
         if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
-            gameActivity.frosch.sterben();
-            if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
-                highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
-            }
+            SpielWerte.setTextAnzeige("Nicht abhauen!");
+            gameActivity.frosch.stirbt();
         }
     }
 
@@ -137,11 +150,8 @@ public class MainThread extends Thread {
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Hindernis) {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
-                        gameActivity.testText = "hit car";
-                        gameActivity.frosch.sterben();
-                        if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
-                            highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
-                        }
+                        SpielWerte.setTextAnzeige("Matsch!");
+                        gameActivity.frosch.stirbt();
                     }
                 }
             }
@@ -161,14 +171,11 @@ public class MainThread extends Thread {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && !((Ziel) s).isBesetzt()) {
                         zieleErreicht++;
                         ((Ziel) s).setBesetzt(true);
-                        gameActivity.frosch.gewinnt();
+                        gameActivity.frosch.erreichtZiel();
                     }
                     // besetzt
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && ((Ziel) s).isBesetzt()) {
-                        gameActivity.frosch.sterben();
-                        if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
-                            highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
-                        }
+                        gameActivity.frosch.stirbt();
                     }
                 }
                 if (s instanceof Hindernis) {
@@ -179,15 +186,12 @@ public class MainThread extends Thread {
                 }
             }
             if (!gameActivity.frosch.hitTree && !gameActivity.frosch.imZiel) {
-                gameActivity.frosch.sterben();
-                if(gameActivity.lebensAnzeige.lebenAnzahl == 5) {
-                    highscore.compareScore(new HighscoreEintrag(gameActivity.punkte, new Date().getTime()));
-                }
+                gameActivity.frosch.stirbt();
             }
-            gameActivity.testText = "Tree? " + gameActivity.frosch.hitTree + " - Speed: " + gameActivity.frosch.geschwindigkeitHorizontal;
         }
         gameActivity.frosch.imZiel = false;
     }
+
 }
 
 

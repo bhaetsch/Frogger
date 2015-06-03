@@ -10,36 +10,45 @@ import java.util.ArrayList;
  */
 class LebensAnzeige {
 
-    private final ArrayList<Rect> leben;
-    int lebenAnzahl;
+    private  ArrayList<Rect> leben;
     private final Paint zeichenStift;
+    private Rect[] lebenRect;
 
-    public LebensAnzeige(int x, int y, int breite, int hoehe, int farbe) {
-        leben = new ArrayList<>();
-        lebenAnzahl = 5;
-
-        //Position und Größe sind abhängig vom Spielfeld //TODO schicker machen
-        int abstand = breite * 2;
-        Rect leben1 = new Rect(x, y, x + breite, y + hoehe);
-        Rect leben2 = new Rect(x + abstand, y, x + abstand + breite, y + hoehe);
-        Rect leben3 = new Rect(x + abstand * 2, y, x + abstand * 2 + breite, y + hoehe);
-        Rect leben4 = new Rect(x + abstand * 3, y, x + abstand * 3 + breite, y + hoehe);
-        Rect leben5 = new Rect(x + abstand * 4, y, x + abstand * 4 + breite, y + hoehe);
-
-        leben.add(leben1);
-        leben.add(leben2);
-        leben.add(leben3);
-        leben.add(leben4);
-        leben.add(leben5);
-
+    public LebensAnzeige() {
         this.zeichenStift = new Paint();
-        this.zeichenStift.setColor(farbe);
+        this.zeichenStift.setColor(Farbe.frosch);
+        leben = new ArrayList<>();
+        lebenRect = new Rect[SpielWerte.LEBEN];
+        resetLebensAnzeige();
     }
 
-    public void draw(Canvas canvas) {
+    void lebenVerlieren(){
+        leben.remove(leben.size() - 1);
+    }
+
+    boolean keineLebenMehr(){
+        if (leben.size() == 0) {
+            resetLebensAnzeige();
+            SpielWerte.resetPunkte();
+            return true;
+        }
+        return false;
+    }
+
+    void resetLebensAnzeige(){
+        for(int i = 0; i < SpielWerte.LEBEN; i++){
+            leben.add(lebenRect[i] = new Rect(
+                    FP.lebensAnzeigeX + (FP.lebensAnzeigeAbstand * i),
+                    FP.lebensAnzeigeY,
+                    FP.lebensAnzeigeX + FP.lebensAnzeigeBreite + (FP.lebensAnzeigeAbstand * i),
+                    FP.lebensAnzeigeY + FP.lebensAnzeigeHöhe));
+        }
+    }
+
+    void draw(Canvas canvas) {
         // zeigt Vierecke nur in Anzahl der lebenAnzahl an
-        for (int i = 1; i <= lebenAnzahl; i++) {
-            canvas.drawRect(leben.get(i - 1), zeichenStift);
+        for (Rect r : leben) {
+            canvas.drawRect(r, zeichenStift);
         }
     }
 }

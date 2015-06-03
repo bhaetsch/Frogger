@@ -10,16 +10,13 @@ public class Frosch extends Spielobjekt {
     private boolean moved;
     private richtung r;
     private final GameActivity gameActivity;
-
     boolean imWasser;
     boolean hitTree;
     boolean imZiel;
     long todesZeitpunkt;
     boolean kuerzlichVerendet;
     private boolean aufStartPosition;
-    long levelStartZeitpunkt;
-
-
+    boolean traegtPrinzessin;
 
     public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, GameActivity gameActivity) {
         super(x, y, breite, hoehe, farbe);
@@ -33,6 +30,7 @@ public class Frosch extends Spielobjekt {
         imZiel = false;
         kuerzlichVerendet = false;
         aufStartPosition = true;
+        traegtPrinzessin = false;
 
     }
 
@@ -56,6 +54,7 @@ public class Frosch extends Spielobjekt {
                         imWasser = true;
                     }
                     aufStartPosition = false;
+                    SpielWerte.changePunkte(10);
                     break;
                 case zurueck:
                     if (!aufStartPosition) {
@@ -81,32 +80,28 @@ public class Frosch extends Spielobjekt {
         moved = false;
     }
 
-    public void gewinnt() {
+    public void erreichtZiel() {
         imZiel = true;
-        gameActivity.punkte += 100;
+        SpielWerte.changePunkte(100);
         resetFrosch();
     }
 
-    public void sterben() {
-        kuerzlichVerendet = true;
-        gameActivity.lebensAnzeige.lebenAnzahl--;
-        if (gameActivity.lebensAnzeige.lebenAnzahl == 0) {
-            gameActivity.lebensAnzeige.lebenAnzahl = 5;
-            gameActivity.punkte = 0;
-
-            for (Spielobjekt s : gameActivity.spielobjekte){
-                if (s instanceof Ziel){
-                    ((Ziel) s).setBesetzt(false);
-                }
-            }
-        }
+    public void stirbt() {
+        traegtPrinzessin = false;
         todesZeitpunkt = System.currentTimeMillis();
-        gameActivity.toterFrosch.anzeigen(getZeichenBereich());
+        gameActivity.prinzessin.aufStart();
+        kuerzlichVerendet = true;
+        gameActivity.lebensAnzeige.lebenVerlieren();
+        if(gameActivity.lebensAnzeige.keineLebenMehr()){
+            resetZiele();
+        }
+        gameActivity.toterFrosch.versetzen(getZeichenBereich());
         resetFrosch();
     }
 
     private void resetFrosch() {
-        levelStartZeitpunkt = System.currentTimeMillis();
+        SpielWerte.startLevel();
+        gameActivity.zeitAnzeige.resetZeitanzeige();
         geschwindigkeitHorizontal = FP.froschGeschwX;
         hitTree = false;
         imWasser = false;
@@ -128,7 +123,12 @@ public class Frosch extends Spielobjekt {
         this.r = r;
     }
 
-    public long getLevelStartZeitpunkt() {
-        return levelStartZeitpunkt;
+    public void resetZiele(){
+
+        for (Spielobjekt s : gameActivity.spielobjekte){
+            if (s instanceof Ziel){
+                ((Ziel) s).setBesetzt(false);
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ abstract class Spielobjekt {
     private final Paint zeichenStift;     //Stift der das Viereck malt
 
     public Spielobjekt(int x, int y, int breite, int hoehe, int farbe) {
+        // könnte Rect sein
         this.x = x;
         this.y = y;
         this.breite = breite;

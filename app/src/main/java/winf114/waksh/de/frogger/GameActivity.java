@@ -20,8 +20,10 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     //<editor-fold | die Spielobjekte und ihre Liste
     ArrayList<Spielobjekt> spielobjekte;
     LebensAnzeige lebensAnzeige;
+    ZeitAnzeige zeitAnzeige;
     ToterFrosch toterFrosch;
     Frosch frosch;
+    Prinzessin prinzessin;
     private Hindernis auto01;
     private Hindernis auto02;
     private Hindernis auto03;
@@ -49,12 +51,10 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private Ziel ziel05;
     //</editor-fold>
 
-    int punkte;                           //die Punkte des aktuellen durchlaufs
     private ZeitMessung renderCycleMessung;
 
-    //Textausgabe, Stift und Hintergrund
+    //Stift und Hintergrund
     private Paint textStift;
-    String testText;
     private Hintergrund hintergrund;
 
     //SurfaceView und MainThread
@@ -78,9 +78,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
         renderCycleMessung = new ZeitMessung();
 
-        // start mit 0 Punkten
-        punkte = 0;
-
         //die Knöpfe müssen nach dem Thread erstellt werden!
         mainThread = new MainThread(surfaceHolder, this);
         programmiereKnöpfe();
@@ -99,16 +96,18 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
         Log.d("GameActivity", "surfaceChanged");
 
-        FP.setParaM(width, height);
+        FP.erstelleSpielParameter(width, height);
         hintergrund = new Hintergrund(width, FP.lanePixelHoehe);
 
         //Stift und Farbe und für die Textanzeigen
-        testText = height + ":" + width + ":" + FP.objektPixelBreite + ":" + FP.froschGeschwX;
+        SpielWerte.setTextAnzeige(height + ":" + width + ":" + FP.objektPixelBreite + ":" + FP.froschGeschwX);
         textStift = new Paint();
         textStift.setColor(Farbe.text);
 
         toterFrosch = new ToterFrosch(Farbe.deadFrosch);
-        lebensAnzeige = new LebensAnzeige(FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 13 + (FP.objektPixelBreite * 60 / 100), FP.objektPixelBreite * 60 / 100, FP.objektPixelHoehe * 60 / 100, Farbe.frosch);
+        prinzessin = new Prinzessin(Farbe.prinzessin);
+        lebensAnzeige = new LebensAnzeige();
+        zeitAnzeige = new ZeitAnzeige();
 
         //<editor-fold | erstellt alle Hindernisse,die Ziele und die Objektliste>
         spielobjekte = new ArrayList<>();
@@ -193,7 +192,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
         //Frosch
         spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, this));
-        frosch.levelStartZeitpunkt = System.currentTimeMillis();
+        prinzessin.aufStart();
+        SpielWerte.startLevel();
         mainThread.setRunning(true);
         mainThread.start();
     }
@@ -266,7 +266,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         Button obenButton = (Button) findViewById(R.id.oben);
         obenButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                punkte += 10;
                 frosch.setMoved();
                 frosch.setRichtung(richtung.vor);
             }
@@ -288,6 +287,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         canvas.drawColor(Color.BLACK);
         hintergrund.draw(canvas);
         lebensAnzeige.draw(canvas);
+        zeitAnzeige.draw(canvas);
 
         //alle Spielobjekte malen
         for (Spielobjekt s : spielobjekte) {
@@ -295,15 +295,16 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         }
 
         //Toter Frosch wird nur zeitweise angezeigt
+        prinzessin.draw(canvas);
         toterFrosch.draw(canvas);
 
         //Punkteanzeige und 4 Textfelder(positioniert) als Kontrollanzeige
         textStift.setTextSize(FP.smallTextSize);
         canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 15, textStift);
         canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
-        canvas.drawText(mainThread.levelZeit, FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
-        canvas.drawText(testText, FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15, textStift);
+        canvas.drawText(SpielWerte.levelZeit(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(SpielWerte.textAnzeige(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15, textStift);
         textStift.setTextSize(FP.largeTextSize);
-        canvas.drawText("Punkte: " + punkte, 10, FP.lanePixelHoehe * 14, textStift);
+        canvas.drawText(SpielWerte.punkte(), 10, FP.lanePixelHoehe * 14, textStift);
     }
 }
