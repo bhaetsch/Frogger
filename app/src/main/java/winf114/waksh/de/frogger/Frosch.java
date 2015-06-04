@@ -101,7 +101,7 @@ public class Frosch extends Spielobjekt {
         gameActivity.lebensAnzeige.lebenVerlieren();
         if(gameActivity.lebensAnzeige.keineLebenMehr()){
             resetZiele();
-            highscore.compareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
+            highscore.startCompareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
             SpielWerte.resetPunkte();
         }
         gameActivity.toterFrosch.versetzen(getZeichenBereich());

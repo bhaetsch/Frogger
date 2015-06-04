@@ -1,74 +1,99 @@
 package winf114.waksh.de.frogger;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.ListIterator;
 
 /**
  * Created by bhaetsch on 03.06.2015.
  */
 public class Highscore {
-    final String FILENAME = "frogger_highscore";
-    ArrayList<HighscoreEintrag> highscore;
-    Context ctx;
+    final String FILENAME = "frogger_highscore";    // Dateiname im App-Speicher
+    ArrayList<HighscoreEintrag> highscore;          // Highscore als HighscoreEintrag-Liste
+    ArrayList<String> highscoreString;              // Highscore als String-Liste
+    Context ctx;                                    // aufrufende Activity (für Zugriff auf Dateisystem benötigt)
 
     public Highscore(Context context) {
         this.ctx = context;
-        if (readHighscore() == null) {
-            highscore = new ArrayList<HighscoreEintrag>(10);
-            for (int i = 0; i < 10; i++) {
-                highscore.add(new HighscoreEintrag(0, new Date().getTime()));
-                writeHighscore(highscore);
-            }
-        } else {
-            highscore = readHighscore();
-        }
+        startReadHighscore();
+        startReadHighscoreString();
     }
 
-    public ArrayList<HighscoreEintrag> readHighscore() {
+    /* Ruft readHighscore() als neuen Thread auf */
+    public void startReadHighscore() {
+        new Thread() {
+            public void run() {
+                readHighscore();
+            }
+        }.start();
+    }
+
+    /* Liest den Highscore als HighscoreEintrag-Liste aus dem App-Speicher */
+    public synchronized void readHighscore() {
         Log.d("Highscore", "readHighscore");
-        ArrayList<HighscoreEintrag> toReturn = null;
         try {
             FileInputStream fis = ctx.openFileInput(FILENAME);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            toReturn = (ArrayList<HighscoreEintrag>) ois.readObject();
+            highscore = (ArrayList<HighscoreEintrag>) ois.readObject();
             ois.close();
             fis.close();
         } catch (Exception e) {
             Log.e("Highscore", "Fehler beim Lesen aus dem Speicher");
-            Log.e("Highscore", e.getMessage());
+            if (highscore == null) {
+                highscore = new ArrayList<HighscoreEintrag>(10);
+                for (int i = 0; i < 10; i++) {
+                    highscore.add(new HighscoreEintrag(0, new Date().getTime()));
+                }
+                writeHighscore(highscore);
+            }
         }
-        return toReturn;
     }
 
-    public ArrayList<String> readHighscoreString() {
+    /* Ruft readHighscoreString() als neuen Thread auf */
+    public void startReadHighscoreString() {
+        new Thread() {
+            public void run() {
+                readHighscoreString();
+            }
+        }.start();
+    }
+
+    /* Liest den Highscore als String-Liste aus dem App-Speicher */
+    public synchronized void readHighscoreString() {
         Log.d("Highscore", "readHighscoreString");
         ArrayList<String> toReturn = null;
         try {
             FileInputStream fis = ctx.openFileInput(FILENAME);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<HighscoreEintrag> temp = (ArrayList<HighscoreEintrag>) ois.readObject();
-            toReturn = mapHighscoreEintragToStringCollection(temp);
+            highscoreString = mapHighscoreEintragToStringCollection(temp);
             ois.close();
             fis.close();
         } catch (Exception e) {
             Log.e("Highscore", "Fehler beim Lesen aus dem Speicher");
             Log.e("Highscore", e.getMessage());
         }
-        return toReturn;
     }
 
+    /* Ruft CollectionTransformer<> auf, um die HighscoreEintrag-Liste in eine String-Liste zu transformieren */
+    public ArrayList<String> mapHighscoreEintragToStringCollection(ArrayList<HighscoreEintrag> list) {
+        CollectionTransformer transformer = new CollectionTransformer<HighscoreEintrag, String>() {
+            @Override
+            String transform(HighscoreEintrag e) {
+                return e.toString();
+            }
+        };
+        return transformer.transform(list);
+    }
+
+    /* Transformiert Collections einer Klasse in Collections einer anderen Klasse */
     public abstract class CollectionTransformer<E, F> {
         abstract F transform(E e);
 
@@ -81,16 +106,7 @@ public class Highscore {
         }
     }
 
-    public ArrayList<String> mapHighscoreEintragToStringCollection(ArrayList<HighscoreEintrag> list) {
-        CollectionTransformer transformer = new CollectionTransformer<HighscoreEintrag, String>() {
-            @Override
-            String transform(HighscoreEintrag e) {
-                return e.toString();
-            }
-        };
-        return transformer.transform(list);
-    }
-
+    /* Schreibt den Highscore in den App-Speicher */
     public void writeHighscore(ArrayList<HighscoreEintrag> highscore) {
         Log.d("Highscore", "writeHighscore");
         try {
@@ -105,25 +121,43 @@ public class Highscore {
         }
     }
 
-    public void compareScore(HighscoreEintrag score) {
+    /* Wird aufgerufen, wenn der Frosch stirbt und startet compareScore() als neuen Thread */
+    public void startCompareScore(HighscoreEintrag score) {
+        final HighscoreEintrag temp = score;
+        new Thread() {
+            public void run() {
+                compareScore(temp);
+            }
+        }.start();
+    }
+
+    /*  Vergleicht den Score mit den gespeicherten Highscores und schreibt ggf. einen neuen Highscore */
+    public synchronized void compareScore(HighscoreEintrag score) {
         Log.d("Highscore", "compareScore");
         boolean newhs = false;
-        HighscoreEintrag nhs = new HighscoreEintrag(0, new Date().getTime());
-        for (HighscoreEintrag hs : highscore) {
+        for (HighscoreEintrag hs : highscore) { // Vergleicht den Score mit den Highscores
             if (score.compareTo(hs) != -1) {
-                Log.d("Highscore", "vorher: " + highscore.get(1));
                 newhs = true;
-                nhs = hs;
                 break;
             }
         }
         if (newhs) {
-            highscore.remove(nhs);
-            highscore.add(score);
-            Collections.sort(highscore, Collections.reverseOrder());
-            highscore.trimToSize();
-            writeHighscore(highscore);
-            Log.d("Highscore", "nachher: " + highscore.get(1));
+            highscore.add(score);   // Fügt den Score zu den Highscores hinzu
+            Collections.sort(highscore, Collections.reverseOrder());    // Sortiert die Highscores absteigend
+            if (highscore.size() > 10) {    // Kürzt die Highscores auf 10 Einträge
+                ArrayList<HighscoreEintrag> highscoreNew = new ArrayList<HighscoreEintrag>();
+                for (int i = 0; i < 10; i++) {
+                    highscoreNew.add(highscore.get(i));
+                }
+                writeHighscore(highscoreNew);
+            } else {                            // Speichert die Highscores
+                writeHighscore(highscore);
+            }
         }
+    }
+
+    /* Gibt den Highscore als String-Liste zurück */
+    public ArrayList<String> getHighscoreString() {
+        return highscoreString;
     }
 }

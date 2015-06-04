@@ -1,6 +1,5 @@
 package winf114.waksh.de.frogger;
 
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
@@ -8,9 +7,9 @@ import java.text.SimpleDateFormat;
  * Created by bhaetsch on 03.06.2015.
  */
 public class HighscoreEintrag implements Serializable, Comparable<HighscoreEintrag> {
-    private int score;
-    private String datum;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private int score;      // erreichte Punktzahl
+    private String datum;   // Zeitstempel
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");    // Datum und Zeit in deutscher Schreibweise
 
     public HighscoreEintrag(int score, long datum) {
         this.score = score;
@@ -28,6 +27,6 @@ public class HighscoreEintrag implements Serializable, Comparable<HighscoreEintr
 
     @Override
     public String toString() {
-        return datum + "        ->        " + score;
+        return datum + "       ->       " + score;
     }
 }
