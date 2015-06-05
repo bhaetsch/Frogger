@@ -1,41 +1,56 @@
 package winf114.waksh.de.frogger;
 
 import android.graphics.Rect;
+import java.util.Random;
 
 /**
  * Created by Matzef on 03.06.2015.
  */
-public class Prinzessin extends Spielobjekt {
+public class Prinzessin extends Hindernis {
 
-    private int farbe;
+    private long start;
+    boolean iscarried;
+    boolean aktiv;
+    Hindernis baum;
 
-    public Prinzessin(int farbe){
-        super(0, 0, 0, 0, farbe);
-        this.farbe = farbe;
+    public Prinzessin(Hindernis baum, int farbe){
+        super(  FP.erweiterteSpielFlaeche.right - FP.objektPixelBreite,
+                FP.lanePixelHoehe * 4 + FP.lanePadding,
+                FP.objektPixelBreite,
+                FP.objektPixelHoehe,
+                0, farbe);
+        iscarried = false;
+        aktiv = false;
+        this.baum = baum;
     }
 
-    void versetzen(Rect position){
-        getZeichenBereich().set(position); //setzt den toten Frosch an die alte Frosch Position
+    void erscheintDiePrinzessin(){
+        if (iscarried == false){
+            if (System.currentTimeMillis() > start + 1000 && !baum.kollidiertMit(FP.spielFlaeche)){
+                Random r = new Random();
+                int random = r.nextInt(100 - 1) + 1;
+                if (random < SpielWerte.PRINZESSIN_ERSCHEIN_CHANCE){
+                    erscheint();
+                }
+                start = System.currentTimeMillis();
+            }
+        }
     }
 
-    void aufStart(){
-        Rect startPosiPrinzessin = new Rect(FP.spielFlaeche.centerX(), FP.lanePixelHoehe * 4 + FP.lanePadding, FP.spielFlaeche.centerX() + FP.objektPixelBreite, FP.lanePixelHoehe * 4 + FP.lanePadding + FP.objektPixelHoehe);
-        this.erscheint(startPosiPrinzessin);
-
-    }
-
-    void erscheint(Rect position){
-        getZeichenStift().setColor(farbe); //zeichnet die im Konstruktor übergebene Farbe
-        getZeichenBereich().set(position); //setzt den toten Frosch an die alte Frosch Position
+    void erscheint(){
+        aktiv = true;
+        getZeichenStift().setColor(Farbe.prinzessin);
     }
 
     void verschwindet(){
+        aktiv = false;
         getZeichenStift().setColor(Farbe.transparent);
     }
 
-    void move(){
-        //Bewegt sich nicht
+    public void move(){
+        if (aktiv == true && iscarried == false){
+            this.setX(baum.getX() + FP.objektPixelBreite);
+            setZeichenBereich();
+        }
     }
-
-
 }

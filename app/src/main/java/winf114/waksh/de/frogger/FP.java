@@ -31,6 +31,10 @@ final class FP {
     static int lebensAnzeigeHöhe;
     static int lebensAnzeigeBreite;
     static int lebensAnzeigeAbstand;
+    static int zeitAnzeigeX;
+    static int zeitAnzeigeY;
+    static int zeitAnzeigeHöhe;
+    static int zeitAnzeigeBreite;
 
     static void erstelleSpielParameter(int spielFeldbreite, int spielFeldHoehe){
 
@@ -54,10 +58,15 @@ final class FP {
         //Hindernisse bewegen sich ausserhalb des sichtbaren Bereichs in der erweiterten Spielfläche weiter
         erweiterteSpielFlaeche = new Rect(spielFlaeche.left - objektPixelBreite * 8, spielFlaeche.top, spielFlaeche.right + objektPixelBreite * 8, spielFlaeche.bottom);
 
-        lebensAnzeigeX = startPositionX + (FP.objektPixelBreite / 2);
-        lebensAnzeigeY = lanePixelHoehe * 13 + (FP.objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100);
+        lebensAnzeigeX = spielFlaeche.centerX();
+        lebensAnzeigeY = lanePixelHoehe * 14 + (FP.objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100);
         lebensAnzeigeHöhe = objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100;
         lebensAnzeigeBreite = objektPixelHoehe * LEBENSANZEIGE_GROESSE_PROZENT / 100;
         lebensAnzeigeAbstand = lebensAnzeigeBreite + (lebensAnzeigeBreite/2);
+
+        zeitAnzeigeX = spielFlaeche.centerX();
+        zeitAnzeigeY = lanePixelHoehe * 13 + (FP.objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100);
+        zeitAnzeigeBreite = (spielFlaeche.right / 2) * 80 / 100;
+        zeitAnzeigeHöhe = objektPixelHoehe * LEBENSANZEIGE_GROESSE_PROZENT / 100;
     }
 }

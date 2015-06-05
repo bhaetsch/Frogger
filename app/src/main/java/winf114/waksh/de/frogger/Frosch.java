@@ -20,7 +20,6 @@ public class Frosch extends Spielobjekt {
     long todesZeitpunkt;
     boolean kuerzlichVerendet;
     private boolean aufStartPosition;
-    boolean traegtPrinzessin;
 
     public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, GameActivity gameActivity) {
         super(x, y, breite, hoehe, farbe);
@@ -37,8 +36,6 @@ public class Frosch extends Spielobjekt {
         imZiel = false;
         kuerzlichVerendet = false;
         aufStartPosition = true;
-        traegtPrinzessin = false;
-
     }
 
     public void move() {
@@ -61,7 +58,7 @@ public class Frosch extends Spielobjekt {
                         imWasser = true;
                     }
                     aufStartPosition = false;
-                    SpielWerte.changePunkte(10);
+                    SpielWerte.addScore(10);
                     break;
                 case zurueck:
                     if (!aufStartPosition) {
@@ -89,20 +86,24 @@ public class Frosch extends Spielobjekt {
 
     public void erreichtZiel() {
         imZiel = true;
-        SpielWerte.changePunkte(100);
+        // SpielWerte.addScore(SpielWerte.getZeitImLevelVerbracht()/1000);
+        if(gameActivity.prinzessin.iscarried){
+            SpielWerte.addScore(200);
+        }
+        else {
+            SpielWerte.addScore(100);
+        }
         resetFrosch();
     }
 
     public void stirbt() {
-        traegtPrinzessin = false;
         todesZeitpunkt = System.currentTimeMillis();
-        gameActivity.prinzessin.aufStart();
         kuerzlichVerendet = true;
         gameActivity.lebensAnzeige.lebenVerlieren();
         if(gameActivity.lebensAnzeige.keineLebenMehr()){
             resetZiele();
             highscore.startCompareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
-            SpielWerte.resetPunkte();
+            SpielWerte.resetScore();
         }
         gameActivity.toterFrosch.versetzen(getZeichenBereich());
         resetFrosch();
@@ -113,6 +114,7 @@ public class Frosch extends Spielobjekt {
         SpielWerte.startLevel();
         gameActivity.zeitAnzeige.resetZeitanzeige();
         geschwindigkeitHorizontal = FP.froschGeschwX;
+        releasePrinzess();
         hitTree = false;
         imWasser = false;
         aufStartPosition = true;
@@ -140,5 +142,18 @@ public class Frosch extends Spielobjekt {
                 ((Ziel) s).setBesetzt(false);
             }
         }
+    }
+
+    void releasePrinzess(){
+        gameActivity.prinzessin.iscarried = false;
+        gameActivity.prinzessin.verschwindet();
+        getZeichenStift().setColor(Farbe.frosch);
+    }
+
+    void pickupPrincess(){
+        gameActivity.prinzessin.iscarried = true;
+        SpielWerte.setTextAnzeige("Prinzessin eingesammelt");
+        getZeichenStift().setColor(Farbe.prinzessin);
+        gameActivity.prinzessin.verschwindet();
     }
 }

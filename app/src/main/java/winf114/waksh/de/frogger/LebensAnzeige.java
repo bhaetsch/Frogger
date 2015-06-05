@@ -38,14 +38,13 @@ class LebensAnzeige {
         for(int i = 0; i < SpielWerte.LEBEN; i++){
             leben.add(lebenRect[i] = new Rect(
                     FP.lebensAnzeigeX + (FP.lebensAnzeigeAbstand * i),
-                    FP.lebensAnzeigeY,
+                    FP.lebensAnzeigeY + FP.lanePadding,
                     FP.lebensAnzeigeX + FP.lebensAnzeigeBreite + (FP.lebensAnzeigeAbstand * i),
-                    FP.lebensAnzeigeY + FP.lebensAnzeigeHöhe));
+                    FP.lebensAnzeigeY + FP.lanePadding + FP.lebensAnzeigeHöhe));
         }
     }
 
     void draw(Canvas canvas) {
-        // zeigt Vierecke nur in Anzahl der lebenAnzahl an
         for (Rect r : leben) {
             canvas.drawRect(r, zeichenStift);
         }

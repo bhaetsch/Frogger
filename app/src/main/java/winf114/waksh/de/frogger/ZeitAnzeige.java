@@ -9,50 +9,50 @@ import android.graphics.Rect;
  */
 class ZeitAnzeige {
 
+    //TODO wird niemals komplett aufgebraucht
     private final Paint zeichenStift;
-    private Rect zeitRect;
-    private int breite;
-    private int startbreite;
-    private long start;
+    private Rect zeichenBereich;
+    private int aktuelleBreite;
+    private long timerStart;
+    private int breiteProSekunde;
 
     public ZeitAnzeige() {
         this.zeichenStift = new Paint();
         this.zeichenStift.setColor(Farbe.auto);
-        startbreite = 405;
-        start = System.currentTimeMillis();
+        timerStart = System.currentTimeMillis();
+        breiteProSekunde = FP.zeitAnzeigeBreite / SpielWerte.LEVEL_ZEIT_SEK;
 
-        zeitRect =  new Rect(
-                FP.spielFlaeche.centerX(),
-                FP.lanePixelHoehe * 14 + FP.lanePadding,
-                FP.spielFlaeche.centerX() + 405,
-                FP.lanePixelHoehe * 14 + FP.lanePadding + FP.lebensAnzeigeHöhe);
+        zeichenBereich =  new Rect(
+                FP.zeitAnzeigeX,
+                FP.zeitAnzeigeY + FP.lanePadding,
+                FP.zeitAnzeigeX + FP.zeitAnzeigeBreite,
+                FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
     }
 
     void tick(){
-        if (System.currentTimeMillis() > start + 1000){
+        if (System.currentTimeMillis() > timerStart + 1000){
             verringereZeitAnzeige();
-            start = System.currentTimeMillis();
+            timerStart = System.currentTimeMillis();
         }
     }
 
-
     void resetZeitanzeige(){
-        zeitRect.set(FP.spielFlaeche.centerX(),
-                FP.lanePixelHoehe * 14 + FP.lanePadding,
-                FP.spielFlaeche.centerX() + 405,
-                FP.lanePixelHoehe * 14 + FP.lanePadding + FP.lebensAnzeigeHöhe);
+        zeichenBereich.set(
+                FP.zeitAnzeigeX,
+                FP.zeitAnzeigeY + FP.lanePadding,
+                FP.zeitAnzeigeX + FP.zeitAnzeigeBreite,
+                FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
     }
 
     void verringereZeitAnzeige(){
-            breite = startbreite - (9*(SpielWerte.getZeitImLevelVerbracht()/1000));
-            zeitRect.set(FP.spielFlaeche.centerX(),
-                    FP.lanePixelHoehe * 14 + FP.lanePadding,
-                    FP.spielFlaeche.centerX() + breite,
-                    FP.lanePixelHoehe * 14 + FP.lanePadding + FP.lebensAnzeigeHöhe);
-
+            aktuelleBreite = FP.zeitAnzeigeBreite - (breiteProSekunde *(SpielWerte.getZeitImLevelVerbracht()/1000));
+            zeichenBereich.set(FP.zeitAnzeigeX,
+                    FP.zeitAnzeigeY + FP.lanePadding,
+                    FP.zeitAnzeigeX + aktuelleBreite,
+                    FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
     }
 
     void draw(Canvas canvas) {
-        canvas.drawRect(zeitRect, zeichenStift);
+        canvas.drawRect(zeichenBereich, zeichenStift);
     }
 }

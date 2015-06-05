@@ -34,7 +34,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private Hindernis baum01;
     private Hindernis baum02;
     private Hindernis baum03;
-    private Hindernis baum04;
+    Hindernis baum04;
     private Hindernis baum05;
     private Hindernis baum06;
     private Hindernis baum07;
@@ -67,7 +67,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         // wird automatisch beim erzeugen der Activity aufgerufen
 
         Log.d("GameActivity", "onCreate");
-        super.onCreate(savedInstanceState);  //TODO kann man hiermit das Game pausieren und wieder laden!?
+        super.onCreate(savedInstanceState);
 
         //surfaceView als Spieloberfläche, surfaceHolder ist ein abstraktes interface für die Oberflächennutzung
         setContentView(R.layout.activity_game);
@@ -105,7 +105,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         textStift.setColor(Farbe.text);
 
         toterFrosch = new ToterFrosch(Farbe.deadFrosch);
-        prinzessin = new Prinzessin(Farbe.prinzessin);
         lebensAnzeige = new LebensAnzeige();
         zeitAnzeige = new ZeitAnzeige();
 
@@ -192,7 +191,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
         //Frosch
         spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, this));
-        prinzessin.aufStart();
+        prinzessin = new Prinzessin(baum04, Farbe.prinzessin);
         SpielWerte.startLevel();
         mainThread.setRunning(true);
         mainThread.start();
@@ -302,8 +301,9 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         textStift.setTextSize(FP.smallTextSize);
         canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 15, textStift);
         canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
-        canvas.drawText(SpielWerte.levelZeit(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
-        canvas.drawText(SpielWerte.textAnzeige(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15, textStift);
+        canvas.drawText(SpielWerte.levelZeit(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 14 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText("Leben", FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(SpielWerte.textAnzeige(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 16, textStift);
         textStift.setTextSize(FP.largeTextSize);
         canvas.drawText(SpielWerte.punkte(), 10, FP.lanePixelHoehe * 14, textStift);
     }

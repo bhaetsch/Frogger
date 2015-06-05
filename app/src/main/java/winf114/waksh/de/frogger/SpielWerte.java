@@ -5,8 +5,9 @@ package winf114.waksh.de.frogger;
  */
 final class SpielWerte {
 
-    private static final int LEVEL_ZEIT_SEK = 45;
+    static final int LEVEL_ZEIT_SEK = 120;
     static final int LEBEN = 7;
+    static final int PRINZESSIN_ERSCHEIN_CHANCE = 20;
 
     private static int punkte;
     private static long levelStartZeitpunkt;
@@ -40,14 +41,14 @@ final class SpielWerte {
     }
 
     static String levelZeit(){
-        return "Zeit: " + (LEVEL_ZEIT_SEK - (zeitImLevelVerbracht / 1000));
+        return "Zeit " + (LEVEL_ZEIT_SEK - (zeitImLevelVerbracht / 1000));
     }
 
-    static void changePunkte(int differenz){
+    static void addScore(int differenz){
         punkte += differenz;
     }
 
-    static void resetPunkte(){
+    static void resetScore(){
         punkte = 0;
     }
 

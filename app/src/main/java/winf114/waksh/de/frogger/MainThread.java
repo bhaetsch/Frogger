@@ -4,8 +4,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.graphics.Canvas;
 
-import java.util.Date;
-
 /**
  * Created by bhaetsch on 25.05.2015.
  */
@@ -42,8 +40,8 @@ public class MainThread extends Thread {
                     gameActivity.zeitAnzeige.tick();
                     levelZuendeCheck();
                     todesAnzeigeCheck();
-                    prinzessinAnzeigeCheck();
-                    prinzessinCheck();
+                    gameActivity.prinzessin.erscheintDiePrinzessin();
+                    kolFroschMitPrinzessin();
                     zieleErreichtCheck();
                     alleObjekteBewegen();
                     kolHindernisMitRand();
@@ -71,6 +69,7 @@ public class MainThread extends Thread {
     private void levelZuendeCheck(){
 
         if (SpielWerte.levelZuende()){
+            SpielWerte.setTextAnzeige("Zu lahm!");
             gameActivity.frosch.stirbt();
         }
     }
@@ -84,18 +83,10 @@ public class MainThread extends Thread {
         }
     }
 
-    private void prinzessinAnzeigeCheck(){
+    private void kolFroschMitPrinzessin(){
 
-    }
-
-    private void prinzessinCheck(){
-
-        if (gameActivity.frosch.kollidiertMit(gameActivity.prinzessin.getZeichenBereich())) {
-            gameActivity.frosch.traegtPrinzessin = true;
-        }
-
-        if (gameActivity.frosch.traegtPrinzessin) {
-            gameActivity.prinzessin.versetzen(gameActivity.frosch.getZeichenBereich());
+        if (gameActivity.frosch.kollidiertMit(gameActivity.prinzessin.getZeichenBereich()) && gameActivity.prinzessin.aktiv) {
+            gameActivity.frosch.pickupPrincess();
         }
     }
 
@@ -103,7 +94,7 @@ public class MainThread extends Thread {
         // wenn 5 ziele gefüllt sind wird das spiel zurück gesetzt
 
         if (zieleErreicht == 5) {
-            SpielWerte.changePunkte(500);
+            SpielWerte.addScore(500);
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Ziel) {
                     ((Ziel) s).setBesetzt(false);
@@ -117,6 +108,7 @@ public class MainThread extends Thread {
         for (Spielobjekt s : gameActivity.spielobjekte) {
             s.move();
         }
+        gameActivity.prinzessin.move();
     }
 
     private void kolFroschMitRand(){
@@ -183,6 +175,7 @@ public class MainThread extends Thread {
                 }
             }
             if (!gameActivity.frosch.hitTree && !gameActivity.frosch.imZiel) {
+                SpielWerte.setTextAnzeige("Blub");
                 gameActivity.frosch.stirbt();
             }
         }
