@@ -5,6 +5,8 @@ package winf114.waksh.de.frogger;
  */
 class Ziel extends Spielobjekt {
 
+    //Ziele werden nicht geleert wenn man verliert
+
     private boolean besetzt;
 
     public Ziel(int x, int breite, int hoehe, int farbe) {

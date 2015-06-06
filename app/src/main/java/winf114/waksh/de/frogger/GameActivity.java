@@ -31,7 +31,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private Auto auto05;
     private Auto auto06;
     private Auto auto07;
-    private Baum baum01;
+    private KrokodilKopf krokodilKopf01;
+    private Baum krokodil01;
     private Baum baum02;
     Baum baum03;
     Baum baum04;
@@ -51,6 +52,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     private Ziel ziel03;
     private Ziel ziel04;
     private Ziel ziel05;
+    Blume blume;
     //</editor-fold>
 
     private ZeitMessung renderCycleMessung;
@@ -117,7 +119,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         int hindernisBreite = FP.objektPixelBreite * 3;
         int hindernisGeschw = 4;
         int lanePositionY = FP.lanePixelHoehe + FP.lanePadding;
-        spielobjekte.add(baum01 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(krokodil01 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.krokodil));
+        spielobjekte.add(krokodilKopf01 = new KrokodilKopf(krokodil01, Farbe.krokodilKopf));
         spielobjekte.add(baum08 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
         spielobjekte.add(baum09 = new Baum(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, 4, Farbe.baum));
 
@@ -198,6 +201,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         //Frosch
         spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, this));
         prinzessin = new Prinzessin(baum04, Farbe.prinzessin);
+        blume = new Blume(ziel01,ziel02,ziel03,ziel04,ziel05);
         SpielWerte.startLevel();
         mainThread.setRunning(true);
         mainThread.start();
@@ -301,6 +305,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
 
         //Toter Frosch wird nur zeitweise angezeigt
         prinzessin.draw(canvas);
+        blume.draw(canvas);
         toterFrosch.draw(canvas);
 
         //Punkteanzeige und 4 Textfelder(positioniert) als Kontrollanzeige

@@ -41,12 +41,15 @@ public class MainThread extends Thread {
                     levelZuendeCheck();
                     gameActivity.toterFrosch.aktualisieren();
                     gameActivity.prinzessin.erscheintDiePrinzessin();
+                    gameActivity.blume.erscheintDieBlume();
                     kolFroschMitPrinzessin();
                     zieleErreichtCheck();
                     alleObjekteBewegen();
                     kolFroschMitSchlange();
+                    kolFroschMitKrokodilKopf();
                     kolSchlangeMitRand();
                     kolHindernisMitRand();
+                    kolFroschMitBlume();
                     kolFroschMitZiel();
                     kolFroschMitBaum();
                     kolFroschMitAuto();
@@ -73,6 +76,12 @@ public class MainThread extends Thread {
         if (SpielWerte.levelZuende()){
             SpielWerte.setTextAnzeige("Zu lahm!");
             gameActivity.frosch.stirbt();
+        }
+    }
+
+    private void kolFroschMitBlume(){
+        if(gameActivity.frosch.kollidiertMit(gameActivity.blume.getZeichenBereich()) && gameActivity.blume.aktiv){
+            gameActivity.frosch.hatBlume = true;
         }
     }
 
@@ -144,6 +153,19 @@ public class MainThread extends Thread {
                 if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
                     SpielWerte.setTextAnzeige("SSSsssZZzzz");
                     gameActivity.frosch.stirbt();
+                }
+            }
+        }
+    }
+
+    private void kolFroschMitKrokodilKopf(){
+        if (gameActivity.frosch.imWasser) {
+            for (Spielobjekt s : gameActivity.spielobjekte) {
+                if (s instanceof KrokodilKopf) {
+                    if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
+                        SpielWerte.setTextAnzeige("Omnomnom");
+                        gameActivity.frosch.stirbt();
+                    }
                 }
             }
         }

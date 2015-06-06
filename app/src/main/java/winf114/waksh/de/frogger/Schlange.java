@@ -45,7 +45,7 @@ public class Schlange extends Hindernis {
             //this.setX(this.getX() + this.getGeschwindigkeit() + baum.getGeschwindigkeit());
             if (getZeichenBereich().centerX() >= baum.getZeichenBereich().right){
                 richtungWechseln();
-                this.setX(this.getX() - this.getGeschwindigkeit());
+                // this.setX(this.getX() - this.getGeschwindigkeit());
 
             }
             if (getZeichenBereich().centerX() <= baum.getZeichenBereich().left)

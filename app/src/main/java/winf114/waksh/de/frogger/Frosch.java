@@ -15,6 +15,7 @@ public class Frosch extends Spielobjekt {
     private final GameActivity gameActivity;
     boolean imWasser;
     boolean aufBaum;
+    boolean hatBlume;
     private boolean aufStartPosition;
 
     public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, GameActivity gameActivity) {
@@ -26,6 +27,7 @@ public class Frosch extends Spielobjekt {
         moved = false;
         aufBaum = false;
         imWasser = false;
+        hatBlume = false;
         aufStartPosition = true;
     }
 
@@ -77,6 +79,12 @@ public class Frosch extends Spielobjekt {
         // SpielWerte.addScore(SpielWerte.getZeitImLevelVerbracht()/1000);
         if(gameActivity.prinzessin.iscarried){
             SpielWerte.addScore(200);
+        }
+        if(hatBlume){
+            SpielWerte.addScore(200);
+            SpielWerte.setTextAnzeige("Blume gepflückt");
+            hatBlume = false;
+            gameActivity.blume.verschwindet();
         }
         else {
             SpielWerte.addScore(100);

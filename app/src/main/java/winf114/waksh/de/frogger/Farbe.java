@@ -24,6 +24,9 @@ final class Farbe {
     static int text = Color.parseColor("#ffffff");
     static int prinzessin = Color.parseColor("#673888");
     static int schlange = Color.parseColor("#ecb14b");
+    static int blume = Color.parseColor("#ff7373");
+    static int krokodil = Color.parseColor("#035c1c");
+    static int krokodilKopf = Color.parseColor("#023D12");
     static int transparent = Color.parseColor("#00000000");
 
 

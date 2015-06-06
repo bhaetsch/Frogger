@@ -27,7 +27,7 @@ public class Prinzessin extends Hindernis {
         if (iscarried == false){
             if (System.currentTimeMillis() > start + 1000 && !baum.kollidiertMit(FP.spielFlaeche)){
                 Random r = new Random();
-                int random = r.nextInt(100 - 1) + 1;
+                int random = r.nextInt(100) + 1;
                 if (random < SpielWerte.PRINZESSIN_ERSCHEINT_CHANCE){
                     erscheint();
                 }

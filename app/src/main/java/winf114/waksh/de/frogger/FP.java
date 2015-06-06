@@ -69,7 +69,7 @@ final class FP {
         lebensAnzeigeAbstand = lebensAnzeigeBreite + (lebensAnzeigeBreite/2);
 
         zeitAnzeigeX = spielFlaeche.centerX();
-        zeitAnzeigeY = lanePixelHoehe * 13 + (FP.objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100);
+        zeitAnzeigeY = lanePixelHoehe * 13 + (FP.objektPixelHoehe * LEBENSANZEIGE_GROESSE_PROZENT / 100);
         zeitAnzeigeBreite = (spielFlaeche.right / 2) * 80 / 100;
         zeitAnzeigeHöhe = objektPixelHoehe * LEBENSANZEIGE_GROESSE_PROZENT / 100;
 
