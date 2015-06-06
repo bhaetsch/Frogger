@@ -8,15 +8,21 @@ import android.graphics.Rect;
 
 class ToterFrosch extends Spielobjekt {
 
-    private int farbe;
+    private long todesZeitpunkt;
 
     public ToterFrosch(int farbe){
         super(0, 0, 0, 0, farbe);
-        this.farbe = farbe;
     }
 
-    void versetzen(Rect position){
-        getZeichenStift().setColor(farbe); //zeichnet die im Konstruktor übergebene Farbe
+    void aktualisieren(){
+        if (System.currentTimeMillis() > todesZeitpunkt + 1000){
+            verstecken();
+        }
+    }
+
+    void anzeigen(Rect position){
+        todesZeitpunkt = System.currentTimeMillis();
+        getZeichenStift().setColor(Farbe.deadFrosch); //zeichnet die im Konstruktor übergebene Farbe
         getZeichenBereich().set(position); //setzt den toten Frosch an die alte Frosch Position
     }
 

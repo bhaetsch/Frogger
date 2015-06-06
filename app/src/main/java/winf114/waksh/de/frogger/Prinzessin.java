@@ -1,6 +1,5 @@
 package winf114.waksh.de.frogger;
 
-import android.graphics.Rect;
 import java.util.Random;
 
 /**
@@ -11,9 +10,9 @@ public class Prinzessin extends Hindernis {
     private long start;
     boolean iscarried;
     boolean aktiv;
-    Hindernis baum;
+    Baum baum;
 
-    public Prinzessin(Hindernis baum, int farbe){
+    public Prinzessin(Baum baum, int farbe){
         super(  FP.erweiterteSpielFlaeche.right - FP.objektPixelBreite,
                 FP.lanePixelHoehe * 4 + FP.lanePadding,
                 FP.objektPixelBreite,
@@ -29,7 +28,7 @@ public class Prinzessin extends Hindernis {
             if (System.currentTimeMillis() > start + 1000 && !baum.kollidiertMit(FP.spielFlaeche)){
                 Random r = new Random();
                 int random = r.nextInt(100 - 1) + 1;
-                if (random < SpielWerte.PRINZESSIN_ERSCHEIN_CHANCE){
+                if (random < SpielWerte.PRINZESSIN_ERSCHEINT_CHANCE){
                     erscheint();
                 }
                 start = System.currentTimeMillis();

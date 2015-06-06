@@ -39,13 +39,16 @@ public class MainThread extends Thread {
                     SpielWerte.updateLevelZeit(System.currentTimeMillis());
                     gameActivity.zeitAnzeige.tick();
                     levelZuendeCheck();
-                    todesAnzeigeCheck();
+                    gameActivity.toterFrosch.aktualisieren();
                     gameActivity.prinzessin.erscheintDiePrinzessin();
                     kolFroschMitPrinzessin();
                     zieleErreichtCheck();
                     alleObjekteBewegen();
+                    kolFroschMitSchlange();
+                    kolSchlangeMitRand();
                     kolHindernisMitRand();
-                    kolFroschMitBaumOderZiel();
+                    kolFroschMitZiel();
+                    kolFroschMitBaum();
                     kolFroschMitAuto();
                     kolFroschMitRand();
                     gameCycleMessung.end();
@@ -67,19 +70,9 @@ public class MainThread extends Thread {
     }
 
     private void levelZuendeCheck(){
-
         if (SpielWerte.levelZuende()){
             SpielWerte.setTextAnzeige("Zu lahm!");
             gameActivity.frosch.stirbt();
-        }
-    }
-
-    private void todesAnzeigeCheck(){
-        //versteckt den toten Frosch und deaktiviert kurz Froschbewegung
-
-        if (System.currentTimeMillis() > gameActivity.frosch.todesZeitpunkt + 1000) {
-            gameActivity.toterFrosch.verstecken();
-            gameActivity.frosch.kuerzlichVerendet = false;
         }
     }
 
@@ -112,32 +105,54 @@ public class MainThread extends Thread {
     }
 
     private void kolFroschMitRand(){
-        // Kollision Frosch mit Rand ?
-
         if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
             SpielWerte.setTextAnzeige("Nicht abhauen!");
             gameActivity.frosch.stirbt();
         }
     }
 
-    private void kolHindernisMitRand(){
-        // Kol Spielobjekt mit Rand
+    private void kolSchlangeMitRand() {
 
+        for (Spielobjekt s : gameActivity.spielobjekte) {
+            if (s instanceof Schlange) {
+                if (!((Schlange) s).aufBaum){
+                    if (!s.kollidiertMit(FP.schlangenFlaeche)) {
+                        ((Schlange) s).richtungWechseln();
+                    }
+                }
+                else{
+                    //((Schlange) s).bewegungAufBaum();
+                }
+            }
+        }
+    }
+
+    private void kolHindernisMitRand(){
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Hindernis) {
                 if (!s.kollidiertMit(FP.erweiterteSpielFlaeche)) {
                     ((Hindernis) s).erscheintWieder();
                 }
             }
+
+        }
+    }
+
+    private void kolFroschMitSchlange(){
+        for (Spielobjekt s : gameActivity.spielobjekte) {
+            if (s instanceof Schlange) {
+                if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
+                    SpielWerte.setTextAnzeige("SSSsssZZzzz");
+                    gameActivity.frosch.stirbt();
+                }
+            }
         }
     }
 
     private void kolFroschMitAuto(){
-        // Kollision Frosch mit Auto ?
-
         if (!gameActivity.frosch.imWasser) {
             for (Spielobjekt s : gameActivity.spielobjekte) {
-                if (s instanceof Hindernis) {
+                if (s instanceof Auto) {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
                         SpielWerte.setTextAnzeige("Matsch!");
                         gameActivity.frosch.stirbt();
@@ -147,41 +162,45 @@ public class MainThread extends Thread {
         }
     }
 
-    private void kolFroschMitBaumOderZiel(){
-        //Kol Frosch mit Baum wasser
-
+    private void kolFroschMitZiel(){
         if (gameActivity.frosch.imWasser) {
-            gameActivity.frosch.hitTree = false;
-            gameActivity.frosch.setGeschwindigkeitHorizontal(FP.froschGeschwX);
             for (Spielobjekt s : gameActivity.spielobjekte) {
-                // mit Ziel
                 if (s instanceof Ziel) {
                     // unbesetzt
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && !((Ziel) s).isBesetzt()) {
                         zieleErreicht++;
                         ((Ziel) s).setBesetzt(true);
+                        SpielWerte.setTextAnzeige("Ziel erreicht");
                         gameActivity.frosch.erreichtZiel();
                     }
                     // besetzt
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && ((Ziel) s).isBesetzt()) {
+                        SpielWerte.setTextAnzeige("Ziel war besetzt");
                         gameActivity.frosch.stirbt();
                     }
                 }
-                if (s instanceof Hindernis) {
+            }
+        }
+    }
+
+    private void kolFroschMitBaum(){
+        if (gameActivity.frosch.imWasser) {
+            gameActivity.frosch.aufBaum = false;
+            gameActivity.frosch.setGeschwindigkeitHorizontal(FP.froschGeschwX);
+            for (Spielobjekt s : gameActivity.spielobjekte) {
+                if (s instanceof Baum) {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
-                        gameActivity.frosch.hitTree = true;
-                        gameActivity.frosch.setGeschwindigkeitHorizontal(((Hindernis) s).getGeschwindigkeit());
+                        gameActivity.frosch.aufBaum = true;
+                        gameActivity.frosch.setGeschwindigkeitHorizontal(((Baum) s).getGeschwindigkeit());
                     }
                 }
             }
-            if (!gameActivity.frosch.hitTree && !gameActivity.frosch.imZiel) {
+            if (!gameActivity.frosch.aufBaum) {
                 SpielWerte.setTextAnzeige("Blub");
                 gameActivity.frosch.stirbt();
             }
         }
-        gameActivity.frosch.imZiel = false;
     }
-
 }
 
 

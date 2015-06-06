@@ -35,6 +35,10 @@ final class FP {
     static int zeitAnzeigeY;
     static int zeitAnzeigeHöhe;
     static int zeitAnzeigeBreite;
+    static int schlangenBreite;
+    static int schlangenHoehe;
+    static int schlangenPadding;
+    static Rect schlangenFlaeche;
 
     static void erstelleSpielParameter(int spielFeldbreite, int spielFeldHoehe){
 
@@ -68,5 +72,11 @@ final class FP {
         zeitAnzeigeY = lanePixelHoehe * 13 + (FP.objektPixelBreite * LEBENSANZEIGE_GROESSE_PROZENT / 100);
         zeitAnzeigeBreite = (spielFlaeche.right / 2) * 80 / 100;
         zeitAnzeigeHöhe = objektPixelHoehe * LEBENSANZEIGE_GROESSE_PROZENT / 100;
+
+        schlangenBreite = objektPixelBreite * 2;
+        schlangenHoehe = objektPixelHoehe * 40 / 100;
+        schlangenPadding = (lanePixelHoehe - schlangenHoehe) / 2;
+        schlangenFlaeche = new Rect (spielFlaeche.left- schlangenBreite, 0, spielFlaeche.right + schlangenBreite, spielFlaeche.bottom);
+
     }
 }

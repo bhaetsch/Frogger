@@ -23,6 +23,8 @@ final class Farbe {
     static int zielBesetzt = Color.parseColor("#c4e86a");
     static int text = Color.parseColor("#ffffff");
     static int prinzessin = Color.parseColor("#673888");
+    static int schlange = Color.parseColor("#ecb14b");
     static int transparent = Color.parseColor("#00000000");
+
 
 }

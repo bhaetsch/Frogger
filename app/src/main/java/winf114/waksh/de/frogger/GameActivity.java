@@ -24,26 +24,28 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     ToterFrosch toterFrosch;
     Frosch frosch;
     Prinzessin prinzessin;
-    private Hindernis auto01;
-    private Hindernis auto02;
-    private Hindernis auto03;
-    private Hindernis auto04;
-    private Hindernis auto05;
-    private Hindernis auto06;
-    private Hindernis auto07;
-    private Hindernis baum01;
-    private Hindernis baum02;
-    private Hindernis baum03;
-    Hindernis baum04;
-    private Hindernis baum05;
-    private Hindernis baum06;
-    private Hindernis baum07;
-    private Hindernis baum08;
-    private Hindernis baum09;
-    private Hindernis baum10;
-    private Hindernis baum11;
-    private Hindernis baum12;
-    private Hindernis baum13;
+    private Auto auto01;
+    private Auto auto02;
+    private Auto auto03;
+    private Auto auto04;
+    private Auto auto05;
+    private Auto auto06;
+    private Auto auto07;
+    private Baum baum01;
+    private Baum baum02;
+    Baum baum03;
+    Baum baum04;
+    private Baum baum05;
+    private Baum baum06;
+    private Baum baum07;
+    private Baum baum08;
+    private Baum baum09;
+    private Baum baum10;
+    private Baum baum11;
+    private Baum baum12;
+    private Baum baum13;
+    private Schlange schlange01;
+    private Schlange schlange02;
     private Ziel ziel01;
     private Ziel ziel02;
     private Ziel ziel03;
@@ -115,70 +117,74 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         int hindernisBreite = FP.objektPixelBreite * 3;
         int hindernisGeschw = 4;
         int lanePositionY = FP.lanePixelHoehe + FP.lanePadding;
-        spielobjekte.add(baum01 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
-        spielobjekte.add(baum08 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
-        spielobjekte.add(baum09 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, 4, Farbe.baum));
+        spielobjekte.add(baum01 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum08 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum09 = new Baum(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, 4, Farbe.baum));
 
         //LANE 3
         hindernisBreite = FP.objektPixelBreite * 6;
         hindernisGeschw = -2;
         lanePositionY = FP.lanePixelHoehe * 2 + FP.lanePadding;
-        spielobjekte.add(baum02 = new Hindernis(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 3, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum02 = new Baum(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 3, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
 
         //LANE 4
-        hindernisBreite = FP.objektPixelBreite * 4;
-        hindernisGeschw = 3;
+        hindernisBreite = FP.objektPixelBreite * 6;
+        hindernisGeschw = 1;
         lanePositionY = FP.lanePixelHoehe * 3 + FP.lanePadding;
-        spielobjekte.add(baum03 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, 3, Farbe.baum));
-        spielobjekte.add(baum12 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 8, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
-        spielobjekte.add(baum13 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 16, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum03 = new Baum(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum12 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 8, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum13 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 16, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(schlange02 = new Schlange(FP.schlangenFlaeche.left, FP.lanePixelHoehe * 3 + FP.schlangenPadding, 2, baum03, Farbe.schlange));
 
         //LANE 5
         hindernisBreite = FP.objektPixelBreite * 5;
         hindernisGeschw = -2;
         lanePositionY = FP.lanePixelHoehe * 4 + FP.lanePadding;
-        spielobjekte.add(baum04 = new Hindernis(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
-        spielobjekte.add(baum10 = new Hindernis(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 10, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum04 = new Baum(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum10 = new Baum(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 10, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
 
         //LANE 6
         hindernisBreite = FP.objektPixelBreite * 3;
         hindernisGeschw = 2;
         lanePositionY = FP.lanePixelHoehe * 5 + FP.lanePadding;
-        spielobjekte.add(baum05 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
-        spielobjekte.add(baum06 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
-        spielobjekte.add(baum07 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum05 = new Baum(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum06 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 7, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+        spielobjekte.add(baum07 = new Baum(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 14, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.baum));
+
+        //LANE 7
+        spielobjekte.add(schlange01 = new Schlange(FP.schlangenFlaeche.left, FP.lanePixelHoehe * 6 + FP.schlangenPadding, 2, null, Farbe.schlange));
 
         //LANE 8
         hindernisBreite = FP.objektPixelBreite * 2;
         hindernisGeschw = 4;
         lanePositionY = FP.lanePixelHoehe * 7 + FP.lanePadding;
-        spielobjekte.add(auto01 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto01 = new Auto(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 9
         hindernisBreite = FP.objektPixelBreite * 4;
         hindernisGeschw = -2;
         lanePositionY = FP.lanePixelHoehe * 8 + FP.lanePadding;
-        spielobjekte.add(auto02 = new Hindernis(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto02 = new Auto(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 10
         hindernisBreite = FP.objektPixelBreite * 3;
         hindernisGeschw = 3;
         lanePositionY = FP.lanePixelHoehe * 9 + FP.lanePadding;
-        spielobjekte.add(auto03 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto03 = new Auto(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 11
         hindernisBreite = FP.objektPixelBreite * 2;
         hindernisGeschw = -5;
         lanePositionY = FP.lanePixelHoehe * 10 + FP.lanePadding;
-        spielobjekte.add(auto04 = new Hindernis(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
-        spielobjekte.add(auto07 = new Hindernis(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 6, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto04 = new Auto(FP.erweiterteSpielFlaeche.right, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto07 = new Auto(FP.erweiterteSpielFlaeche.right + FP.objektPixelBreite * 6, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
         //LANE 12
         hindernisBreite = FP.objektPixelBreite * 2;
         hindernisGeschw = 4;
         lanePositionY = FP.lanePixelHoehe * 11 + FP.lanePadding;
-        spielobjekte.add(auto05 = new Hindernis(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
-        spielobjekte.add(auto06 = new Hindernis(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 5, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto05 = new Auto(FP.erweiterteSpielFlaeche.left, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
+        spielobjekte.add(auto06 = new Auto(FP.erweiterteSpielFlaeche.left + FP.objektPixelBreite * 5, lanePositionY, hindernisBreite, FP.objektPixelHoehe, hindernisGeschw, Farbe.auto));
 
 
         //LANE 1 Ziele

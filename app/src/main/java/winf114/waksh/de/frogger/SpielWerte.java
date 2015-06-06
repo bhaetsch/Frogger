@@ -7,7 +7,7 @@ final class SpielWerte {
 
     static final int LEVEL_ZEIT_SEK = 120;
     static final int LEBEN = 7;
-    static final int PRINZESSIN_ERSCHEIN_CHANCE = 20;
+    static final int PRINZESSIN_ERSCHEINT_CHANCE = 20;
 
     private static int punkte;
     private static long levelStartZeitpunkt;
@@ -30,6 +30,7 @@ final class SpielWerte {
     }
 
     static int getZeitImLevelVerbracht(){
+        // TODO /1000 wegen redundanz
         return (int)zeitImLevelVerbracht;
     }
 
