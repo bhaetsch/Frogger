@@ -1,5 +1,9 @@
 package winf114.waksh.de.frogger;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.app.Activity;
@@ -10,14 +14,25 @@ import android.widget.Button;
 import android.graphics.Color;
 import android.util.Log;
 import android.graphics.Paint;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
+
 import java.util.ArrayList;
 
-public class GameActivity extends Activity implements SurfaceHolder.Callback {
+public class GameActivity extends Activity implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     //TODO memo to self: renderpausen: logcat:GC_FOR_ALLOC freed 7576K, 32% free 17140K/25000K, paused 81ms, total 90ms
     //TODO bei kollision mit dem rand wird der sterbende frosch ausserhalb des bildes angezeigt
 
-    //<editor-fold | die Spielobjekte und ihre Liste
+    SharedPreferences sharedPref;
+    boolean usePlayServices = false;
+    GoogleApiClient mGoogleApiClient;
+    private static int RC_SIGN_IN = 9001;
+    private boolean mResolvingConnectionFailure = false;
+    private boolean mAutoStartSignInFlow = true;
+
     ArrayList<Spielobjekt> spielobjekte;
     LebensAnzeige lebensAnzeige;
     ZeitAnzeige zeitAnzeige;
@@ -88,16 +103,106 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     }
 
     @Override
+    protected void onStart() {
+        Log.d("GameActivity", "onStart");
+        super.onStart();
+
+        sharedPref = this.getSharedPreferences("winf114.waksh.de.Frogger.Settings", Context.MODE_PRIVATE);
+        usePlayServices = sharedPref.getBoolean(getString(R.string.str_opt_playServices), usePlayServices);
+
+        if (usePlayServices) {
+            if (mGoogleApiClient == null) {
+                // Create the Google Api Client with access to the Play Games services
+                mGoogleApiClient = new GoogleApiClient.Builder(this)
+                        .addConnectionCallbacks(this)
+                        .addOnConnectionFailedListener(this)
+                        .addApi(Games.API).addScope(Games.SCOPE_GAMES)
+                        .setViewForPopups(findViewById(android.R.id.content))
+                        .build();
+            }
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("GameActivity", "onStop");
+        super.onStop();
+
+        if (usePlayServices) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Log.d("GameActivity", "onConnected");
+        // The player is signed in.
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d("GameActivity", "onConnectionSuspended");
+        if (usePlayServices) {
+            // Attempt to reconnect
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d("GameActivity", "onConnectionFailed");
+        if (mResolvingConnectionFailure) {
+            // already resolving
+            return;
+        }
+
+        // if the sign-in button was clicked or if auto sign-in is enabled,
+        // launch the sign-in flow
+        if (usePlayServices || mAutoStartSignInFlow) {
+            mAutoStartSignInFlow = false;
+            mResolvingConnectionFailure = true;
+
+            // Attempt to resolve the connection failure
+            if (connectionResult.hasResolution()) {
+                try {
+                    connectionResult.startResolutionForResult(this, RC_SIGN_IN);
+                } catch (IntentSender.SendIntentException e) {
+                    // The intent was canceled before it was sent.  Return to the default
+                    // state and attempt to connect to get an updated ConnectionResult.
+                    mGoogleApiClient.connect();
+                }
+            } else {
+                Log.d("GameActivity", "There was an issue with sign-in, please try again later.");
+            }
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == RC_SIGN_IN) {
+            mResolvingConnectionFailure = false;
+            if (usePlayServices && resultCode == RESULT_OK) {
+                mGoogleApiClient.connect();
+            } else {
+                // Bring up an error dialog to alert the user that sign-in failed
+                usePlayServices = false;
+                Log.d("GameActivity", "Unable to sign in.");
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean(getString(R.string.str_opt_playServices), false);
+                editor.commit();
+            }
+        }
+    }
+
+    @Override
     public void surfaceCreated(SurfaceHolder holder) {
         //wird automatisch aufgerufen sobald das SurfaceView erstellt wird
-
         Log.d("GameActivity", "surfaceCreated");
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         //wird automatisch aufgerufen sobald das SurfaceView auf Größe gezogen wird
-
         Log.d("GameActivity", "surfaceChanged");
 
         FP.erstelleSpielParameter(width, height);
@@ -199,9 +304,9 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         //</editor-fold>
 
         //Frosch
-        spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, this));
+        spielobjekte.add(frosch = new Frosch(FP.startPositionX, FP.startPositionY, FP.objektPixelBreite, FP.objektPixelHoehe, FP.froschGeschwY, FP.froschGeschwX, Farbe.frosch, usePlayServices, this));
         prinzessin = new Prinzessin(baum04, Farbe.prinzessin);
-        blume = new Blume(ziel01,ziel02,ziel03,ziel04,ziel05);
+        blume = new Blume(ziel01, ziel02, ziel03, ziel04, ziel05);
         SpielWerte.startLevel();
         mainThread.setRunning(true);
         mainThread.start();
@@ -245,7 +350,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    private void programmiereKnöpfe(){
+    private void programmiereKnöpfe() {
         //programmiert die Knöpfe, die den Frosch steuern
 
         Button linksButton = (Button) findViewById(R.id.links);

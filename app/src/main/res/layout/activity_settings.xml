@@ -9,19 +9,18 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="winf114.waksh.de.frogger.HighscoreActivity">
+    tools:context="winf114.waksh.de.frogger.SettingsActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/str_head_highscore"
+        android:text="@string/str_head_settings"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <ListView
-        android:id="@+id/listView"
+    <CheckBox
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </ListView>
-
+        android:text="@string/str_opt_playServices"
+        android:id="@+id/checkBox" />
 </LinearLayout>

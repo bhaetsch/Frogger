@@ -1,5 +1,7 @@
 package winf114.waksh.de.frogger;
 
+import com.google.android.gms.games.Games;
+
 import java.util.Date;
 
 /**
@@ -18,10 +20,12 @@ public class Frosch extends Spielobjekt {
     boolean hatBlume;
     private boolean aufStartPosition;
 
-    public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, GameActivity gameActivity) {
+    public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, boolean usePlayServices, GameActivity gameActivity) {
         super(x, y, breite, hoehe, farbe);
         this.gameActivity = gameActivity;
-        this.highscore = new Highscore(gameActivity);
+        if (!usePlayServices) {
+            this.highscore = new Highscore(gameActivity);
+        }
         this.geschwindigkeitHorizontal = geschwindigkeitHorizontal;
         this.geschwindigkeitVertikal = geschwindigkeitVertikal;
         moved = false;
@@ -77,16 +81,15 @@ public class Frosch extends Spielobjekt {
 
     public void erreichtZiel() {
         // SpielWerte.addScore(SpielWerte.getZeitImLevelVerbracht()/1000);
-        if(gameActivity.prinzessin.iscarried){
+        if (gameActivity.prinzessin.iscarried) {
             SpielWerte.addScore(200);
         }
-        if(hatBlume){
+        if (hatBlume) {
             SpielWerte.addScore(200);
             SpielWerte.setTextAnzeige("Blume gepflückt");
             hatBlume = false;
             gameActivity.blume.verschwindet();
-        }
-        else {
+        } else {
             SpielWerte.addScore(100);
         }
         resetFrosch();
@@ -95,9 +98,16 @@ public class Frosch extends Spielobjekt {
     public void stirbt() {
         gameActivity.toterFrosch.anzeigen(getZeichenBereich());
         gameActivity.lebensAnzeige.lebenVerlieren();
-        if(gameActivity.lebensAnzeige.keineLebenMehr()){
+        if (gameActivity.lebensAnzeige.keineLebenMehr()) {
             resetZiele();
-            highscore.startCompareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
+            if (gameActivity.usePlayServices && gameActivity.mGoogleApiClient != null && gameActivity.mGoogleApiClient.isConnected()) {
+                Games.Leaderboards.submitScore(gameActivity.mGoogleApiClient, "CgkI2-engsYVEAIQAQ", SpielWerte.getPunkte());
+            } else {
+                if (highscore == null) {
+                    this.highscore = new Highscore(gameActivity);
+                }
+                highscore.startCompareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
+            }
             SpielWerte.resetScore();
         }
         resetFrosch();
@@ -129,22 +139,22 @@ public class Frosch extends Spielobjekt {
         this.r = r;
     }
 
-    public void resetZiele(){
+    public void resetZiele() {
 
-        for (Spielobjekt s : gameActivity.spielobjekte){
-            if (s instanceof Ziel){
+        for (Spielobjekt s : gameActivity.spielobjekte) {
+            if (s instanceof Ziel) {
                 ((Ziel) s).setBesetzt(false);
             }
         }
     }
 
-    void releasePrinzess(){
+    void releasePrinzess() {
         gameActivity.prinzessin.iscarried = false;
         gameActivity.prinzessin.verschwindet();
         getZeichenStift().setColor(Farbe.frosch);
     }
 
-    void pickupPrincess(){
+    void pickupPrincess() {
         gameActivity.prinzessin.iscarried = true;
         SpielWerte.setTextAnzeige("Prinzessin eingesammelt");
         getZeichenStift().setColor(Farbe.prinzessin);
