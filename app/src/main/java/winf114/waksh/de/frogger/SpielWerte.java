@@ -32,19 +32,18 @@ final class SpielWerte {
     }
 
     static int getZeitImLevelVerbracht() {
-        // TODO /1000 wegen redundanz
-        return (int) zeitImLevelVerbracht;
+        return (int) (zeitImLevelVerbracht / 1000);
     }
 
     static boolean levelZuende() {
-        if (zeitImLevelVerbracht > (SpielWerte.LEVEL_ZEIT_SEK * 1000)) {
+        if (getZeitImLevelVerbracht() > SpielWerte.LEVEL_ZEIT_SEK) {
             return true;
         }
         return false;
     }
 
     static String levelZeit() {
-        return "Zeit " + (LEVEL_ZEIT_SEK - (zeitImLevelVerbracht / 1000));
+        return "Zeit " + (LEVEL_ZEIT_SEK - getZeitImLevelVerbracht());
     }
 
     static void addScore(int differenz) {
