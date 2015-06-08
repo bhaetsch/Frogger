@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.gesture.GestureOverlayView;
 import android.graphics.Canvas;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,10 +24,12 @@ import com.google.android.gms.games.Games;
 
 import java.util.ArrayList;
 
-public class GameActivity extends Activity implements SurfaceHolder.Callback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GameActivity extends Activity implements SurfaceHolder.Callback, GestureDetector.OnGestureListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     //TODO memo to self: renderpausen: logcat:GC_FOR_ALLOC freed 7576K, 32% free 17140K/25000K, paused 81ms, total 90ms
     //TODO bei kollision mit dem rand wird der sterbende frosch ausserhalb des bildes angezeigt
+
+    private GestureDetector gestureDetector;
 
     SharedPreferences sharedPref;
     boolean usePlayServices = false;
@@ -94,6 +99,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Go
         surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
+
+        gestureDetector = new GestureDetector(this, this);
 
         renderCycleMessung = new ZeitMessung();
 
@@ -348,6 +355,62 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Go
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+        if (event1.getX() < event2.getX() && ((event1.getY() > event2.getY() && event1.getY() - event2.getY() < event2.getX() - event1.getX()) || (event1.getY() < event2.getY() && event2.getY() - event1.getY() < event2.getX() - event1.getX()))) {
+            frosch.setMoved();
+            frosch.setRichtung(richtung.rechts);
+            return true;
+        }
+        if (event1.getX() > event2.getX() && ((event1.getY() > event2.getY() && event1.getY() - event2.getY() < event1.getX() - event2.getX()) || (event1.getY() < event2.getY() && event2.getY() - event1.getY() < event1.getX() - event2.getX()))) {
+            frosch.setMoved();
+            frosch.setRichtung(richtung.links);
+            return true;
+        }
+        if (event1.getY() < event2.getY()) {
+            frosch.setMoved();
+            frosch.setRichtung(richtung.zurueck);
+            return true;
+        }
+        if (event1.getY() > event2.getY()) {
+            frosch.setMoved();
+            frosch.setRichtung(richtung.vor);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent event) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent event) {
+
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent event) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent event) {
+        return false;
     }
 
     private void programmiereKnöpfe() {
