@@ -72,31 +72,32 @@ public class MainThread extends Thread {
         this.running = running;
     }
 
-    private void levelZuendeCheck(){
-        if (SpielWerte.levelZuende()){
+    private void levelZuendeCheck() {
+        if (SpielWerte.levelZuende()) {
             SpielWerte.setTextAnzeige("Zu lahm!");
             gameActivity.frosch.stirbt();
         }
     }
 
-    private void kolFroschMitBlume(){
-        if(gameActivity.frosch.kollidiertMit(gameActivity.blume.getZeichenBereich()) && gameActivity.blume.aktiv){
+    private void kolFroschMitBlume() {
+        if (gameActivity.frosch.kollidiertMit(gameActivity.blume.getZeichenBereich()) && gameActivity.blume.aktiv) {
             gameActivity.frosch.hatBlume = true;
         }
     }
 
-    private void kolFroschMitPrinzessin(){
+    private void kolFroschMitPrinzessin() {
 
         if (gameActivity.frosch.kollidiertMit(gameActivity.prinzessin.getZeichenBereich()) && gameActivity.prinzessin.aktiv) {
             gameActivity.frosch.pickupPrincess();
         }
     }
 
-    private void zieleErreichtCheck(){
+    private void zieleErreichtCheck() {
         // wenn 5 ziele gefüllt sind wird das spiel zurück gesetzt
 
         if (zieleErreicht == 5) {
-            SpielWerte.addScore(500);
+            SpielWerte.addScore(500 * SpielWerte.getLevelMultiplikator());
+            SpielWerte.levelUp();
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Ziel) {
                     ((Ziel) s).setBesetzt(false);
@@ -106,14 +107,14 @@ public class MainThread extends Thread {
         }
     }
 
-    private void alleObjekteBewegen(){
+    private void alleObjekteBewegen() {
         for (Spielobjekt s : gameActivity.spielobjekte) {
             s.move();
         }
         gameActivity.prinzessin.move();
     }
 
-    private void kolFroschMitRand(){
+    private void kolFroschMitRand() {
         if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
             SpielWerte.setTextAnzeige("Nicht abhauen!");
             gameActivity.frosch.stirbt();
@@ -124,19 +125,18 @@ public class MainThread extends Thread {
 
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Schlange) {
-                if (!((Schlange) s).aufBaum){
+                if (!((Schlange) s).aufBaum) {
                     if (!s.kollidiertMit(FP.schlangenFlaeche)) {
                         ((Schlange) s).richtungWechseln();
                     }
-                }
-                else{
+                } else {
                     //((Schlange) s).bewegungAufBaum();
                 }
             }
         }
     }
 
-    private void kolHindernisMitRand(){
+    private void kolHindernisMitRand() {
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Hindernis) {
                 if (!s.kollidiertMit(FP.erweiterteSpielFlaeche)) {
@@ -147,7 +147,7 @@ public class MainThread extends Thread {
         }
     }
 
-    private void kolFroschMitSchlange(){
+    private void kolFroschMitSchlange() {
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Schlange) {
                 if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
@@ -158,7 +158,7 @@ public class MainThread extends Thread {
         }
     }
 
-    private void kolFroschMitKrokodilKopf(){
+    private void kolFroschMitKrokodilKopf() {
         if (gameActivity.frosch.imWasser) {
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof KrokodilKopf) {
@@ -171,7 +171,7 @@ public class MainThread extends Thread {
         }
     }
 
-    private void kolFroschMitAuto(){
+    private void kolFroschMitAuto() {
         if (!gameActivity.frosch.imWasser) {
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Auto) {
@@ -184,7 +184,7 @@ public class MainThread extends Thread {
         }
     }
 
-    private void kolFroschMitZiel(){
+    private void kolFroschMitZiel() {
         if (gameActivity.frosch.imWasser) {
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Ziel) {
@@ -205,7 +205,7 @@ public class MainThread extends Thread {
         }
     }
 
-    private void kolFroschMitBaum(){
+    private void kolFroschMitBaum() {
         if (gameActivity.frosch.imWasser) {
             gameActivity.frosch.aufBaum = false;
             gameActivity.frosch.setGeschwindigkeitHorizontal(FP.froschGeschwX);

@@ -54,7 +54,7 @@ public class Frosch extends Spielobjekt {
                     imWasser = true;
                 }
                 aufStartPosition = false;
-                SpielWerte.addScore(10);
+                SpielWerte.addScore(10 * SpielWerte.getLevelMultiplikator());
                 break;
             case zurueck:
                 if (!aufStartPosition) {
@@ -82,15 +82,15 @@ public class Frosch extends Spielobjekt {
     public void erreichtZiel() {
         // SpielWerte.addScore(SpielWerte.getZeitImLevelVerbracht()/1000);
         if (gameActivity.prinzessin.iscarried) {
-            SpielWerte.addScore(200);
+            SpielWerte.addScore(200 * SpielWerte.getLevelMultiplikator());
         }
         if (hatBlume) {
-            SpielWerte.addScore(200);
+            SpielWerte.addScore(200 * SpielWerte.getLevelMultiplikator());
             SpielWerte.setTextAnzeige("Blume gepflückt");
             hatBlume = false;
             gameActivity.blume.verschwindet();
         } else {
-            SpielWerte.addScore(100);
+            SpielWerte.addScore(100 * SpielWerte.getLevelMultiplikator());
         }
         resetFrosch();
     }
@@ -111,7 +111,6 @@ public class Frosch extends Spielobjekt {
             SpielWerte.resetScore();
         }
         resetFrosch();
-
     }
 
     private void resetFrosch() {
@@ -140,7 +139,6 @@ public class Frosch extends Spielobjekt {
     }
 
     public void resetZiele() {
-
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Ziel) {
                 ((Ziel) s).setBesetzt(false);
