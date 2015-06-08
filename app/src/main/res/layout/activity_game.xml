@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
+        <!--
         <GridLayout
             android:id="@+id/fullscreen_content_controls"
             style="?metaButtonBarStyle"
@@ -60,5 +61,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rechts_button_text" />
         </GridLayout>
+        -->
     </FrameLayout>
 </FrameLayout>

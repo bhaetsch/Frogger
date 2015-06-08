@@ -106,7 +106,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
 
         //die Knöpfe müssen nach dem Thread erstellt werden!
         mainThread = new MainThread(surfaceHolder, this);
-        programmiereKnöpfe();
     }
 
     @Override
@@ -411,42 +410,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
     @Override
     public boolean onSingleTapUp(MotionEvent event) {
         return false;
-    }
-
-    private void programmiereKnöpfe() {
-        //programmiert die Knöpfe, die den Frosch steuern
-
-        Button linksButton = (Button) findViewById(R.id.links);
-        linksButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                frosch.setMoved();
-                frosch.setRichtung(richtung.links);
-            }
-        });
-
-        Button rechtsButton = (Button) findViewById(R.id.rechts);
-        rechtsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                frosch.setMoved();
-                frosch.setRichtung(richtung.rechts);
-            }
-        });
-
-        Button untenButton = (Button) findViewById(R.id.unten);
-        untenButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                frosch.setMoved();
-                frosch.setRichtung(richtung.zurueck);
-            }
-        });
-
-        Button obenButton = (Button) findViewById(R.id.oben);
-        obenButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                frosch.setMoved();
-                frosch.setRichtung(richtung.vor);
-            }
-        });
     }
 
     protected void onDraw(Canvas canvas) {
