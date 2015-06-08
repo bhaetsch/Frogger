@@ -10,7 +10,7 @@ import android.graphics.Rect;
 
 final class FP {
 
-    private static final int LANE_HOEHE_PROZENT = 5;        //Höhe einer "Lane" im Spiel in % des Screens
+    private static final int LANE_HOEHE_PROZENT = 6;        //Höhe einer "Lane" im Spiel in % des Screens
     private static final int OBJEKT_HOEHE_PROZENT = 80;     //Höhe des Objekts in % der Lane Hoehe
     private static final int LEBENSANZEIGE_GROESSE_PROZENT = 60;
 
