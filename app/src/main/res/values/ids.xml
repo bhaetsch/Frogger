@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- ID der App im Play Store -->
     <string name="app_id">740349834203</string>
 
     <!-- ID des Leaderboards (Highscore) -->
     <string name="leaderboard_highscore">CgkI2-engsYVEAIQAQ</string>
+
 </resources>

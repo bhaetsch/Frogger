@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import android.content.Context;
@@ -27,22 +26,21 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("MainActivity", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void onStart() {
-        Log.d("MainActivity", "onStart");
         super.onStart();
 
+        /* Prüft, ob Google Play Services für die Highscores verwendet werden sollen */
         sharedPref = this.getSharedPreferences("winf114.waksh.de.Frogger.Settings", Context.MODE_PRIVATE);
         usePlayServices = sharedPref.getBoolean(getString(R.string.str_opt_playServices), usePlayServices);
 
+        /* Versucht ggf. eine Verbindung zu den Google Play Services aufzubauen */
         if (usePlayServices) {
             if (mGoogleApiClient == null) {
-                // Create the Google Api Client with access to the Play Games services
                 mGoogleApiClient = new GoogleApiClient.Builder(this)
                         .addConnectionCallbacks(this)
                         .addOnConnectionFailedListener(this)
@@ -56,20 +54,19 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     protected void onResume() {
-        Log.d("MainActivity", "onResume");
         super.onResume();
 
+        /* Liest den Highscore aus dem App-Speicher ein, falls die Google Play Services nicht verwendet werden sollen */
         if (!usePlayServices) {
-            /* Liest den Highscore aus dem App-Speicher ein */
             highscore = new Highscore(this);
         }
     }
 
     @Override
     protected void onStop() {
-        Log.d("MainActivity", "onStop");
         super.onStop();
 
+        /* Beendet ggf. die Verbindung zu den Google Play Services */
         if (usePlayServices) {
             mGoogleApiClient.disconnect();
         }
@@ -77,42 +74,32 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Log.d("MainActivity", "onConnected");
-        // The player is signed in. Hide the sign-in button and allow the
-        // player to proceed.
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("MainActivity", "onConnectionSuspended");
-
+        /* Baut ggf. erneut eine Verbindung zu den Google Play Services auf */
         if (usePlayServices) {
-            // Attempt to reconnect
             mGoogleApiClient.connect();
         }
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d("MainActivity", "onConnectionFailed");
+        /* Wird der Verbindungsfehler schon bearbeitet? */
         if (mResolvingConnectionFailure) {
-            // already resolving
             return;
         }
 
-        // if the sign-in button was clicked or if auto sign-in is enabled,
-        // launch the sign-in flow
+        /* Versuch den Verbindungsfehler zu beheben */
         if (usePlayServices || mAutoStartSignInFlow) {
             mAutoStartSignInFlow = false;
             mResolvingConnectionFailure = true;
 
-            // Attempt to resolve the connection failure
             if (connectionResult.hasResolution()) {
                 try {
                     connectionResult.startResolutionForResult(this, RC_SIGN_IN);
                 } catch (IntentSender.SendIntentException e) {
-                    // The intent was canceled before it was sent.  Return to the default
-                    // state and attempt to connect to get an updated ConnectionResult.
                     mGoogleApiClient.connect();
                 }
             } else {
@@ -121,13 +108,15 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         }
     }
 
+    /* Wird implizit durch connectionResult.startResolutionForResult aufgerufen, sobald ein Result zurückgegeben wird  */
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == RC_SIGN_IN) {
             mResolvingConnectionFailure = false;
             if (usePlayServices && resultCode == RESULT_OK) {
+                /* erneuter Verbindungsversuch */
                 mGoogleApiClient.connect();
             } else {
-                // Bring up an error dialog to alert the user that sign-in failed.
+                /* Fallback auf lokale Highscores */
                 highscore = new Highscore(this);
                 usePlayServices = false;
                 show_toast("Unable to sign in, using local Highscores!");
@@ -170,20 +159,20 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         }
     }
 
-    /* Wird aufgerufen, wenn der Settings-Button gedrückt wird und zeigt einen Toast */
+    /* Wird aufgerufen, wenn der Settings-Button gedrückt wird und startet die SettingsActivity */
     public void onclick_settings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 
-    /* Wird aufgerufen, wenn der Credits-Button gedrückt wird und zeigt einen Tost */
+    /* Wird aufgerufen, wenn der Credits-Button gedrückt wird und startet die CreditsActivity */
     public void onclick_credits(View view) {
-        show_toast("Credits");
+        Intent intent = new Intent(this, CreditsActivity.class);
+        startActivity(intent);
     }
 
     /* Wird aufgerufen, wenn der Exit-Button gedrückt wird und beendet die App */
     public void onclick_exit(View view) {
-        show_toast("beende Frogger");
         this.finish();
     }
 }

@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Frogger</string>
+
+    <string name="app_name">WAKker</string>
 
     <!-- Strings for activity_main -->
     <string name="str_btn_play">Play Game</string>
@@ -19,8 +20,13 @@
     <string name="title_activity_highscore">HighscoreActivity</string>
     <string name="str_head_highscore">Highscore</string>
 
-    <!-- Strings for activity_setting -->
+    <!-- Strings for activity_settings -->
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="str_head_settings">Settings</string>
     <string name="str_opt_playServices">Google Play Games für den Highscore benutzen</string>
+
+    <!-- Strings for activity_credits -->
+    <string name="title_activity_credits">CreditsActivity</string>
+    <string name="str_head_credits">Credits</string>
+
 </resources>
