@@ -96,7 +96,7 @@ public class MainThread extends Thread {
         // wenn 5 ziele gefüllt sind wird das spiel zurück gesetzt
 
         if (zieleErreicht == 5) {
-            SpielWerte.addScore(500 * SpielWerte.getLevelMultiplikator());
+            SpielWerte.addScore(500);
             SpielWerte.levelUp();
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Ziel) {

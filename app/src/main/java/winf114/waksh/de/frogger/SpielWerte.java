@@ -1,5 +1,7 @@
 package winf114.waksh.de.frogger;
 
+import android.util.Log;
+
 /**
  * Created by Matzef on 03.06.2015.
  */
@@ -47,7 +49,7 @@ final class SpielWerte {
     }
 
     static void addScore(int differenz) {
-        punkte += differenz;
+        punkte += differenz * getLevelMultiplikator();
     }
 
     static void resetScore() {
@@ -67,8 +69,8 @@ final class SpielWerte {
         level++;
     }
 
-    static int getLevelMultiplikator() {
-        return 1 + level / 10;
+    static float getLevelMultiplikator() {
+        return 1 + (float)level / 10;
     }
 
     static int getPunkte() {

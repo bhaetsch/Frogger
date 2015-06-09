@@ -156,6 +156,11 @@ public class Highscore {
         }
     }
 
+    /* Gibt den Highscore als HighscoreEintrag-Liste zurück */
+    public ArrayList<HighscoreEintrag> getHighscore() {
+        return highscore;
+    }
+
     /* Gibt den Highscore als String-Liste zurück */
     public ArrayList<String> getHighscoreString() {
         return highscoreString;

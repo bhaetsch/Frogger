@@ -29,4 +29,8 @@ public class HighscoreEintrag implements Serializable, Comparable<HighscoreEintr
     public String toString() {
         return datum + "       ->       " + score;
     }
+
+    public int getScore() {
+        return score;
+    }
 }

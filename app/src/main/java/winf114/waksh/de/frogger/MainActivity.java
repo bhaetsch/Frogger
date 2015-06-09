@@ -155,7 +155,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     /* Wird aufgerufen, wenn der Highscore-Button gedrückt wird und startet die HighscoreActivity */
     public void onclick_highscore(View view) {
         if (usePlayServices && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, "CgkI2-engsYVEAIQAQ"), 0);
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, FP.HIGHSCORE_ID), 0);
         } else {
             while (highscore.getHighscoreString() == null) {  // Wartet, bis die String-Liste erstellt ist
                 try {
