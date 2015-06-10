@@ -8,12 +8,6 @@ import android.graphics.Rect;
  * da die Felder fast nur als Parameter verwendet werden ist der Klassenname so kurz
  */
 final class FP {
-    /* ID des Leaderboards (Google Play Services) */
-    static final String HIGHSCORE_ID = "CgkI2-engsYVEAIQAQ";
-
-    /* Name im Dateisystem für den lokalen Highscore */
-    static final String HIGHSCORE_FILENAME = "frogger_highscore";
-
     /* Konstanten zur Berechnug der Dimensionen abhängig von der Bildschirmgröße */
     private static final int LANE_HOEHE_PROZENT = 6;
     private static final int OBJEKT_HOEHE_PROZENT = 80;

@@ -17,11 +17,12 @@
     <ImageView
         android:id="@+id/wakker_logo"
         android:layout_width="wrap_content"
-        android:layout_height="300px"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10px"
-        android:layout_marginTop="10px"
-        android:src="@drawable/wakker_trans" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/wakker_trans"
+        android:contentDescription="@string/str_logo_alt" />
 
     <Button
         android:id="@+id/btn_play"

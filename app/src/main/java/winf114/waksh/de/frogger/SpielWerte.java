@@ -44,7 +44,7 @@ final class SpielWerte {
     }
 
     static String levelZeit() {
-        return "Zeit " + (LEVEL_ZEIT_SEK - getZeitImLevelVerbracht());
+        return Integer.toString(LEVEL_ZEIT_SEK - getZeitImLevelVerbracht());
     }
 
     static void addScore(int differenz) {
@@ -57,11 +57,11 @@ final class SpielWerte {
     }
 
     static String punkte() {
-        return "Punkte: " + punkte;
+        return Integer.toString(punkte);
     }
 
     static String level() {
-        return "Level: " + level;
+        return Integer.toString(level);
     }
 
     static void levelUp() {

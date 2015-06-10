@@ -36,7 +36,7 @@ public class Highscore {
     /* Liest den Highscore als HighscoreEintrag-Liste aus dem App-Speicher */
     public synchronized void readHighscore() {
         try {
-            FileInputStream fis = ctx.openFileInput(FP.HIGHSCORE_FILENAME);
+            FileInputStream fis = ctx.openFileInput(ctx.getString(R.string.highscore));
             ObjectInputStream ois = new ObjectInputStream(fis);
             highscore = (ArrayList<HighscoreEintrag>) ois.readObject();
             ois.close();
@@ -65,7 +65,7 @@ public class Highscore {
     public synchronized void readHighscoreString() {
         ArrayList<String> toReturn = null;
         try {
-            FileInputStream fis = ctx.openFileInput(FP.HIGHSCORE_FILENAME);
+            FileInputStream fis = ctx.openFileInput(ctx.getString(R.string.highscore));
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<HighscoreEintrag> temp = (ArrayList<HighscoreEintrag>) ois.readObject();
             highscoreString = mapHighscoreEintragToStringCollection(temp);
@@ -102,7 +102,7 @@ public class Highscore {
     /* Schreibt den Highscore in den App-Speicher */
     public void writeHighscore(ArrayList<HighscoreEintrag> highscore) {
         try {
-            FileOutputStream fos = ctx.openFileOutput(FP.HIGHSCORE_FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = ctx.openFileOutput(ctx.getString(R.string.highscore), Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(highscore);
             oos.flush();

@@ -17,7 +17,7 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.activity_settings);
 
         /* öffnet einen Link auf die SharedPreferences im App-Speicher und ruft den gespeicherten Wert für "usePlayServices" ab */
-        sharedPref = this.getSharedPreferences("winf114.waksh.de.Frogger.Settings", Context.MODE_PRIVATE);
+        sharedPref = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         usePlayServices = sharedPref.getBoolean(getString(R.string.str_opt_playServices), usePlayServices);
 
         /* setzt die CheckBox auf den abgerufenen Wert */

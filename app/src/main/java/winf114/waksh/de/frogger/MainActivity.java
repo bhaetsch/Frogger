@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         super.onStart();
 
         /* Prüft, ob Google Play Services für die Highscores verwendet werden sollen */
-        sharedPref = this.getSharedPreferences("winf114.waksh.de.Frogger.Settings", Context.MODE_PRIVATE);
+        sharedPref = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         usePlayServices = sharedPref.getBoolean(getString(R.string.str_opt_playServices), usePlayServices);
 
         /* Versucht ggf. eine Verbindung zu den Google Play Services aufzubauen */
@@ -101,7 +101,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     mGoogleApiClient.connect();
                 }
             } else {
-                show_toast("There was an issue with sign-in, please try again later.");
+                show_toast(getString(R.string.str_main_tryagain));
             }
         }
     }
@@ -117,7 +117,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 /* Fallback auf lokale Highscores */
                 highscore = new Highscore(this);
                 usePlayServices = false;
-                show_toast("Unable to sign in, using local Highscores!");
+                show_toast(getString(R.string.str_main_local));
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean(getString(R.string.str_opt_playServices), false);
                 editor.commit();
@@ -143,7 +143,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     public void onclick_highscore(View view) {
         if (usePlayServices && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             /* ruft den Highscore von den Google Play Services ab, falls dieser genutzt werden soll */
-            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, FP.HIGHSCORE_ID), 0);
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, getString(R.string.leaderboard_highscore)), 0);
         } else {
             /* lädt den lokalen Highscore aus dem App-Speicher, falls dieser genutzt werden soll */
             while (highscore.getHighscoreString() == null) {  // Wartet, bis die String-Liste erstellt ist

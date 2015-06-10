@@ -87,6 +87,6 @@ public class Blume extends Hindernis {
     }
 
     public void move() {
-        // Die Blume bewegt sich nicht
+        /* Die Blume bewegt sich nicht */
     }
 }

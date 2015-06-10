@@ -96,7 +96,7 @@ public class Frosch extends Spielobjekt {
         }
         if (hatBlume) {
             SpielWerte.addScore(200);
-            SpielWerte.setTextAnzeige("Blume gepflückt");
+            SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_frosch_blume));
             hatBlume = false;
             gameActivity.blume.verschwindet();
         } else {
@@ -114,7 +114,7 @@ public class Frosch extends Spielobjekt {
             /* Prüfen, ob Google Play Services oder lokaler Highscore genutzt wird */
             if (gameActivity.usePlayServices && gameActivity.mGoogleApiClient != null && gameActivity.mGoogleApiClient.isConnected()) {
                 /* Highscore von Google Play Services laden */
-                Games.Leaderboards.loadTopScores(gameActivity.mGoogleApiClient, FP.HIGHSCORE_ID, LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC, 1, true).setResultCallback(new ResultCallback<Leaderboards.LoadScoresResult>() {
+                Games.Leaderboards.loadTopScores(gameActivity.mGoogleApiClient, gameActivity.getString(R.string.leaderboard_highscore), LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC, 1, true).setResultCallback(new ResultCallback<Leaderboards.LoadScoresResult>() {
                     @Override
                     public void onResult(final Leaderboards.LoadScoresResult scoreResult) {
                         if (scoreResult != null && GamesStatusCodes.STATUS_OK == scoreResult.getStatus().getStatusCode() && scoreResult.getScores() != null) {
@@ -125,7 +125,7 @@ public class Frosch extends Spielobjekt {
                                     public void run() {
                                         Context context = gameActivity.getApplicationContext();
                                         int duration = Toast.LENGTH_SHORT;
-                                        Toast toast = Toast.makeText(context, "Neuer Highscore!", duration);
+                                        Toast toast = Toast.makeText(context, gameActivity.getString(R.string.str_frosch_highscore), duration);
                                         toast.setGravity(Gravity.TOP, 0, 0);
                                         toast.show();
                                     }
@@ -135,7 +135,7 @@ public class Frosch extends Spielobjekt {
                     }
                 });
                 /* aktuellen Score an Google Play Services übertragen */
-                Games.Leaderboards.submitScore(gameActivity.mGoogleApiClient, FP.HIGHSCORE_ID, SpielWerte.getPunkte());
+                Games.Leaderboards.submitScore(gameActivity.mGoogleApiClient, gameActivity.getString(R.string.leaderboard_highscore), SpielWerte.getPunkte());
             } else {
                 /* Highscore-Handler erstellen, falls noch nicht erstellt */
                 if (highscore == null) {
@@ -148,7 +148,7 @@ public class Frosch extends Spielobjekt {
                         public void run() {
                             Context context = gameActivity.getApplicationContext();
                             int duration = Toast.LENGTH_SHORT;
-                            Toast toast = Toast.makeText(context, "Neuer Highscore!", duration);
+                            Toast toast = Toast.makeText(context, gameActivity.getString(R.string.str_frosch_highscore), duration);
                             toast.setGravity(Gravity.TOP, 0, 0);
                             toast.show();
                         }
@@ -208,7 +208,7 @@ public class Frosch extends Spielobjekt {
     /* Prinzessin einsammeln */
     void pickupPrincess() {
         gameActivity.prinzessin.iscarried = true;
-        SpielWerte.setTextAnzeige("Prinzessin eingesammelt");
+        SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_frosch_prinzessin));
         getZeichenStift().setColor(Farbe.prinzessin);
         gameActivity.prinzessin.verschwindet();
     }

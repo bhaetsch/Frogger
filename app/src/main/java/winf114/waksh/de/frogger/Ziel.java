@@ -16,7 +16,7 @@ class Ziel extends Spielobjekt {
             this.getZeichenStift().setColor(Farbe.zielBesetzt);
             this.setZeichenBereich();
             this.besetzt = true;
-        } else if (!besetzt) {
+        } else {
             this.getZeichenStift().setColor(Farbe.zielLeer);
             this.setZeichenBereich();
             this.besetzt = false;

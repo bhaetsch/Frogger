@@ -85,7 +85,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
         super.onStart();
 
         /* Prüft, ob Google Play Services für die Highscores verwendet werden sollen */
-        sharedPref = this.getSharedPreferences("winf114.waksh.de.Frogger.Settings", Context.MODE_PRIVATE);
+        sharedPref = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         usePlayServices = sharedPref.getBoolean(getString(R.string.str_opt_playServices), usePlayServices);
 
         /* Versucht ggf. eine Verbindung zu den Google Play Services aufzubauen */
@@ -422,13 +422,13 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
         textStift.setTextSize(FP.smallTextSize);
         canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 16, textStift);
         canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 16 - (FP.lanePixelHoehe / 2), textStift);
-        canvas.drawText(SpielWerte.levelZeit(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 14 - (FP.lanePixelHoehe / 2), textStift);
-        canvas.drawText("Leben", FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(getString(R.string.str_game_time) + SpielWerte.levelZeit(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 14 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(getString(R.string.str_game_frogs), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
         canvas.drawText(SpielWerte.textAnzeige(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 16, textStift);
 
         /* Punkte- und Levelanzeige zeichnen */
         textStift.setTextSize(FP.largeTextSize);
-        canvas.drawText(SpielWerte.punkte(), 10, FP.lanePixelHoehe * 14, textStift);
-        canvas.drawText(SpielWerte.level(), 10, FP.lanePixelHoehe * 15, textStift);
+        canvas.drawText(getString(R.string.str_game_score) + SpielWerte.punkte(), 10, FP.lanePixelHoehe * 14, textStift);
+        canvas.drawText(getString(R.string.str_game_level) + SpielWerte.level(), 10, FP.lanePixelHoehe * 15, textStift);
     }
 }

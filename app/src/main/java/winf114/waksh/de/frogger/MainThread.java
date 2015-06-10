@@ -71,7 +71,7 @@ public class MainThread extends Thread {
     /* Ist die Zeit abgelaufen? */
     private void levelZuendeCheck() {
         if (SpielWerte.levelZuende()) {
-            SpielWerte.setTextAnzeige("Zu lahm!");
+            SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_slow));
             gameActivity.frosch.stirbt();
         }
     }
@@ -118,7 +118,7 @@ public class MainThread extends Thread {
     /* Kollidiert der Frosch mit dem Rand des Spielfelds? */
     private void kolFroschMitRand() {
         if (!gameActivity.frosch.kollidiertMit(FP.spielFlaeche)) {
-            SpielWerte.setTextAnzeige("Nicht abhauen!");
+            SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_bugger));
             gameActivity.frosch.stirbt();
         }
     }
@@ -152,7 +152,7 @@ public class MainThread extends Thread {
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Schlange) {
                 if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
-                    SpielWerte.setTextAnzeige("SSSsssZZzzz");
+                    SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_snake));
                     gameActivity.frosch.stirbt();
                 }
             }
@@ -165,7 +165,7 @@ public class MainThread extends Thread {
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof KrokodilKopf) {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
-                        SpielWerte.setTextAnzeige("Omnomnom");
+                        SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_yummy));
                         gameActivity.frosch.stirbt();
                     }
                 }
@@ -179,7 +179,7 @@ public class MainThread extends Thread {
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Auto) {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich())) {
-                        SpielWerte.setTextAnzeige("Matsch!");
+                        SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_squish));
                         gameActivity.frosch.stirbt();
                     }
                 }
@@ -196,12 +196,12 @@ public class MainThread extends Thread {
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && !((Ziel) s).isBesetzt()) {
                         zieleErreicht++;
                         ((Ziel) s).setBesetzt(true);
-                        SpielWerte.setTextAnzeige("Ziel erreicht");
+                        SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_target1));
                         gameActivity.frosch.erreichtZiel();
                     }
                     /* Ziel besetzt */
                     if (gameActivity.frosch.kollidiertMit(s.getZeichenBereich()) && ((Ziel) s).isBesetzt()) {
-                        SpielWerte.setTextAnzeige("Ziel war besetzt");
+                        SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_target2));
                         gameActivity.frosch.stirbt();
                     }
                 }
@@ -223,7 +223,7 @@ public class MainThread extends Thread {
                 }
             }
             if (!gameActivity.frosch.aufBaum) {
-                SpielWerte.setTextAnzeige("Blub");
+                SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_thread_blub));
                 gameActivity.frosch.stirbt();
             }
         }

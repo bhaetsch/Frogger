@@ -22,7 +22,7 @@ class ToterFrosch extends Spielobjekt {
     void anzeigen(Rect position) {
         todesZeitpunkt = System.currentTimeMillis();
         getZeichenStift().setColor(Farbe.deadFrosch); // zeichnet die im Konstruktor übergebene Farbe
-        getZeichenBereich().set(position);            //setzt den toten Frosch an die alte Frosch-Position
+        getZeichenBereich().set(position);            // setzt den toten Frosch an die alte Frosch-Position
     }
 
     void verstecken() {
