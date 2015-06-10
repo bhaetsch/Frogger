@@ -27,21 +27,27 @@
     <!-- Strings for activity_credits -->
     <string name="title_activity_credits" translatable="false">"CreditsActivity"</string>
     <string name="str_head_credits" translatable="false">"Credits"</string>
-    <string name="str_credits_entw" formatted="false">"WAKker was built by\n\n Matze Findeisen &amp;\n Benjamin Hätsch\n\nas part of the course \'Development and Management of Software Systems - Programming 2\' at Wirtschaftsakademie Schleswig-Holstein in Kiel, Germany.\n\n\nThe logo is based on the following image:\nhttp://pixabay.com/de/frosch-tier-froschlurch-gr%C3%BCn-688641/"</string>
-    <string name="str_credits_copy" formatted="false" translatable="false">"Copyright &#169; 2015 Matze Findeisen &amp; Benjamin Hätsch"</string>
+    <string name="str_credits_entw" formatted="false">"WAKker was built by\n\n Matze Findeisen &amp;\n Benjamin Hätsch\n\nas part of the course \'Development and Management of Software Systems - Programming 2\' at Wirtschaftsakademie Schleswig-Holstein in Kiel, Germany.\n\n\nThe logo is based on the following image:\nhttp://pixabay.com/de/frosch-tier-froschlurch-gr%C3%BCn-688641/\n\n\nCopyright &#169; 2015 Matze Findeisen &amp; Benjamin Hätsch"</string>
 
     <!-- Strings for Frosch -->
     <string name="str_frosch_blume">"Flower picked!"</string>
     <string name="str_frosch_highscore">"New High Score!"</string>
     <string name="str_frosch_prinzessin">"Princess caught!"</string>
+    <string name="str_frosch_score">"Score: "</string>
 
     <!-- Strings for GameActivity -->
-    <string name="str_game_frogs">"Frogs"</string>
+    <string name="str_game_go">"Let\'s go!"</string>
+    <string name="str_game_gc" translatable="false">"GCmax|avg: "</string>
+    <string name="str_game_rc" translatable="false">"RCmax|avg: "</string>
+    <string name="str_game_ms" translatable="false">" (ms)"</string>
     <string name="str_game_time">"Time "</string>
+    <string name="str_game_frogs">"Frogs"</string>
     <string name="str_game_score">"Score: "</string>
     <string name="str_game_level" translatable="false">"Level: "</string>
 
     <!-- Strings for MainActivity -->
+    <string name="str_main_firstUse" translatable="false">"firstUse"</string>
+    <string name="str_main_playServices" translatable="false">"usePlayServices"</string>
     <string name="str_main_local">"Unable to sign in, using local High Score!"</string>
     <string name="str_main_tryagain">"There was an issue with sign-in, please try again later!"</string>
 

@@ -39,9 +39,9 @@ class LebensAnzeige {
         for (int i = 0; i < SpielWerte.LEBEN; i++) {
             leben.add(lebenRect[i] = new Rect(
                     FP.lebensAnzeigeX + (FP.lebensAnzeigeAbstand * i),
-                    FP.lebensAnzeigeY + FP.lanePadding,
+                    FP.lebensAnzeigeY + FP.lanePadding * 2,
                     FP.lebensAnzeigeX + FP.lebensAnzeigeBreite + (FP.lebensAnzeigeAbstand * i),
-                    FP.lebensAnzeigeY + FP.lanePadding + FP.lebensAnzeigeHöhe));
+                    FP.lebensAnzeigeY + FP.lanePadding * 3 + FP.lebensAnzeigeHöhe));
         }
     }
 

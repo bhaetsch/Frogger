@@ -11,6 +11,7 @@ final class SpielWerte {
     static final int PRINZESSIN_ERSCHEINT_CHANCE = 10;
 
     private static int punkte;
+    private static int punkteAlt;
     private static int level;
     private static long levelStartZeitpunkt;
     private static long zeitImLevelVerbracht;
@@ -52,6 +53,7 @@ final class SpielWerte {
     }
 
     static void resetScore() {
+        punkteAlt = punkte;
         punkte = 0;
         level = 0;
     }
@@ -78,6 +80,10 @@ final class SpielWerte {
 
     static int getPunkte() {
         return punkte;
+    }
+
+    static int getPunkteAlt() {
+        return punkteAlt;
     }
 
     static void setTextAnzeige(String text) {

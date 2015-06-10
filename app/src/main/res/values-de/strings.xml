@@ -5,7 +5,7 @@
     <string name="str_btn_settings">"Einstellungen"</string>
     <string name="str_head_settings">"Einstellungen"</string>
     <string name="str_opt_playServices">"Google Play Games für den High Score benutzen"</string>
-    <string name="str_credits_entw" formatted="false">"WAKker wurde von\n\n Matze Findeisen &amp;\n Benjamin Hätsch\n\nim Rahmen der Lehrveranstaltung \'Entwicklung und Management von Softwaresystemen - Programmierung 2\' an der Wirtschaftsakademie Schleswig-Holstein in Kiel entwickelt.\n\n\nDas Logo wurde auf Grundlage der folgenden Grafik erstellt:\nhttp://pixabay.com/de/frosch-tier-froschlurch-gr%C3%BCn-688641/"</string>
+    <string name="str_credits_entw" formatted="false">"WAKker wurde von\n\n Matze Findeisen &amp;\n Benjamin Hätsch\n\nim Rahmen der Lehrveranstaltung \'Entwicklung und Management von Softwaresystemen - Programmierung 2\' an der Wirtschaftsakademie Schleswig-Holstein in Kiel entwickelt.\n\n\nDas Logo wurde auf Grundlage der folgenden Grafik erstellt:\nhttp://pixabay.com/de/frosch-tier-froschlurch-gr%C3%BCn-688641/\n\n\nCopyright &#169; 2015 Matze Findeisen &amp; Benjamin Hätsch"</string>
     <string name="str_logo_alt">"Spiel-Logo"</string>
     <string name="str_frosch_blume">"Blume gepflückt!"</string>
     <string name="str_frosch_highscore">"Neuer High Score!"</string>
@@ -21,5 +21,7 @@
     <string name="str_thread_target1">"Ziel erreicht!"</string>
     <string name="str_thread_target2">"Ziel schon besetzt!"</string>
     <string name="str_thread_yummy">"Omnomnom!"</string>
+    <string name="str_frosch_score">"Punkte: "</string>
+    <string name="str_game_go">"Los geht\'s!"</string>
 
 </resources>

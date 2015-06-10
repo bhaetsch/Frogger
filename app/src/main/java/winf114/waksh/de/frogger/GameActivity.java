@@ -36,13 +36,12 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
     /* Darstellung und Brechnung der Spielinhalte */
     private Paint textStift;
     private Hintergrund hintergrund;
-    private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
     private MainThread mainThread;
 
     /* Highscore-System */
     private SharedPreferences sharedPref;
-    boolean usePlayServices = false;
+    boolean usePlayServices;
+    boolean firstUsePlayServices;
     GoogleApiClient mGoogleApiClient;
     private static int RC_SIGN_IN = 9001;
     private boolean mResolvingConnectionFailure = false;
@@ -66,8 +65,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
         aktiviereImmersiveFullscreen();
 
         /* surfaceView ist die Spieloberfläche, surfaceHolder ist ein abstraktes Interface für die Oberflächennutzung */
-        surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
-        surfaceHolder = surfaceView.getHolder();
+        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+        SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
         /* Wischgesten-Erkennung an die Activity binden */
@@ -84,9 +83,10 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
     protected void onStart() {
         super.onStart();
 
-        /* Prüft, ob Google Play Services für die Highscores verwendet werden sollen */
+        /* Prüft, ob Google Play Services für die Highscores verwendet werden sollen und ob dies die erste Benutzung ist */
         sharedPref = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
-        usePlayServices = sharedPref.getBoolean(getString(R.string.str_opt_playServices), usePlayServices);
+        usePlayServices = sharedPref.getBoolean(getString(R.string.str_main_playServices), false);
+        firstUsePlayServices = sharedPref.getBoolean(getString(R.string.str_main_firstUse), false);
 
         /* Versucht ggf. eine Verbindung zu den Google Play Services aufzubauen */
         if (usePlayServices) {
@@ -176,7 +176,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
         hintergrund = new Hintergrund(width, FP.lanePixelHoehe);
 
         /* Stift und Farbe und für die Textanzeigen erzeugen */
-        SpielWerte.setTextAnzeige(height + ":" + width + ":" + FP.objektPixelBreite + ":" + FP.froschGeschwX);
+        SpielWerte.setTextAnzeige(getString(R.string.str_game_go));
         textStift = new Paint();
         textStift.setColor(Farbe.text);
 
@@ -420,8 +420,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
 
         /* Ergebnisse der Zeitmessungen, Zeit- und Lebensanzeige und Textausgabe zeichnen */
         textStift.setTextSize(FP.smallTextSize);
-        canvas.drawText("GCmax|avg: " + mainThread.gameCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 16, textStift);
-        canvas.drawText("RCmax|avg: " + renderCycleMessung + " (ms)", 10, FP.lanePixelHoehe * 16 - (FP.lanePixelHoehe / 2), textStift);
+        canvas.drawText(getString(R.string.str_game_gc) + mainThread.gameCycleMessung + getString(R.string.str_game_ms), 10, FP.lanePixelHoehe * 16, textStift);
+        canvas.drawText(getString(R.string.str_game_rc) + renderCycleMessung + getString(R.string.str_game_ms), 10, FP.lanePixelHoehe * 16 - (FP.lanePixelHoehe / 2), textStift);
         canvas.drawText(getString(R.string.str_game_time) + SpielWerte.levelZeit(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 14 - (FP.lanePixelHoehe / 2), textStift);
         canvas.drawText(getString(R.string.str_game_frogs), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 15 - (FP.lanePixelHoehe / 2), textStift);
         canvas.drawText(SpielWerte.textAnzeige(), FP.startPositionX + (FP.objektPixelBreite / 2), FP.lanePixelHoehe * 16, textStift);

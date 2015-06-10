@@ -1,7 +1,8 @@
 package winf114.waksh.de.frogger;
 
 import android.content.Context;
-import android.view.Gravity;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResultCallback;
@@ -113,27 +114,48 @@ public class Frosch extends Spielobjekt {
             resetZiele();
             /* Prüfen, ob Google Play Services oder lokaler Highscore genutzt wird */
             if (gameActivity.usePlayServices && gameActivity.mGoogleApiClient != null && gameActivity.mGoogleApiClient.isConnected()) {
-                /* Highscore von Google Play Services laden */
-                Games.Leaderboards.loadTopScores(gameActivity.mGoogleApiClient, gameActivity.getString(R.string.leaderboard_highscore), LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC, 1, true).setResultCallback(new ResultCallback<Leaderboards.LoadScoresResult>() {
-                    @Override
-                    public void onResult(final Leaderboards.LoadScoresResult scoreResult) {
-                        if (scoreResult != null && GamesStatusCodes.STATUS_OK == scoreResult.getStatus().getStatusCode() && scoreResult.getScores() != null) {
-                            /* Prüfen, ob aktueller Score > Highscore bei Google Play Services */
-                            if (scoreResult.getScores().get(0).getRawScore() < SpielWerte.getPunkte()) {
-                                /* Toast auf dem UI-Thread starten, um den User über neuen Highscore zu informieren */
-                                gameActivity.runOnUiThread(new Runnable() {
-                                    public void run() {
-                                        Context context = gameActivity.getApplicationContext();
-                                        int duration = Toast.LENGTH_SHORT;
-                                        Toast toast = Toast.makeText(context, gameActivity.getString(R.string.str_frosch_highscore), duration);
-                                        toast.setGravity(Gravity.TOP, 0, 0);
-                                        toast.show();
-                                    }
-                                });
+                /* Bei der ersten Benutzung der Google Play Services kann noch kein Highscore abgefragt werden */
+                if (gameActivity.firstUsePlayServices) {
+                    /* Ab jetzt können die Highscores von Google Play Services geladen werden */
+                    gameActivity.firstUsePlayServices = false;
+                    SharedPreferences sharedPref = gameActivity.getSharedPreferences(gameActivity.getString(R.string.shared_prefs), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putBoolean(gameActivity.getString(R.string.str_main_firstUse), false);
+                    editor.commit();
+                    /* Toast auf dem UI-Thread starten, um den User über neuen (ersten) Highscore zu informieren */
+                    gameActivity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            Context context = gameActivity.getApplicationContext();
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, gameActivity.getString(R.string.str_frosch_highscore), duration);
+                            toast.show();
+                        }
+                    });
+                } else {
+                    /* Highscore von Google Play Services laden */
+                    Games.Leaderboards.loadTopScores(gameActivity.mGoogleApiClient, gameActivity.getString(R.string.leaderboard_highscore), LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC, 1, true).setResultCallback(new ResultCallback<Leaderboards.LoadScoresResult>() {
+                        @Override
+                        public void onResult(Leaderboards.LoadScoresResult scoreResult) {
+                            if (scoreResult != null && GamesStatusCodes.STATUS_OK == scoreResult.getStatus().getStatusCode() && scoreResult.getScores() != null) {
+                                /* Prüfen, ob aktueller Score > Highscore bei Google Play Services */
+                                if (scoreResult.getScores().get(0).getRawScore() < SpielWerte.getPunkteAlt()) {
+                                    /* Toast auf dem UI-Thread starten, um den User über neuen Highscore zu informieren */
+                                    gameActivity.runOnUiThread(new Runnable() {
+                                        public void run() {
+                                            Context context = gameActivity.getApplicationContext();
+                                            int duration = Toast.LENGTH_SHORT;
+                                            Toast toast = Toast.makeText(context, gameActivity.getString(R.string.str_frosch_highscore), duration);
+                                            toast.show();
+                                        }
+                                    });
+                                }
+                                scoreResult.release();
                             }
                         }
-                    }
-                });
+                    });
+                }
+                /* aktuellen Score in der Textanzeige anzeigen */
+                SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_frosch_score) + SpielWerte.getPunkte());
                 /* aktuellen Score an Google Play Services übertragen */
                 Games.Leaderboards.submitScore(gameActivity.mGoogleApiClient, gameActivity.getString(R.string.leaderboard_highscore), SpielWerte.getPunkte());
             } else {
@@ -149,11 +171,12 @@ public class Frosch extends Spielobjekt {
                             Context context = gameActivity.getApplicationContext();
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, gameActivity.getString(R.string.str_frosch_highscore), duration);
-                            toast.setGravity(Gravity.TOP, 0, 0);
                             toast.show();
                         }
                     });
                 }
+                /* aktuellen Score in der Textanzeige anzeigen */
+                SpielWerte.setTextAnzeige(gameActivity.getString(R.string.str_frosch_score) + SpielWerte.getPunkte());
                 /* Schreiben des aktuellen Scores in den lokalen Speicher initiieren */
                 highscore.startCompareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
             }
