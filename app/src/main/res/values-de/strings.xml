@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="str_btn_exit">Ende</string>
+    <string name="str_btn_exit">Beenden</string>
     <string name="str_btn_play">Spielen</string>
     <string name="str_btn_settings">Einstellungen</string>
     <string name="str_head_settings">Einstellungen</string>

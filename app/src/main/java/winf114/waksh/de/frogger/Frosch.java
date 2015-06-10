@@ -16,10 +16,9 @@ import java.util.Date;
  * Created by bhaetsch on 25.05.2015.
  */
 public class Frosch extends Spielobjekt {
-
-    Highscore highscore;
+    private Highscore highscore;
     private final int geschwindigkeitVertikal;
-    int geschwindigkeitHorizontal;
+    private int geschwindigkeitHorizontal;
     private boolean moved;
     private richtung r;
     private final GameActivity gameActivity;
@@ -31,18 +30,21 @@ public class Frosch extends Spielobjekt {
     public Frosch(int x, int y, int breite, int hoehe, int geschwindigkeitVertikal, int geschwindigkeitHorizontal, int farbe, boolean usePlayServices, GameActivity gameActivity) {
         super(x, y, breite, hoehe, farbe);
         this.gameActivity = gameActivity;
-        if (!usePlayServices) { // Highscore-Handler nur anlegen, wenn Google Play Services nicht genutzt werden
-            this.highscore = new Highscore(gameActivity);
-        }
         this.geschwindigkeitHorizontal = geschwindigkeitHorizontal;
         this.geschwindigkeitVertikal = geschwindigkeitVertikal;
-        moved = false;
-        aufBaum = false;
-        imWasser = false;
-        hatBlume = false;
-        aufStartPosition = true;
+        this.moved = false;
+        this.aufBaum = false;
+        this.imWasser = false;
+        this.hatBlume = false;
+        this.aufStartPosition = true;
+
+        /* Highscore-Handler nur anlegen, wenn Google Play Services nicht genutzt werden */
+        if (!usePlayServices) {
+            this.highscore = new Highscore(gameActivity);
+        }
     }
 
+    /* Frosch bewegen (geerbte Funktion) */
     public void move() {
         if (aufBaum) {
             this.setX(this.getX() + geschwindigkeitHorizontal);
@@ -54,6 +56,7 @@ public class Frosch extends Spielobjekt {
         }
     }
 
+    /* Frosch bewegen (in die richtige Richtung) */
     private void move(richtung r) {
         switch (r) {
             case vor:
@@ -71,7 +74,6 @@ public class Frosch extends Spielobjekt {
                         imWasser = false;
                         aufBaum = false;
                     }
-                    aufStartPosition = false;
                 }
                 break;
             case links:
@@ -87,6 +89,7 @@ public class Frosch extends Spielobjekt {
         moved = false;
     }
 
+    /* Der Frosch hat ein Ziel erreicht */
     public void erreichtZiel() {
         if (gameActivity.prinzessin.iscarried) {
             SpielWerte.addScore(200);
@@ -102,6 +105,7 @@ public class Frosch extends Spielobjekt {
         resetFrosch();
     }
 
+    /* Der Frosch ist gestorben */
     public void stirbt() {
         gameActivity.toterFrosch.anzeigen(getZeichenBereich());
         gameActivity.lebensAnzeige.lebenVerlieren();
@@ -153,11 +157,13 @@ public class Frosch extends Spielobjekt {
                 /* Schreiben des aktuellen Scores in den lokalen Speicher initiieren */
                 highscore.startCompareScore(new HighscoreEintrag(SpielWerte.getPunkte(), new Date().getTime()));
             }
+            /* Punkte zurücksetzen */
             SpielWerte.resetScore();
         }
         resetFrosch();
     }
 
+    /* Parameter für Frosch und Spiel zurücksetzen */
     private void resetFrosch() {
         SpielWerte.startLevel();
         gameActivity.zeitAnzeige.resetZeitanzeige();
@@ -183,6 +189,7 @@ public class Frosch extends Spielobjekt {
         this.r = r;
     }
 
+    /* Ziele zurücksetzen */
     public void resetZiele() {
         for (Spielobjekt s : gameActivity.spielobjekte) {
             if (s instanceof Ziel) {
@@ -191,12 +198,14 @@ public class Frosch extends Spielobjekt {
         }
     }
 
+    /* Prinzessin freigeben */
     void releasePrinzess() {
         gameActivity.prinzessin.iscarried = false;
         gameActivity.prinzessin.verschwindet();
         getZeichenStift().setColor(Farbe.frosch);
     }
 
+    /* Prinzessin einsammeln */
     void pickupPrincess() {
         gameActivity.prinzessin.iscarried = true;
         SpielWerte.setTextAnzeige("Prinzessin eingesammelt");

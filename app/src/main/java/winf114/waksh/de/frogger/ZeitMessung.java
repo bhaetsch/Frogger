@@ -14,7 +14,7 @@ class ZeitMessung {
     private long cycleTimeSum;
     private int cycles;
 
-    public ZeitMessung(){
+    public ZeitMessung() {
         cycles = 0;
         cycleTimeMax = 0;
         cycleTimeAvg = 0;
@@ -25,18 +25,21 @@ class ZeitMessung {
         return cycleTimeMax + " | " + cycleTimeAvg;
     }
 
-    public void start(){
+    /* Zeitmessung starten */
+    public void start() {
         cycleTimeBegin = System.currentTimeMillis();
     }
 
-    private void getMax(){
+    /* Maximum aller Zeitmessungen */
+    private void getMax() {
         cycleTime = System.currentTimeMillis() - cycleTimeBegin;
         if (cycleTime > cycleTimeMax) {
             cycleTimeMax = cycleTime;
         }
     }
 
-    private void getAvg(){
+    /* Mittelwert aller Zeitmessungen */
+    private void getAvg() {
         cycleTime = System.currentTimeMillis() - cycleTimeBegin;
         cycleTimeSum = cycleTimeSum + cycleTime;
         if (cycles == CYLCLES_AVG) {
@@ -46,7 +49,8 @@ class ZeitMessung {
         }
     }
 
-    public void end(){
+    /* Zeitmessung beenden */
+    public void end() {
         cycles++;
         getMax();
         getAvg();

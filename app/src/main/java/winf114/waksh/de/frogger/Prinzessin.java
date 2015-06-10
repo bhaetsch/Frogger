@@ -6,7 +6,6 @@ import java.util.Random;
  * Created by Matzef on 03.06.2015.
  */
 public class Prinzessin extends Hindernis {
-
     private long start;
     boolean iscarried;
     boolean aktiv;

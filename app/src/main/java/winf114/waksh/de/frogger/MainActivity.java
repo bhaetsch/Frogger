@@ -14,11 +14,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    Highscore highscore;
-
-    SharedPreferences sharedPref;
-    boolean usePlayServices = false;
-
+    /* Highscore-System */
+    private Highscore highscore;
+    private SharedPreferences sharedPref;
+    private boolean usePlayServices = false;
     private GoogleApiClient mGoogleApiClient;
     private static int RC_SIGN_IN = 9001;
     private boolean mResolvingConnectionFailure = false;
@@ -95,7 +94,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         if (usePlayServices || mAutoStartSignInFlow) {
             mAutoStartSignInFlow = false;
             mResolvingConnectionFailure = true;
-
             if (connectionResult.hasResolution()) {
                 try {
                     connectionResult.startResolutionForResult(this, RC_SIGN_IN);
@@ -141,11 +139,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         startActivity(intent);
     }
 
-    /* Wird aufgerufen, wenn der Highscore-Button gedrückt wird und startet die HighscoreActivity */
+    /* Wird aufgerufen, wenn der Highscore-Button gedrückt wird */
     public void onclick_highscore(View view) {
         if (usePlayServices && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            /* ruft den Highscore von den Google Play Services ab, falls dieser genutzt werden soll */
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient, FP.HIGHSCORE_ID), 0);
         } else {
+            /* lädt den lokalen Highscore aus dem App-Speicher, falls dieser genutzt werden soll */
             while (highscore.getHighscoreString() == null) {  // Wartet, bis die String-Liste erstellt ist
                 try {
                     Thread.sleep(50);
@@ -153,6 +153,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     //Exception
                 }
             }
+            /* startet die HighscoreActivity mit den geladenen Highscores */
             Intent intent = new Intent(this, HighscoreActivity.class);
             intent.putExtra("highscoreString", highscore.getHighscoreString()); // Übergibt die String-Liste an die HighscoreActivity
             startActivity(intent);

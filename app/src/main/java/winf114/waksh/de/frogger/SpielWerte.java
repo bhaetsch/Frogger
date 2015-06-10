@@ -1,12 +1,11 @@
 package winf114.waksh.de.frogger;
 
-import android.util.Log;
-
 /**
  * Created by Matzef on 03.06.2015.
  */
 final class SpielWerte {
 
+    /* Konstanten zur Steuerung des Spielablaufs */
     static final int LEVEL_ZEIT_SEK = 120;
     static final int LEBEN = 7;
     static final int PRINZESSIN_ERSCHEINT_CHANCE = 10;
@@ -49,7 +48,7 @@ final class SpielWerte {
     }
 
     static void addScore(int differenz) {
-        punkte += differenz * getLevelMultiplikator();
+        punkte += differenz * getPunkteMultiplikator();
     }
 
     static void resetScore() {
@@ -69,8 +68,12 @@ final class SpielWerte {
         level++;
     }
 
-    static float getLevelMultiplikator() {
-        return 1 + (float)level / 10;
+    static float getPunkteMultiplikator() {
+        return 1 + (float) level / 10;
+    }
+
+    static float getGeschwindigkeitsMultiplikator() {
+        return 1 + (float) level / 5;
     }
 
     static int getPunkte() {

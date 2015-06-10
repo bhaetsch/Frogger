@@ -3,7 +3,6 @@ package winf114.waksh.de.frogger;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 /**
  * Created by Matzef on 03.06.2015.
@@ -19,23 +18,25 @@ class ZeitAnzeige {
         this.zeichenStift = new Paint();
         this.zeichenStift.setColor(Farbe.auto);
         timerStart = System.currentTimeMillis();
-        breiteProSekunde = (float)FP.zeitAnzeigeBreite / (float)SpielWerte.LEVEL_ZEIT_SEK;
+        breiteProSekunde = (float) FP.zeitAnzeigeBreite / (float) SpielWerte.LEVEL_ZEIT_SEK;
 
-        zeichenBereich =  new Rect(
+        zeichenBereich = new Rect(
                 FP.zeitAnzeigeX,
                 FP.zeitAnzeigeY + FP.lanePadding,
                 FP.zeitAnzeigeX + FP.zeitAnzeigeBreite,
                 FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
     }
 
-    void tick(){
-        if (System.currentTimeMillis() > timerStart + 1000){
+    /* Wrapper, um die Zeitanzeige nur einmal pro Sekunde zu ändern */
+    void tick() {
+        if (System.currentTimeMillis() > timerStart + 1000) {
             verringereZeitAnzeige();
             timerStart = System.currentTimeMillis();
         }
     }
 
-    void resetZeitanzeige(){
+    /* Zurücksetzen der Zeitanzeige auf Ausgangswerte */
+    void resetZeitanzeige() {
         zeichenBereich.set(
                 FP.zeitAnzeigeX,
                 FP.zeitAnzeigeY + FP.lanePadding,
@@ -43,12 +44,13 @@ class ZeitAnzeige {
                 FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
     }
 
-    void verringereZeitAnzeige(){
-            float aktuelleBreite = FP.zeitAnzeigeBreite - (breiteProSekunde * SpielWerte.getZeitImLevelVerbracht());
-            zeichenBereich.set(FP.zeitAnzeigeX,
-                    FP.zeitAnzeigeY + FP.lanePadding,
-                    FP.zeitAnzeigeX + Math.round(aktuelleBreite),
-                    FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
+    /* Änderung der Zeitanzeige */
+    void verringereZeitAnzeige() {
+        float aktuelleBreite = FP.zeitAnzeigeBreite - (breiteProSekunde * SpielWerte.getZeitImLevelVerbracht());
+        zeichenBereich.set(FP.zeitAnzeigeX,
+                FP.zeitAnzeigeY + FP.lanePadding,
+                FP.zeitAnzeigeX + Math.round(aktuelleBreite),
+                FP.zeitAnzeigeY + FP.lanePadding + FP.zeitAnzeigeHöhe);
     }
 
     void draw(Canvas canvas) {

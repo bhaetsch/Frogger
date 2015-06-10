@@ -8,12 +8,9 @@ import android.graphics.Color;
  */
 
 final class Farbe {
-
     static int zielBereich = Color.parseColor("#3b522e");
     static int wasserBereich = Color.parseColor("#2e4975");
-    static int pausenBereich = Color.parseColor("#3b522e");
     static int strassenBereich = Color.parseColor("#7b7b7b");
-    static int startBereich = Color.parseColor("#3b522e");
     static int strassenMarkierung = Color.parseColor("#ffffff");
     static int frosch = Color.parseColor("#c4e86a");
     static int deadFrosch = Color.parseColor("#cfd1a7");
@@ -28,6 +25,4 @@ final class Farbe {
     static int krokodil = Color.parseColor("#035c1c");
     static int krokodilKopf = Color.parseColor("#023D12");
     static int transparent = Color.parseColor("#00000000");
-
-
 }

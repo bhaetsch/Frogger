@@ -15,13 +15,8 @@ public class Blume extends Hindernis {
     Ziel ziel04;
     Ziel ziel05;
 
-    public Blume(Ziel ziel01, Ziel ziel02, Ziel ziel03, Ziel ziel04, Ziel ziel05){
-        super(  0,
-                0,
-                FP.objektPixelBreite,
-                FP.objektPixelHoehe,
-                0, Farbe.transparent);
-
+    public Blume(Ziel ziel01, Ziel ziel02, Ziel ziel03, Ziel ziel04, Ziel ziel05) {
+        super(0, 0, FP.objektPixelBreite, FP.objektPixelHoehe, 0, Farbe.transparent);
         this.ziel01 = ziel01;
         this.ziel02 = ziel02;
         this.ziel03 = ziel03;
@@ -30,8 +25,9 @@ public class Blume extends Hindernis {
         aktiv = false;
     }
 
-    void erscheintDieBlume(){
-        if(!aktiv) {
+    /* Lässt die Blume zufällig erscheinen */
+    void erscheintDieBlume() {
+        if (!aktiv) {
             if (System.currentTimeMillis() > start + 1000) {
                 Random r = new Random();
                 int random = r.nextInt(100) + 1;
@@ -39,35 +35,35 @@ public class Blume extends Hindernis {
                     int random2 = r.nextInt(5) + 1;
                     switch (random2) {
                         case 1:
-                            if(ziel01.isBesetzt() == false) {
+                            if (ziel01.isBesetzt() == false) {
                                 setX(ziel01.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 2:
-                            if(ziel02.isBesetzt() == false) {
+                            if (ziel02.isBesetzt() == false) {
                                 setX(ziel02.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 3:
-                            if(ziel03.isBesetzt() == false) {
+                            if (ziel03.isBesetzt() == false) {
                                 setX(ziel03.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 4:
-                            if(ziel04.isBesetzt() == false) {
+                            if (ziel04.isBesetzt() == false) {
                                 setX(ziel04.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 5:
-                            if(ziel05.isBesetzt() == false){
+                            if (ziel05.isBesetzt() == false) {
                                 setX(ziel05.getX());
                                 setZeichenBereich();
                                 erscheint();
@@ -80,17 +76,17 @@ public class Blume extends Hindernis {
         }
     }
 
-    void erscheint(){
+    void erscheint() {
         aktiv = true;
         getZeichenStift().setColor(Farbe.blume);
     }
 
-    void verschwindet(){
+    void verschwindet() {
         aktiv = false;
         getZeichenStift().setColor(Farbe.transparent);
     }
 
-    public void move(){
-        // Bewegt sich nicht
+    public void move() {
+        // Die Blume bewegt sich nicht
     }
 }

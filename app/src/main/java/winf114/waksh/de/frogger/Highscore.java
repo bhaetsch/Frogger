@@ -1,7 +1,6 @@
 package winf114.waksh.de.frogger;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,7 +14,6 @@ import java.util.Date;
  * Created by bhaetsch on 03.06.2015.
  */
 public class Highscore {
-    final String FILENAME = "frogger_highscore";    // Dateiname im App-Speicher
     ArrayList<HighscoreEintrag> highscore;          // Highscore als HighscoreEintrag-Liste
     ArrayList<String> highscoreString;              // Highscore als String-Liste
     Context ctx;                                    // aufrufende Activity (für Zugriff auf Dateisystem benötigt)
@@ -37,15 +35,13 @@ public class Highscore {
 
     /* Liest den Highscore als HighscoreEintrag-Liste aus dem App-Speicher */
     public synchronized void readHighscore() {
-        Log.d("Highscore", "readHighscore");
         try {
-            FileInputStream fis = ctx.openFileInput(FILENAME);
+            FileInputStream fis = ctx.openFileInput(FP.HIGHSCORE_FILENAME);
             ObjectInputStream ois = new ObjectInputStream(fis);
             highscore = (ArrayList<HighscoreEintrag>) ois.readObject();
             ois.close();
             fis.close();
         } catch (Exception e) {
-            Log.e("Highscore", "Fehler beim Lesen aus dem Speicher");
             if (highscore == null) {
                 highscore = new ArrayList<HighscoreEintrag>(10);
                 for (int i = 0; i < 10; i++) {
@@ -67,18 +63,15 @@ public class Highscore {
 
     /* Liest den Highscore als String-Liste aus dem App-Speicher */
     public synchronized void readHighscoreString() {
-        Log.d("Highscore", "readHighscoreString");
         ArrayList<String> toReturn = null;
         try {
-            FileInputStream fis = ctx.openFileInput(FILENAME);
+            FileInputStream fis = ctx.openFileInput(FP.HIGHSCORE_FILENAME);
             ObjectInputStream ois = new ObjectInputStream(fis);
             ArrayList<HighscoreEintrag> temp = (ArrayList<HighscoreEintrag>) ois.readObject();
             highscoreString = mapHighscoreEintragToStringCollection(temp);
             ois.close();
             fis.close();
         } catch (Exception e) {
-            Log.e("Highscore", "Fehler beim Lesen aus dem Speicher");
-            Log.e("Highscore", e.getMessage());
         }
     }
 
@@ -108,16 +101,14 @@ public class Highscore {
 
     /* Schreibt den Highscore in den App-Speicher */
     public void writeHighscore(ArrayList<HighscoreEintrag> highscore) {
-        Log.d("Highscore", "writeHighscore");
         try {
-            FileOutputStream fos = ctx.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = ctx.openFileOutput(FP.HIGHSCORE_FILENAME, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(highscore);
             oos.flush();
             oos.close();
             fos.close();
         } catch (Exception e) {
-            Log.e("Highscore", "Fehler beim Schreiben in den Speicher");
         }
     }
 
@@ -133,7 +124,6 @@ public class Highscore {
 
     /*  Vergleicht den Score mit den gespeicherten Highscores und schreibt ggf. einen neuen Highscore */
     public synchronized void compareScore(HighscoreEintrag score) {
-        Log.d("Highscore", "compareScore");
         boolean newhs = false;
         for (HighscoreEintrag hs : highscore) { // Vergleicht den Score mit den Highscores
             if (score.compareTo(hs) != -1) {
