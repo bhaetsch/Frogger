@@ -157,10 +157,11 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
             } else {
                 /* Fallback auf lokale Highscores */
                 usePlayServices = false;
-                show_toast("Unable to sign in, using local Highscores!");
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean(getString(R.string.str_opt_playServices), false);
+                editor.putBoolean(getString(R.string.str_main_playServices), false);
                 editor.commit();
+                show_toast(getString(R.string.str_main_local));
+
             }
         }
     }
@@ -322,7 +323,6 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
-
 
     /* Wischgesten-Erkennung */
     @Override

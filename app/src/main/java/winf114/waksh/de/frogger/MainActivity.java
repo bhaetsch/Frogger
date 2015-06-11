@@ -18,7 +18,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private Highscore highscore;
     private SharedPreferences sharedPref;
     private boolean usePlayServices;
-    private boolean firstUsePlayServices;
     private GoogleApiClient mGoogleApiClient;
     private static int RC_SIGN_IN = 9001;
     private boolean mResolvingConnectionFailure = false;
@@ -37,7 +36,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         /* Prüft, ob Google Play Services für die Highscores verwendet werden sollen */
         sharedPref = this.getSharedPreferences(getString(R.string.shared_prefs), Context.MODE_PRIVATE);
         usePlayServices = sharedPref.getBoolean(getString(R.string.str_main_playServices), false);
-        firstUsePlayServices = sharedPref.getBoolean(getString(R.string.str_main_firstUse), false);
 
 
         /* Versucht ggf. eine Verbindung zu den Google Play Services aufzubauen */
@@ -120,10 +118,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 /* Fallback auf lokale Highscores */
                 highscore = new Highscore(this);
                 usePlayServices = false;
-                show_toast(getString(R.string.str_main_local));
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putBoolean(getString(R.string.str_opt_playServices), false);
+                editor.putBoolean(getString(R.string.str_main_playServices), false);
                 editor.commit();
+                show_toast(getString(R.string.str_main_local));
             }
         }
     }
