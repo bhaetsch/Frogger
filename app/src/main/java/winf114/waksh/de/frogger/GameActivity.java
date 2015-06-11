@@ -299,7 +299,7 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback, Ge
             try {
                 mainThread.join();
                 retry = false;
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }

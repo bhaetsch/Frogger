@@ -2,7 +2,6 @@ package winf114.waksh.de.frogger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResultCallback;

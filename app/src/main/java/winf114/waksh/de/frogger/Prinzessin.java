@@ -23,7 +23,7 @@ public class Prinzessin extends Hindernis {
     }
 
     void erscheintDiePrinzessin(){
-        if (iscarried == false){
+        if (!iscarried){
             if (System.currentTimeMillis() > start + 1000 && !baum.kollidiertMit(FP.spielFlaeche)){
                 Random r = new Random();
                 int random = r.nextInt(100) + 1;
@@ -46,7 +46,7 @@ public class Prinzessin extends Hindernis {
     }
 
     public void move(){
-        if (aktiv == true && iscarried == false){
+        if (aktiv && !iscarried){
             this.setX(baum.getX() + FP.objektPixelBreite);
             setZeichenBereich();
         }

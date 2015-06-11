@@ -35,35 +35,35 @@ public class Blume extends Hindernis {
                     int random2 = r.nextInt(5) + 1;
                     switch (random2) {
                         case 1:
-                            if (ziel01.isBesetzt() == false) {
+                            if (!ziel01.isBesetzt()) {
                                 setX(ziel01.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 2:
-                            if (ziel02.isBesetzt() == false) {
+                            if (!ziel02.isBesetzt()) {
                                 setX(ziel02.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 3:
-                            if (ziel03.isBesetzt() == false) {
+                            if (!ziel03.isBesetzt()) {
                                 setX(ziel03.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 4:
-                            if (ziel04.isBesetzt() == false) {
+                            if (!ziel04.isBesetzt()) {
                                 setX(ziel04.getX());
                                 setZeichenBereich();
                                 erscheint();
                             }
                             break;
                         case 5:
-                            if (ziel05.isBesetzt() == false) {
+                            if (!ziel05.isBesetzt()) {
                                 setX(ziel05.getX());
                                 setZeichenBereich();
                                 erscheint();

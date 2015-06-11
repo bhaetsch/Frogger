@@ -38,10 +38,7 @@ final class SpielWerte {
     }
 
     static boolean levelZuende() {
-        if (getZeitImLevelVerbracht() > SpielWerte.LEVEL_ZEIT_SEK) {
-            return true;
-        }
-        return false;
+        return getZeitImLevelVerbracht() > SpielWerte.LEVEL_ZEIT_SEK;
     }
 
     static String levelZeit() {

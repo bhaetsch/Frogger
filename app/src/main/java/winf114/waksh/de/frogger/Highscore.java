@@ -63,7 +63,6 @@ public class Highscore {
 
     /* Liest den Highscore als String-Liste aus dem App-Speicher */
     public synchronized void readHighscoreString() {
-        ArrayList<String> toReturn = null;
         try {
             FileInputStream fis = ctx.openFileInput(ctx.getString(R.string.highscore));
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -71,7 +70,7 @@ public class Highscore {
             highscoreString = mapHighscoreEintragToStringCollection(temp);
             ois.close();
             fis.close();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -108,7 +107,7 @@ public class Highscore {
             oos.flush();
             oos.close();
             fos.close();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

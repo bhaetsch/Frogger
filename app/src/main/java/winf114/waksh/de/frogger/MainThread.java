@@ -10,7 +10,6 @@ public class MainThread extends Thread {
     private volatile boolean running = false;
     private final SurfaceHolder surfaceHolder;
     private final GameActivity gameActivity;
-    private Canvas canvas;
     final ZeitMessung gameCycleMessung;
     private int zieleErreicht;
 
@@ -24,6 +23,7 @@ public class MainThread extends Thread {
 
     @Override
     public void run() {
+        Canvas canvas;
         while (running) {
             canvas = null;
             try {
