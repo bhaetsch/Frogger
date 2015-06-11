@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="winf114.waksh.de.frogger" >
+    package="de.waksh.winf114.wakker" >
 
     <application
         android:allowBackup="true"
@@ -15,7 +15,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="de.waksh.winf114.wakker.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,47 +24,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GameActivity"
+            android:name="de.waksh.winf114.wakker.GameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_game"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="de.waksh.winf114.wakker.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="winf114.waksh.de.frogger.MainActivity" />
+                android:value="de.waksh.winf114.wakker.MainActivity" />
         </activity>
         <activity
-            android:name=".HighscoreActivity"
+            android:name="de.waksh.winf114.wakker.HighscoreActivity"
             android:label="@string/title_activity_highscore"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="winf114.waksh.de.frogger.MainActivity" />
+                android:value="de.waksh.winf114.wakker.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="de.waksh.winf114.wakker.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="winf114.waksh.de.frogger.MainActivity" />
+                android:value="de.waksh.winf114.wakker.MainActivity" />
         </activity>
         <activity
-            android:name=".CreditsActivity"
+            android:name="de.waksh.winf114.wakker.CreditsActivity"
             android:label="@string/title_activity_credits"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="winf114.waksh.de.frogger.MainActivity" />
+                android:value="de.waksh.winf114.wakker.MainActivity" />
         </activity>
         <activity
-            android:name=".InstructionsActivity"
+            android:name="de.waksh.winf114.wakker.InstructionsActivity"
             android:label="@string/title_activity_instructions"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="winf114.waksh.de.frogger.MainActivity" />
+                android:value="de.waksh.winf114.wakker.MainActivity" />
         </activity>
     </application>
 
