@@ -8,6 +8,7 @@
     <string name="str_logo_alt">"Game Logo"</string>
     <string name="str_btn_play">"Play Game"</string>
     <string name="str_btn_highscore" translatable="false">"High Score"</string>
+    <string name="str_btn_instructions">"Game Instructions"</string>
     <string name="str_btn_settings">"Settings"</string>
     <string name="str_btn_credits" translatable="false">"Credits"</string>
     <string name="str_btn_exit">"Exit"</string>
@@ -23,6 +24,11 @@
     <string name="title_activity_settings" translatable="false">"SettingsActivity"</string>
     <string name="str_head_settings">"Settings"</string>
     <string name="str_opt_playServices">"Use Google Play Games for High Score"</string>
+
+    <!-- Strings for activity_instructions -->
+    <string name="title_activity_instructions" translatable="false">"InstructionsActivity"</string>
+    <string name="str_head_instr">"Game Instructions"</string>
+    <string name="str_instr_content" formatted="false">"Gameplay\nTry to reach all five targets (black) to get to the next level.\nBut beware! Don\'t let the cars (brown) get you. Also the snakes (yellow) and the crocodile (dark green) have it in for you.\nThe logs (brown) help you to get over the river and the back of the crocodile (lightgreen) is harmless, too.\nIf you catch the Frog Princess (purple) or reach the target with the flower (pink), you\'ll get extra points.\n\nControls\nThe frog is moved by swipe gestures. If you want to move the frog up, just swipe up anywhere on the screen. The same goes for moving the frog to the left, to the right or down.\n\nHigh Scores\nBy default the High Scores are saved locally on your device.\nIf you want to compete with other players you can choose to use Google Play Games for High Scores in the Settings.\nFor that you have to give the App access to your Google+ profile.\nWe use the access only for High Scores, no profile information will be read out!"</string>
 
     <!-- Strings for activity_credits -->
     <string name="title_activity_credits" translatable="false">"CreditsActivity"</string>

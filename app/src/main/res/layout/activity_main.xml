@@ -39,6 +39,13 @@
         android:text="@string/str_btn_highscore" />
 
     <Button
+        android:id="@+id/btn_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onclick_instructions"
+        android:text="@string/str_btn_instructions" />
+
+    <Button
         android:id="@+id/btn_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

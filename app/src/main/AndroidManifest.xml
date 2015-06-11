@@ -58,6 +58,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="winf114.waksh.de.frogger.MainActivity" />
         </activity>
+        <activity
+            android:name=".InstructionsActivity"
+            android:label="@string/title_activity_instructions"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="winf114.waksh.de.frogger.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

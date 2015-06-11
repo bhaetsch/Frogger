@@ -23,5 +23,8 @@
     <string name="str_thread_yummy">"Omnomnom!"</string>
     <string name="str_frosch_score">"Punkte: "</string>
     <string name="str_game_go">"Los geht\'s!"</string>
+    <string name="str_btn_instructions">"Spielanleitung"</string>
+    <string name="str_head_instr">"Spielanleitung"</string>
+    <string name="str_instr_content" formatted="false">"Spielprinzip\nVersuche alle fünf Ziele (schwarz) zu erreichen, um in das nächste Level zu kommen.\nAber Vorsicht! Lass dich nicht von den Autos (braun) erwischen. Auch die Schlangen (gelb) und das Krokodil (dunkelgrün) haben es auf dich abgesehen.\nDie Baumstämme (braun) helfen dir über den Fluss zu kommen und auf dem Rücken des Krokodils (hellgrün) ist es auch ungefährlich.\nSammelst du unterwegs die Froschprinzessin (lila) ein oder erreichst das Ziel mit der Blume (rosa), kannst du Extrapunkte sammeln.\n\nSteuerung\nDer Frosch wird durch Wischgesten gesteuert. Willst du den Frosch also nach oben bewegen, wische einfach irgendwo auf dem Bildschirm nach oben. Genauso kannst du den Frosch auch nach rechts, links und unten bewegen.\n\nHigh Scores\nStandardmäßig werden die High Scores lokal auf deinem Gerät gespeichert.\nMöchtest du dich mit anderen Spielern messen, kannst du in den Einstellungen das Speichern der High Scores bei Google Play Games aktivieren. Dazu musst du der App erlauben auf dein Google+ Profil zuzugreifen.\nWir benutzen den Zugriff ausschließlich für das Speichern und Abrufen der High Scores, es werden keine Profil-Informationen ausgelesen!"</string>
 
 </resources>

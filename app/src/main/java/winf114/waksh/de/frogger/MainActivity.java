@@ -163,6 +163,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         }
     }
 
+    /* Wird aufgerufen, wenn der Instructions-Button gedrückt wird und startet die InstructionsActivity */
+    public void onclick_instructions(View view) {
+        Intent intent = new Intent(this, InstructionsActivity.class);
+        startActivity(intent);
+    }
+
     /* Wird aufgerufen, wenn der Settings-Button gedrückt wird und startet die SettingsActivity */
     public void onclick_settings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
