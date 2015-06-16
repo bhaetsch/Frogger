@@ -1,69 +1,92 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="de.waksh.de.wakker.MainActivity">
 
-    <ImageView
-        android:id="@+id/wakker_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/wakker_trans"
-        android:contentDescription="@string/str_logo_alt" />
-
-    <Button
-        android:id="@+id/btn_play"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onclick_play"
-        android:text="@string/str_btn_play" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_highscore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onclick_highscore"
-        android:text="@string/str_btn_highscore" />
+        <ImageView
+            android:id="@+id/wakker_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/str_logo_alt"
+            android:src="@drawable/wakker_trans" />
 
-    <Button
-        android:id="@+id/btn_instructions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onclick_instructions"
-        android:text="@string/str_btn_instructions" />
+        <Button
+            android:id="@+id/btn_play"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_play"
+            android:text="@string/str_btn_play" />
 
-    <Button
-        android:id="@+id/btn_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onclick_settings"
-        android:text="@string/str_btn_settings" />
+        <Button
+            android:id="@+id/btn_highscore"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_highscore"
+            android:text="@string/str_btn_highscore" />
 
-    <Button
-        android:id="@+id/btn_credits"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onclick_credits"
-        android:text="@string/str_btn_credits" />
+        <Button
+            android:id="@+id/btn_instructions"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_instructions"
+            android:text="@string/str_btn_instructions" />
 
-    <Button
-        android:id="@+id/btn_exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onclick_exit"
-        android:text="@string/str_btn_exit" />
+        <Button
+            android:id="@+id/btn_settings"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_settings"
+            android:text="@string/str_btn_settings" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_credits"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_credits"
+            android:text="@string/str_btn_credits" />
+
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_exit"
+            android:text="@string/str_btn_exit" />
+
+    </LinearLayout>
+
+</ScrollView>
