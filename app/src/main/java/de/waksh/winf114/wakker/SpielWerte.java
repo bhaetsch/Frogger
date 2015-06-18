@@ -72,7 +72,7 @@ final class SpielWerte {
     }
 
     static float getGeschwindigkeitsMultiplikator() {
-        return 1 + (float) level / 5;
+        return 1 + (float) level / 3;
     }
 
     static int getPunkte() {
