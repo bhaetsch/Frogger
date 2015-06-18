@@ -27,12 +27,14 @@ class LebensAnzeige {
     }
 
     void lebenDazu() {
-        int temp = leben.size();
-        leben.add(lebenRect[temp] = new Rect(
-                FP.lebensAnzeigeX + (FP.lebensAnzeigeAbstand * temp),
-                FP.lebensAnzeigeY + FP.lanePadding * 2,
-                FP.lebensAnzeigeX + FP.lebensAnzeigeBreite + (FP.lebensAnzeigeAbstand * temp),
-                FP.lebensAnzeigeY + FP.lanePadding * 3 + FP.lebensAnzeigeHöhe));
+        if(leben.size() < 7) {
+            int temp = leben.size();
+            leben.add(lebenRect[temp] = new Rect(
+                    FP.lebensAnzeigeX + (FP.lebensAnzeigeAbstand * temp),
+                    FP.lebensAnzeigeY + FP.lanePadding * 2,
+                    FP.lebensAnzeigeX + FP.lebensAnzeigeBreite + (FP.lebensAnzeigeAbstand * temp),
+                    FP.lebensAnzeigeY + FP.lanePadding * 3 + FP.lebensAnzeigeHöhe));
+        }
     }
 
     boolean keineLebenMehr() {

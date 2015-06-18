@@ -6,4 +6,11 @@
     <!-- ID des Leaderboards (Highscore) -->
     <string name="leaderboard_highscore" translatable="false">CgkI2-engsYVEAIQAQ</string>
 
+    <!-- IDs der Achievements -->
+    <string name="achievement_level1" translatable="false">CgkI2-engsYVEAIQAw</string>
+    <string name="achievement_level2" translatable="false">CgkI2-engsYVEAIQBA</string>
+    <string name="achievement_level3" translatable="false">CgkI2-engsYVEAIQBQ</string>
+    <string name="achievement_level5" translatable="false">CgkI2-engsYVEAIQBg</string>
+    <string name="achievement_level10" translatable="false">CgkI2-engsYVEAIQBw</string>
+
 </resources>

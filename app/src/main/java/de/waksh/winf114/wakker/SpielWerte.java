@@ -67,6 +67,10 @@ final class SpielWerte {
         level++;
     }
 
+    static int getLevel() {
+        return level;
+    }
+
     static float getPunkteMultiplikator() {
         return 1 + (float) level / 10;
     }

@@ -95,6 +95,7 @@ public class MainThread extends Thread {
         if (zieleErreicht == 5) {
             SpielWerte.addScore(500);
             SpielWerte.levelUp();
+            gameActivity.frosch.achievements(SpielWerte.getLevel());
             gameActivity.lebensAnzeige.lebenDazu();
             for (Spielobjekt s : gameActivity.spielobjekte) {
                 if (s instanceof Ziel) {

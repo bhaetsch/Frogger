@@ -8,6 +8,7 @@
     <string name="str_logo_alt">"Game Logo"</string>
     <string name="str_btn_play">"Play Game"</string>
     <string name="str_btn_highscore" translatable="false">"High Score"</string>
+    <string name="str_btn_achievements">"Achievements"</string>
     <string name="str_btn_instructions">"Game Instructions"</string>
     <string name="str_btn_settings">"Settings"</string>
     <string name="str_btn_credits" translatable="false">"Credits"</string>
@@ -38,6 +39,7 @@
     <!-- Strings for Frosch -->
     <string name="str_frosch_blume">"Flower picked!"</string>
     <string name="str_frosch_highscore">"New High Score!"</string>
+    <string name="str_frosch_achievement">"New Achievement!"</string>
     <string name="str_frosch_prinzessin">"Princess caught!"</string>
     <string name="str_frosch_score">"Score: "</string>
 

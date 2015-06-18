@@ -6,6 +6,7 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import android.content.Context;
 
@@ -49,6 +50,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                         .build();
             }
             mGoogleApiClient.connect();
+
+            /* Button für Achievements sichtbar machen */
+            Button acButton = (Button)findViewById(R.id.btn_achievements);
+            acButton.setVisibility(View.VISIBLE);
+        } else {
+            /* Button für Achievements unsichtbar machen, wenn Google Play Services in den Einstellungen deaktiviert wurden */
+            Button acButton = (Button)findViewById(R.id.btn_achievements);
+            acButton.setVisibility(View.GONE);
         }
     }
 
@@ -158,6 +167,17 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             Intent intent = new Intent(this, HighscoreActivity.class);
             intent.putExtra("highscoreString", highscore.getHighscoreString()); // Übergibt die String-Liste an die HighscoreActivity
             startActivity(intent);
+        }
+    }
+
+    /* Wird aufgerufen, wenn der Achievements-Button gedrückt wird */
+    public void onclick_achievements(View view) {
+        if (usePlayServices && mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            /* Achievements abrufen, wenn möglich */
+            startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 0);
+        } else {
+            /* Fehlermeldung in Toast anzeigen */
+            show_toast(getString(R.string.str_main_tryagain));
         }
     }
 

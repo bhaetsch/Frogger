@@ -13,6 +13,7 @@
     tools:context="de.waksh.de.wakker.MainActivity">
 
     <LinearLayout
+        android:id="@+id/ll_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -46,6 +47,17 @@
             android:maxWidth="400dp"
             android:onClick="onclick_highscore"
             android:text="@string/str_btn_highscore" />
+
+        <Button
+            android:id="@+id/btn_achievements"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="400dp"
+            android:maxWidth="400dp"
+            android:onClick="onclick_achievements"
+            android:text="@string/str_btn_achievements" />
 
         <Button
             android:id="@+id/btn_instructions"
