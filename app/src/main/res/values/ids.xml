@@ -13,4 +13,7 @@
     <string name="achievement_level5" translatable="false">CgkI2-engsYVEAIQBg</string>
     <string name="achievement_level10" translatable="false">CgkI2-engsYVEAIQBw</string>
 
+    <!-- ID für AdBanner -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

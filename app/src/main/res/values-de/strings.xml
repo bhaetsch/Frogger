@@ -4,8 +4,8 @@
     <string name="str_btn_play">"Spielen"</string>
     <string name="str_btn_settings">"Einstellungen"</string>
     <string name="str_head_settings">"Einstellungen"</string>
-    <string name="str_opt_playServices">"Google Play Games für den High Score benutzen"</string>
-    <string name="str_credits_entw" formatted="false">"WAKker wurde von\n\n Matze Findeisen &amp;\n Benjamin Hätsch\n\nim Rahmen der Lehrveranstaltung \'Entwicklung und Management von Softwaresystemen - Programmierung 2\' an der Wirtschaftsakademie Schleswig-Holstein in Kiel entwickelt.\n\n\nDas Logo wurde auf Grundlage der folgenden Grafik erstellt:\nhttp://pixabay.com/de/frosch-tier-froschlurch-gr%C3%BCn-688641/\n\n\nCopyright &#169; 2015 Matze Findeisen &amp; Benjamin Hätsch"</string>
+    <string name="str_opt_playServices">"Google Play Games für den High Score und Erfolge benutzen"</string>
+    <string name="str_credits_entw" formatted="false">"WAKker wurde von\n\n Matze Findeisen &amp;\n Benjamin Hätsch\n\nim Rahmen der Lehrveranstaltung \'Entwicklung und Management von Softwaresystemen - Programmierung 2\' an der Wirtschaftsakademie Schleswig-Holstein in Kiel entwickelt.\n\n\nDie folgenden Grafiken wurden in dieser App verwendet:\nhttp://pixabay.com/de/frosch-tier-froschlurch-gr%C3%BCn-688641\nhttp://pixabay.com/de/krone-gold-k%C3%B6nig-k%C3%B6nigin-gelb-294438\n\n\nCopyright &#169; 2015 Matze Findeisen &amp; Benjamin Hätsch"</string>
     <string name="str_logo_alt">"Spiel-Logo"</string>
     <string name="str_frosch_blume">"Blume gepflückt!"</string>
     <string name="str_frosch_highscore">"Neuer High Score!"</string>
@@ -27,6 +27,5 @@
     <string name="str_head_instr">"Spielanleitung"</string>
     <string name="str_instr_content" formatted="false">"Spielprinzip\nVersuche alle fünf Ziele (schwarz) zu erreichen, um in das nächste Level zu kommen.\nAber Vorsicht! Lass dich nicht von den Autos (braun) erwischen. Auch die Schlangen (gelb) und das Krokodil (dunkelgrün) haben es auf dich abgesehen.\nDie Baumstämme (braun) helfen dir über den Fluss zu kommen und auf dem Rücken des Krokodils (hellgrün) ist es auch ungefährlich.\nSammelst du unterwegs die Froschprinzessin (lila) ein oder erreichst das Ziel mit der Blume (rosa), kannst du Extrapunkte sammeln.\n\nSteuerung\nDer Frosch wird durch Wischgesten gesteuert. Willst du den Frosch also nach oben bewegen, wische einfach irgendwo auf dem Bildschirm nach oben. Genauso kannst du den Frosch auch nach rechts, links und unten bewegen.\n\nHigh Scores\nStandardmäßig werden die High Scores lokal auf deinem Gerät gespeichert.\nMöchtest du dich mit anderen Spielern messen, kannst du in den Einstellungen das Speichern der High Scores bei Google Play Games aktivieren. Dazu musst du der App erlauben auf dein Google+ Profil zuzugreifen.\nWir benutzen den Zugriff ausschließlich für das Speichern und Abrufen der High Scores, es werden keine Profil-Informationen ausgelesen!"</string>
     <string name="str_btn_achievements">"Erfolge"</string>
-    <string name="str_frosch_achievement">"Neuer Erfolg!"</string>
 
 </resources>
