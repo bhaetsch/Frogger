@@ -1,8 +1,8 @@
 <resources>
 
     <string name="app_name" translatable="false">"WAKker"</string>
-    <string name="shared_prefs" translatable="false">"de.waksh.winf114.wakker.settings"</string>
-    <string name="highscore" translatable="false">"de.waksh.winf114.wakker.highscore"</string>
+    <string name="shared_prefs" translatable="false">"de.waksh.winf114.wakker2.settings"</string>
+    <string name="highscore" translatable="false">"de.waksh.winf114.wakker2.highscore"</string>
 
     <!-- Strings for activity_main -->
     <string name="str_logo_alt">"Game Logo"</string>

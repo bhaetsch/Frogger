@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.waksh.winf114.wakker" >
+    package="de.waksh.winf114.wakker2" >
 
     <!-- Include required permissions for Google Mobile Ads to run-->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -20,7 +20,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="de.waksh.winf114.wakker.MainActivity"
+            android:name="de.waksh.winf114.wakker2.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,51 +29,51 @@
         </activity>
 
         <activity
-            android:name="de.waksh.winf114.wakker.GameActivity"
+            android:name="de.waksh.winf114.wakker2.GameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_game"
-            android:parentActivityName="de.waksh.winf114.wakker.MainActivity"
+            android:parentActivityName="de.waksh.winf114.wakker2.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.waksh.winf114.wakker.MainActivity" />
+                android:value="de.waksh.winf114.wakker2.MainActivity" />
         </activity>
 
         <activity
-            android:name="de.waksh.winf114.wakker.HighscoreActivity"
+            android:name="de.waksh.winf114.wakker2.HighscoreActivity"
             android:label="@string/title_activity_highscore"
-            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker2.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.waksh.winf114.wakker.MainActivity" />
+                android:value="de.waksh.winf114.wakker2.MainActivity" />
         </activity>
 
         <activity
-            android:name="de.waksh.winf114.wakker.SettingsActivity"
+            android:name="de.waksh.winf114.wakker2.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker2.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.waksh.winf114.wakker.MainActivity" />
+                android:value="de.waksh.winf114.wakker2.MainActivity" />
         </activity>
 
         <activity
-            android:name="de.waksh.winf114.wakker.CreditsActivity"
+            android:name="de.waksh.winf114.wakker2.CreditsActivity"
             android:label="@string/title_activity_credits"
-            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker2.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.waksh.winf114.wakker.MainActivity" />
+                android:value="de.waksh.winf114.wakker2.MainActivity" />
         </activity>
 
         <activity
-            android:name="de.waksh.winf114.wakker.InstructionsActivity"
+            android:name="de.waksh.winf114.wakker2.InstructionsActivity"
             android:label="@string/title_activity_instructions"
-            android:parentActivityName="de.waksh.winf114.wakker.MainActivity" >
+            android:parentActivityName="de.waksh.winf114.wakker2.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.waksh.winf114.wakker.MainActivity" />
+                android:value="de.waksh.winf114.wakker2.MainActivity" />
         </activity>
 
         <!--Include the AdActivity configChanges and theme. -->
