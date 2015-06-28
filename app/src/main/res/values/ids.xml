@@ -14,6 +14,7 @@
     <string name="achievement_level10" translatable="false">CgkI2-engsYVEAIQBw</string>
 
     <!-- ID für AdBanner -->
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_test" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_live" translatable="false">ca-app-pub-9466428559615092/4653428765</string>
 
 </resources>
