@@ -8,8 +8,8 @@ android {
         applicationId "de.waksh.winf114.wakker2"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 101
+        versionName "1.0.1"
     }
 
     buildTypes {
@@ -25,5 +25,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.0'
     compile 'com.google.android.gms:play-services-games:7.5.0'
-    compile 'com.google.android.gms:play-services-ads:7.5.0'
 }
